@@ -2,35 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>USACE PDBP AIS Demo</title>
+  <title>USACE PDBP AIS</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* --- Minimal CSS for demo, paste your full CSS for production --- */
     body { background: #1A1F14; color: #F5F2EB; font-family: 'Mulish', sans-serif; margin: 0; min-height: 100vh; }
-    .header-inner { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .header-inner { max-width: 1060px; margin: 0 auto; padding: 24px; display: flex; align-items: center; gap: 16px; }
     .logo-seal { width: 36px; height: 36px; border: 1.5px solid #C8A84B; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display',serif; font-size: 11px; color: #C8A84B; }
     .logo-primary { font-family: 'DM Serif Display',serif; font-size: 18px; color: #F5F2EB; }
     .logo-sub { font-size: 10px; color: #C8A84B; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
-    .main-content { max-width: 900px; margin: 32px auto; background: #252D1C; border-radius: 8px; padding: 32px; }
+    .main-content { max-width: 1060px; margin: 32px auto; background: #252D1C; border-radius: 8px; padding: 32px; min-height: 600px; }
     h1, h2 { font-family: 'DM Serif Display',serif; color: #F5F2EB; }
     .btn-primary { background: #C8A84B; color: #1A1F14; font-weight: bold; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; margin-top: 24px; }
     .btn-primary:hover { background: #E2C97E; }
-    .ai-prompt-area { background: #ECEAE3; color: #1A1F14; border-radius: 6px; padding: 16px; margin: 24px 0; }
-    .ai-response-area { background: #E4E1D8; color: #3A3F34; border-radius: 6px; padding: 16px; min-height: 48px; }
-    textarea.text-input { width: 100%; min-height: 60px; font-size: 14px; font-family: 'Mulish',sans-serif; margin-top: 8px; border-radius: 4px; border: 1px solid #C8A84B; padding: 8px; }
+    .btn-secondary { background: #ECEAE3; color: #1A1F14; border: 1px solid #C8A84B; border-radius: 4px; padding: 8px 16px; cursor: pointer; }
+    .btn-secondary:hover { background: #E2C97E; }
+    .sidebar { background: #252D1C; color: #F5F2EB; border-radius: 8px; padding: 24px; min-width: 220px; max-width: 220px; float: left; margin-right: 32px; }
+    .sidebar-label { font-family: 'DM Mono',monospace; font-size: 10px; color: #C8A84B; margin-bottom: 8px; }
+    .proc-nav-item { padding: 8px 0; cursor: pointer; border-bottom: 1px solid #C8A84B; }
+    .proc-nav-item.active { background: #C8A84B; color: #1A1F14; }
+    .proc-nav-code { font-family: 'DM Mono',monospace; font-size: 10px; color: #C8A84B; margin-right: 8px; }
+    .proc-nav-name { font-size: 13px; font-weight: bold; }
+    .screen { display: none; }
+    .screen.active { display: block; }
     .step-list { margin: 24px 0; }
     .step-item { background: #3D5229; color: #F5F2EB; border-radius: 4px; margin-bottom: 10px; padding: 12px; }
     .step-main { font-weight: bold; }
     .step-detail { font-size: 13px; color: #E2C97E; }
+    .ai-prompt-area { background: #ECEAE3; color: #1A1F14; border-radius: 6px; padding: 16px; margin: 24px 0; }
+    .ai-response-area { background: #E4E1D8; color: #3A3F34; border-radius: 6px; padding: 16px; min-height: 48px; }
+    textarea.text-input { width: 100%; min-height: 60px; font-size: 14px; font-family: 'Mulish',sans-serif; margin-top: 8px; border-radius: 4px; border: 1px solid #C8A84B; padding: 8px; }
     .artifact-panel { background: #ECEAE3; color: #1A1F14; border-radius: 6px; padding: 16px; margin: 24px 0; }
     .artifact-header { font-weight: bold; margin-bottom: 8px; }
     .artifact-body { font-family: 'DM Mono',monospace; font-size: 13px; white-space: pre-wrap; }
-    .btn-secondary { background: #ECEAE3; color: #1A1F14; border: 1px solid #C8A84B; border-radius: 4px; padding: 8px 16px; cursor: pointer; }
-    .btn-secondary:hover { background: #E2C97E; }
-    .footer-inner { max-width: 900px; margin: 0 auto; padding: 24px; color: #C8A84B; font-size: 12px; }
-    @media (max-width: 700px) {
+    .footer-inner { max-width: 1060px; margin: 0 auto; padding: 24px; color: #C8A84B; font-size: 12px; }
+    .api-key-btn { background: #C8A84B; color: #1A1F14; border: none; border-radius: 4px; padding: 6px 12px; font-size: 12px; margin-left: 16px; cursor: pointer; }
+    .api-key-btn:hover { background: #E2C97E; }
+    @media (max-width: 900px) {
       .main-content, .header-inner, .footer-inner { padding: 8px; }
+      .sidebar { float: none; margin: 0 0 24px 0; max-width: 100%; }
     }
   </style>
 </head>
@@ -42,48 +52,143 @@
         <div class="logo-primary">PDBP Lifecycle Guide</div>
         <div class="logo-sub">PPM Community of Practice · USACE</div>
       </div>
+      <button class="api-key-btn" onclick="setApiKey()">Set API Key</button>
     </div>
   </header>
-  <div class="main-content" id="main-content">
-    <h1>USACE PDBP Assistant Information System (AIS) <span style="font-size:16px;color:#C8A84B;">Demo</span></h1>
-    <p>
-      This demo guides Project Delivery Teams through the USACE Project Delivery Business Process (PDBP) lifecycle, step by step, with process checklists, artifact templates, and AI-powered guidance (AI disabled in demo).
-    </p>
-    <h2>Initiation Phase: Work Acceptance (PROC1000)</h2>
-    <div class="step-list">
-      <div class="step-item">
-        <div class="step-main">Receive work request from Primary Stakeholder or HQUSACE directive</div>
-        <div class="step-detail">Initial request should include preliminary scope information. Document the requesting party, nature of work, and date received.</div>
+  <div style="display:flex;max-width:1060px;margin:0 auto;">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-label">Phases</div>
+      <div class="proc-nav-item active" id="nav-initiation" onclick="showPhase('initiation')"><span class="proc-nav-code">Initiation</span><span class="proc-nav-name">Work Acceptance</span></div>
+      <div class="proc-nav-item" id="nav-planning" onclick="showPhase('planning')"><span class="proc-nav-code">Planning</span><span class="proc-nav-name">PMP Development</span></div>
+      <div class="proc-nav-item" id="nav-execution" onclick="showPhase('execution')"><span class="proc-nav-code">Execution</span><span class="proc-nav-name">Project Delivery</span></div>
+      <div class="proc-nav-item" id="nav-closeout" onclick="showPhase('closeout')"><span class="proc-nav-code">Closeout</span><span class="proc-nav-name">Project Closeout</span></div>
+    </aside>
+    <div class="main-content">
+      <div class="screen active" id="screen-initiation">
+        <h2>Initiation Phase: Work Acceptance (PROC1000)</h2>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-main">Receive work request from Primary Stakeholder or HQUSACE directive</div>
+            <div class="step-detail">Initial request should include preliminary scope information. Document the requesting party, nature of work, and date received.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-main">Forward work request to DPM or Work Acceptance Official</div>
+            <div class="step-detail">Notify the DPM promptly. Do not begin any work activities prior to DPM acknowledgment.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-main">Assign work request to appropriate PgM or Senior PM</div>
+            <div class="step-detail">Per local SOPs, PgM role may be delegated to a Senior PM. Document the assignment.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-main">[DECISION] Is work within the USACE Activity's AOR or Mission Assignment?</div>
+            <div class="step-detail">Reference ER 5-1-10 and ER 1140-1-211. Identify statutory authority. If YES → Step 7. If NO → Step 5.</div>
+          </div>
+        </div>
+        <div class="ai-prompt-area">
+          <div><strong>AI Guidance (AskSage):</strong></div>
+          <textarea class="text-input" id="ai-in-initiation" placeholder="Ask about this process — e.g. When is HQUSACE approval required?"></textarea>
+          <button class="btn-primary" onclick="askAI('initiation')">Get Guidance →</button>
+        </div>
+        <div class="ai-response-area" id="ai-out-initiation">
+          <span style="opacity:.5;">AI guidance is disabled until API key is set.</span>
+        </div>
+        <div class="artifact-panel">
+          <div class="artifact-header">📄 Work Acceptance Decision Record</div>
+          <button class="btn-secondary" onclick="genArtifact('initiation')">Generate Draft →</button>
+          <div class="artifact-body" id="ab-initiation">Click “Generate Draft” to produce a project-specific starter document for this process.</div>
+        </div>
       </div>
-      <div class="step-item">
-        <div class="step-main">Forward work request to DPM or Work Acceptance Official</div>
-        <div class="step-detail">Notify the DPM promptly. Do not begin any work activities prior to DPM acknowledgment.</div>
+      <div class="screen" id="screen-planning">
+        <h2>Planning Phase: PMP Development (PROC2000)</h2>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-main">Initiate PMP development concurrent with project authorization</div>
+            <div class="step-detail">Begin immediately upon work acceptance — do not wait for final funding confirmation. Reference REF8005G for all required sections.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-main">Define PMP structure and all required subsidiary plans</div>
+            <div class="step-detail">Required plans: Risk Management, Quality Management, Communications, Safety, Acquisition, Schedule, Resource Estimate.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-main">Draft project description, purpose, and authorization basis</div>
+            <div class="step-detail">State what is authorized, by whom, and under what authority. Include statutory basis, appropriation source, and authorized scope.</div>
+          </div>
+        </div>
+        <div class="ai-prompt-area">
+          <div><strong>AI Guidance (AskSage):</strong></div>
+          <textarea class="text-input" id="ai-in-planning" placeholder="Ask about this process — e.g. What is required in the PMP?"></textarea>
+          <button class="btn-primary" onclick="askAI('planning')">Get Guidance →</button>
+        </div>
+        <div class="ai-response-area" id="ai-out-planning">
+          <span style="opacity:.5;">AI guidance is disabled until API key is set.</span>
+        </div>
+        <div class="artifact-panel">
+          <div class="artifact-header">📄 Project Management Plan (PMP) Framework</div>
+          <button class="btn-secondary" onclick="genArtifact('planning')">Generate Draft →</button>
+          <div class="artifact-body" id="ab-planning">Click “Generate Draft” to produce a project-specific starter document for this process.</div>
+        </div>
       </div>
-      <div class="step-item">
-        <div class="step-main">Assign work request to appropriate PgM or Senior PM</div>
-        <div class="step-detail">Per local SOPs, PgM role may be delegated to a Senior PM. Document the assignment.</div>
+      <div class="screen" id="screen-execution">
+        <h2>Execution Phase: Project Delivery (PROC3000)</h2>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-main">Confirm execution authorization: approved PMP, confirmed funds, full PDT staffing</div>
+            <div class="step-detail">Verify: approved PMP, funds confirmed, PDT fully staffed with named individuals. Issue formal notice to proceed.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-main">Execute the project per the approved PMP baseline</div>
+            <div class="step-detail">Each member executes their scope per the approved plan. Deviations must be identified and reported immediately.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-main">Conduct schedule updates and EVM performance measurement at minimum monthly</div>
+            <div class="step-detail">Update the schedule monthly minimum. Measure EVM metrics where required. Document trends.</div>
+          </div>
+        </div>
+        <div class="ai-prompt-area">
+          <div><strong>AI Guidance (AskSage):</strong></div>
+          <textarea class="text-input" id="ai-in-execution" placeholder="Ask about this process — e.g. How to handle variances?"></textarea>
+          <button class="btn-primary" onclick="askAI('execution')">Get Guidance →</button>
+        </div>
+        <div class="ai-response-area" id="ai-out-execution">
+          <span style="opacity:.5;">AI guidance is disabled until API key is set.</span>
+        </div>
+        <div class="artifact-panel">
+          <div class="artifact-header">📄 Execution Monitoring & Control Summary</div>
+          <button class="btn-secondary" onclick="genArtifact('execution')">Generate Draft →</button>
+          <div class="artifact-body" id="ab-execution">Click “Generate Draft” to produce a project-specific starter document for this process.</div>
+        </div>
       </div>
-      <div class="step-item">
-        <div class="step-main">[DECISION] Is work within the USACE Activity's AOR or Mission Assignment?</div>
-        <div class="step-detail">Reference ER 5-1-10 and ER 1140-1-211. Identify statutory authority. If YES → Step 7. If NO → Step 5.</div>
+      <div class="screen" id="screen-closeout">
+        <h2>Closeout Phase: Project Closeout (PROC4000)</h2>
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-main">Confirm all deliverables complete and formally accepted</div>
+            <div class="step-detail">Verify every deliverable has been completed, inspected, and accepted. Document the non-federal sponsor's formal written acceptance of all project outputs.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-main">Confirm all contracts closed or in formal closeout status</div>
+            <div class="step-detail">Verify: final invoices paid, performance evaluations submitted, all modifications complete, and contractor disputes resolved or in formal dispute resolution.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-main">Reconcile all project accounts and unliquidated obligations (ULOs)</div>
+            <div class="step-detail">Confirm all expenditures captured, all ULOs justified or deobligated, and the project financial record is complete and accurate.</div>
+          </div>
+        </div>
+        <div class="ai-prompt-area">
+          <div><strong>AI Guidance (AskSage):</strong></div>
+          <textarea class="text-input" id="ai-in-closeout" placeholder="Ask about this process — e.g. What is required for closeout?"></textarea>
+          <button class="btn-primary" onclick="askAI('closeout')">Get Guidance →</button>
+        </div>
+        <div class="ai-response-area" id="ai-out-closeout">
+          <span style="opacity:.5;">AI guidance is disabled until API key is set.</span>
+        </div>
+        <div class="artifact-panel">
+          <div class="artifact-header">📄 Project Closeout Checklist & Memorandum</div>
+          <button class="btn-secondary" onclick="genArtifact('closeout')">Generate Draft →</button>
+          <div class="artifact-body" id="ab-closeout">Click “Generate Draft” to produce a project-specific starter document for this process.</div>
+        </div>
       </div>
     </div>
-    <div class="ai-prompt-area">
-      <div><strong>AI Guidance (Demo):</strong></div>
-      <textarea class="text-input" id="ai-in-proc1000" placeholder="Ask about this process — e.g. When is HQUSACE approval required?"></textarea>
-      <button class="btn-primary" onclick="askAI('proc1000')">Get Guidance →</button>
-    </div>
-    <div class="ai-response-area" id="ai-out-proc1000">
-      <span style="opacity:.5;">AI guidance is disabled in this demo.</span>
-    </div>
-    <div class="artifact-panel">
-      <div class="artifact-header">📄 Work Acceptance Decision Record</div>
-      <button class="btn-secondary" onclick="genArtifact('proc1000')">Generate Draft →</button>
-      <div class="artifact-body" id="ab-proc1000">Click “Generate Draft” to produce a project-specific starter document for this process.</div>
-    </div>
-    <p>
-      <em>For a full-featured version, including all phases and AI integration, contact your USACE PPM CoP lead.</em>
-    </p>
   </div>
   <footer>
     <div class="footer-inner">
@@ -91,27 +196,90 @@
     </div>
   </footer>
   <script>
-    // --- Demo AskSage Integration (AI disabled) ---
+    // --- AskSage Integration ---
+    let ASKSAGE_API_KEY = '';
+    const ASKSAGE_API_URL = 'https://api.asksage.ai/v1/chat';
+
+    function setApiKey() {
+      const key = prompt('Enter your AskSage API key:');
+      if (key && key.length > 10) {
+        ASKSAGE_API_KEY = key;
+        sessionStorage.setItem('asksage_api_key', key);
+        alert('API key set! AI guidance and artifact generation are now enabled.');
+        document.querySelectorAll('.ai-response-area').forEach(el => {
+          el.innerHTML = '<span style="opacity:.5;">AI guidance is ready. Enter your question and click "Get Guidance".</span>';
+        });
+      } else {
+        alert('Invalid API key. Please try again.');
+      }
+    }
+    // Load API key from session storage if present
+    if (sessionStorage.getItem('asksage_api_key')) {
+      ASKSAGE_API_KEY = sessionStorage.getItem('asksage_api_key');
+    }
+
+    function showPhase(phase) {
+      ['initiation','planning','execution','closeout'].forEach(function(p){
+        document.getElementById('screen-' + p).classList.remove('active');
+        document.getElementById('nav-' + p).classList.remove('active');
+      });
+      document.getElementById('screen-' + phase).classList.add('active');
+      document.getElementById('nav-' + phase).classList.add('active');
+    }
+
     async function callAskSage({prompt, system, max_tokens=1000}) {
-      // Demo: AI is disabled
-      return 'AI guidance is not available in this demo. Please add your AskSage API key for live use.';
+      if (!ASKSAGE_API_KEY) {
+        return 'AI guidance is disabled until API key is set.';
+      }
+      const res = await fetch(ASKSAGE_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + ASKSAGE_API_KEY
+        },
+        body: JSON.stringify({
+          prompt,
+          system,
+          max_tokens
+        })
+      });
+      const data = await res.json();
+      return data.answer || data.text || 'No response.';
     }
 
-    async function askAI(procId){
-      const inp = document.getElementById(`ai-in-${procId}`)?.value.trim();
-      const out = document.getElementById(`ai-out-${procId}`);
+    async function askAI(phase){
+      const inp = document.getElementById(`ai-in-${phase}`)?.value.trim();
+      const out = document.getElementById(`ai-out-${phase}`);
       if (!inp) { out.innerHTML = '<span style="color:#C8A84B">Please enter a question above.</span>'; return; }
-      out.innerHTML = `<span style="color:#C8A84B">AI guidance is not available in this demo.</span>`;
+      out.innerHTML = `<span style="color:#C8A84B">Consulting AskSage AI...</span>`;
+      try {
+        const text = await callAskSage({
+          prompt: inp,
+          system: `You are an expert USACE PDBP advisor in the PPM CoP AI-powered lifecycle guidance tool. Provide practical, authoritative guidance per EM 5-1-11 (Aug 2024 revision). Be direct and specific. Reference EM 5-1-11 Table numbers, PROC codes, REF documents, and ERs. Maximum 5 sentences unless more is clearly needed. No filler.`,
+          max_tokens: 1000
+        });
+        out.innerHTML = `<div style="white-space:pre-wrap;font-size:13px;">${text}</div>`;
+      } catch (e) {
+        out.innerHTML = '<span style="color:#C0392B;">Connection error. Please try again.</span>';
+      }
     }
 
-    async function genArtifact(procId){
-      const el = document.getElementById(`ab-${procId}`);
+    async function genArtifact(phase){
+      const el = document.getElementById(`ab-${phase}`);
       if (!el) return;
       el.textContent = 'Generating draft artifact...';
-      setTimeout(function() {
-        el.textContent = 'AI artifact generation is not available in this demo. Please add your AskSage API key for live use.';
-      }, 800);
+      try {
+        const text = await callAskSage({
+          prompt: `Generate a draft artifact for the ${phase} phase of USACE PDBP. Use ALL CAPS section labels followed by colons. Use [BRACKETS] for project-specific fields. One page maximum. Immediately usable.`,
+          system: 'You are a USACE project management expert generating draft artifacts for PDTs. Output clean professional document text only — no markdown, no hashtag headers, no asterisks. Use ALL CAPS section labels followed by colons. Use [BRACKETS] for project-specific fields. One page maximum. Immediately usable.',
+          max_tokens: 1000
+        });
+        el.textContent = text;
+      } catch (e) {
+        el.textContent = 'Error generating artifact. Check connection and try again.';
+      }
     }
   </script>
 </body>
 </html>
+
