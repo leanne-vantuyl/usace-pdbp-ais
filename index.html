@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>USACE PDBP AIS Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- Minimal CSS for demo, paste your full CSS for production --- */
+    body { background: #1A1F14; color: #F5F2EB; font-family: 'Mulish', sans-serif; margin: 0; min-height: 100vh; }
+    .header-inner { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .logo-seal { width: 36px; height: 36px; border: 1.5px solid #C8A84B; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display',serif; font-size: 11px; color: #C8A84B; }
+    .logo-primary { font-family: 'DM Serif Display',serif; font-size: 18px; color: #F5F2EB; }
+    .logo-sub { font-size: 10px; color: #C8A84B; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+    .main-content { max-width: 900px; margin: 32px auto; background: #252D1C; border-radius: 8px; padding: 32px; }
+    h1, h2 { font-family: 'DM Serif Display',serif; color: #F5F2EB; }
+    .btn-primary { background: #C8A84B; color: #1A1F14; font-weight: bold; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; margin-top: 24px; }
+    .btn-primary:hover { background: #E2C97E; }
+    .ai-prompt-area { background: #ECEAE3; color: #1A1F14; border-radius: 6px; padding: 16px; margin: 24px 0; }
+    .ai-response-area { background: #E4E1D8; color: #3A3F34; border-radius: 6px; padding: 16px; min-height: 48px; }
+    textarea.text-input { width: 100%; min-height: 60px; font-size: 14px; font-family: 'Mulish',sans-serif; margin-top: 8px; border-radius: 4px; border: 1px solid #C8A84B; padding: 8px; }
+    .step-list { margin: 24px 0; }
+    .step-item { background: #3D5229; color: #F5F2EB; border-radius: 4px; margin-bottom: 10px; padding: 12px; }
+    .step-main { font-weight: bold; }
+    .step-detail { font-size: 13px; color: #E2C97E; }
+    .artifact-panel { background: #ECEAE3; color: #1A1F14; border-radius: 6px; padding: 16px; margin: 24px 0; }
+    .artifact-header { font-weight: bold; margin-bottom: 8px; }
+    .artifact-body { font-family: 'DM Mono',monospace; font-size: 13px; white-space: pre-wrap; }
+    .btn-secondary { background: #ECEAE3; color: #1A1F14; border: 1px solid #C8A84B; border-radius: 4px; padding: 8px 16px; cursor: pointer; }
+    .btn-secondary:hover { background: #E2C97E; }
+    .footer-inner { max-width: 900px; margin: 0 auto; padding: 24px; color: #C8A84B; font-size: 12px; }
+    @media (max-width: 700px) {
+      .main-content, .header-inner, .footer-inner { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner" style="display:flex;align-items:center;gap:16px;">
+      <div class="logo-seal">PPM</div>
+      <div>
+        <div class="logo-primary">PDBP Lifecycle Guide</div>
+        <div class="logo-sub">PPM Community of Practice · USACE</div>
+      </div>
+    </div>
+  </header>
+  <div class="main-content" id="main-content">
+    <h1>USACE PDBP Assistant Information System (AIS) <span style="font-size:16px;color:#C8A84B;">Demo</span></h1>
+    <p>
+      This demo guides Project Delivery Teams through the USACE Project Delivery Business Process (PDBP) lifecycle, step by step, with process checklists, artifact templates, and AI-powered guidance (AI disabled in demo).
+    </p>
+    <h2>Initiation Phase: Work Acceptance (PROC1000)</h2>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-main">Receive work request from Primary Stakeholder or HQUSACE directive</div>
+        <div class="step-detail">Initial request should include preliminary scope information. Document the requesting party, nature of work, and date received.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-main">Forward work request to DPM or Work Acceptance Official</div>
+        <div class="step-detail">Notify the DPM promptly. Do not begin any work activities prior to DPM acknowledgment.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-main">Assign work request to appropriate PgM or Senior PM</div>
+        <div class="step-detail">Per local SOPs, PgM role may be delegated to a Senior PM. Document the assignment.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-main">[DECISION] Is work within the USACE Activity's AOR or Mission Assignment?</div>
+        <div class="step-detail">Reference ER 5-1-10 and ER 1140-1-211. Identify statutory authority. If YES → Step 7. If NO → Step 5.</div>
+      </div>
+    </div>
+    <div class="ai-prompt-area">
+      <div><strong>AI Guidance (Demo):</strong></div>
+      <textarea class="text-input" id="ai-in-proc1000" placeholder="Ask about this process — e.g. When is HQUSACE approval required?"></textarea>
+      <button class="btn-primary" onclick="askAI('proc1000')">Get Guidance →</button>
+    </div>
+    <div class="ai-response-area" id="ai-out-proc1000">
+      <span style="opacity:.5;">AI guidance is disabled in this demo.</span>
+    </div>
+    <div class="artifact-panel">
+      <div class="artifact-header">📄 Work Acceptance Decision Record</div>
+      <button class="btn-secondary" onclick="genArtifact('proc1000')">Generate Draft →</button>
+      <div class="artifact-body" id="ab-proc1000">Click “Generate Draft” to produce a project-specific starter document for this process.</div>
+    </div>
+    <p>
+      <em>For a full-featured version, including all phases and AI integration, contact your USACE PPM CoP lead.</em>
+    </p>
+  </div>
+  <footer>
+    <div class="footer-inner">
+      POC: PPM Community of Practice · USACE  |  EM 5-1-11 (Rev Aug 2024)  |  Demo Version
+    </div>
+  </footer>
+  <script>
+    // --- Demo AskSage Integration (AI disabled) ---
+    async function callAskSage({prompt, system, max_tokens=1000}) {
+      // Demo: AI is disabled
+      return 'AI guidance is not available in this demo. Please add your AskSage API key for live use.';
+    }
+
+    async function askAI(procId){
+      const inp = document.getElementById(`ai-in-${procId}`)?.value.trim();
+      const out = document.getElementById(`ai-out-${procId}`);
+      if (!inp) { out.innerHTML = '<span style="color:#C8A84B">Please enter a question above.</span>'; return; }
+      out.innerHTML = `<span style="color:#C8A84B">AI guidance is not available in this demo.</span>`;
+    }
+
+    async function genArtifact(procId){
+      const el = document.getElementById(`ab-${procId}`);
+      if (!el) return;
+      el.textContent = 'Generating draft artifact...';
+      setTimeout(function() {
+        el.textContent = 'AI artifact generation is not available in this demo. Please add your AskSage API key for live use.';
+      }, 800);
+    }
+  </script>
+</body>
+</html>.0
