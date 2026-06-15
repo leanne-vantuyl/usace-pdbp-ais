@@ -626,6 +626,10 @@ body.light-mode footer{border-top:2px solid #5A4010;}
 body.light-mode .footer-attr{color:#5A4010;font-weight:700;}
 body.light-mode .footer-doc{color:#444444;opacity:1;}
 body.light-mode .theme-toggle{background:#E8E4D9;border:2px solid #5A4010;color:#111111;font-weight:700;}
+.font-toggle{background:transparent;border:1px solid var(--border);color:var(--white-dim);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.07em;padding:6px 11px;cursor:pointer;}
+body.light-mode .font-toggle{color:#5A4010;border-color:#5A4010;}
+html.font-s{font-size:14px;}
+html.font-l{font-size:18px;}
 body.light-mode .theme-toggle:hover{background:#5A4010;color:#FFFFFF;}
 body.light-mode .health-score-card{background:#E8E4D9;border:2px solid #5A4010;}
 body.light-mode .flag-item{color:#111111;}
@@ -697,6 +701,7 @@ body.light-mode .tour-skip:hover{color:#111111;}
         <span class="search-icon">⌕</span>
         <div class="search-results" id="search-results"></div>
       </div>
+      <button class="font-toggle" id="font-toggle" onclick="toggleFontSize()">Text: M</button>
       <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button>
       <button class="btn-secondary" onclick="openJumpModal()" style="padding:7px 13px;font-size:9px;letter-spacing:.08em;white-space:nowrap;">&#10549; Jump To</button>
       <div class="phase-nav">
@@ -3299,6 +3304,28 @@ function toggleTheme(){
     try{localStorage.setItem('pdbp-theme','dark');}catch(e){}
   }
 }
+
+var FONT_SIZES=['font-s','','font-l'];
+var FONT_LABELS={'font-s':'Text: S','':'Text: M','font-l':'Text: L'};
+function applyFontSize(cls){
+  document.documentElement.classList.remove('font-s','font-l');
+  if(cls){document.documentElement.classList.add(cls);}
+  var btn=document.getElementById('font-toggle');
+  if(btn)btn.textContent=FONT_LABELS[cls];
+  try{localStorage.setItem('pdbp-fontsize',cls);}catch(e){}
+}
+function toggleFontSize(){
+  var current=document.documentElement.classList.contains('font-l')?'font-l':(document.documentElement.classList.contains('font-s')?'font-s':'');
+  var idx=FONT_SIZES.indexOf(current);
+  var next=FONT_SIZES[(idx+1)%FONT_SIZES.length];
+  applyFontSize(next);
+}
+(function(){
+  var saved;
+  try{saved=localStorage.getItem('pdbp-fontsize');}catch(e){}
+  if(saved===null||saved===undefined)saved='';
+  applyFontSize(saved);
+})();
 (function(){
   try{
   if(localStorage.getItem('pdbp-theme')==='dark'){
