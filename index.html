@@ -9261,7 +9261,7 @@ function projNew(){
   projSaveList(list);
   closeProjLibrary();
   // Go to profile screen
-  ['initiation','planning','execution','closeout','outputs'].forEach(function(ph){
+  ['initiation','planning','execution','closeout'].forEach(function(ph){
     var btn=document.getElementById('pnav-'+ph);if(btn)btn.style.display='none';
   });
   switchPhase('profile');
