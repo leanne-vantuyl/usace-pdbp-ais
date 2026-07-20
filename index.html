@@ -1364,6 +1364,29 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{
 /* ── WCAG: prevent iOS auto font size adjustment ── */
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 
+
+/* ── Two-step program type selector ── */
+.pt-category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;}
+.pt-category-btn{background:rgba(255,255,255,.02);border:1px solid var(--border);
+  padding:14px 12px;text-align:left;cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;gap:4px;border-radius:2px;width:100%;}
+.pt-category-btn:hover{border-color:var(--gold-dim);background:rgba(200,168,75,.06);}
+.pt-category-btn.selected{border-color:var(--gold);background:rgba(200,168,75,.12);box-shadow:0 0 0 1px var(--gold);}
+.pt-category-icon{font-size:1.2rem;line-height:1;}
+.pt-category-name{font-family:'DM Serif Display',serif;font-size:0.875rem;color:var(--text-primary);font-weight:600;}
+.pt-category-desc{font-family:'DM Sans',sans-serif;font-size:0.625rem;color:var(--text-muted);line-height:1.4;}
+.pt-sub-grid-wrap{margin-bottom:10px;padding:10px;border:1px solid var(--border);border-radius:2px;background:rgba(200,168,75,.03);}
+.pt-sub-label{font-family:'DM Mono',monospace;font-size:0.5625rem;letter-spacing:.1em;
+  color:var(--gold-dim);text-transform:uppercase;margin-bottom:8px;}
+.pt-sub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+body.light-mode .pt-category-btn{background:rgba(0,0,0,.02);border-color:rgba(90,64,16,.2);}
+body.light-mode .pt-category-btn:hover{border-color:#8B6914;background:rgba(90,64,16,.06);}
+body.light-mode .pt-category-btn.selected{border-color:#5A4010;background:rgba(90,64,16,.1);}
+body.light-mode .pt-category-name{color:#2C2A25;}
+body.light-mode .pt-sub-grid-wrap{background:rgba(90,64,16,.03);border-color:rgba(90,64,16,.2);}
+@media(max-width:600px){.pt-category-grid{grid-template-columns:1fr;}
+  .pt-sub-grid{grid-template-columns:1fr 1fr;}}
+
 </style>
 </head>
 <body>
@@ -1514,7 +1537,7 @@ project:{
   scope:{inScope:[],outOfScope:[],stakeholderReqs:[],assumptions:[],constraints:[],scopeVersion:'1.0',pmConcurrenceDate:'',sponsorConcurrenceDate:''},
   pmp:{division:'',stakeholder:'',pmRecord:'',dpmRecord:'',version:'1.0',pmpDate:'',authDate:'',statutoryAuth:'',appropriation:'',authorizedScope:'',totalProjectCost:'',costShare:'',scopeInScope:'',scopeOutOfScope:'',scopeAssumptions:'',scopeConstraints:'',scheduleTool:'Primavera P6',scheduleLevel:'',baselineDate:'',milestoneA:'',milestoneB:'',milestoneC:'',contractAward:'',constructionStart:'',beneficialUse:'',projectComplete:'',criticalPathDuration:'',inHouseLabor:'',contractedWork:'',contingency:'',contingencyBasis:'',estimatingMethod:'',spendPlan:[],risks:[],qualityApproach:'',reviewGates:'',acceptanceCriteria:'',stakeholderReporting:'',acquisitionSummary:'',contracts:[],safetyRequirements:'',vmApproach:''}
 }};
-const LBL={q1:{feasibility:'Feasibility Study',ped:'PED',dbb:'Design-Bid-Build',db:'Design-Build',cmgc:'CMGC',cap:'CAP / Small Project',om:'O&M'},q2:{mega:'Mega (≥$500M)',large:'Large ($100M–$499M)',small:'Small (<$100M)'},q3:{fcsa:'FCSA',congressional:'Congressionally Directed',iija:'IIJA / Supplemental','cap-auth':'CAP Authority',unsure:'Other / Unsure'},q4:{scratch:'Starting from Scratch',inheriting:'Inheriting a Project',restarting:'Restarting'}};
+const LBL={q1:{feasibility:'Feasibility Study',ped:'PED',dbb:'Design-Bid-Build',db:'Construction · DB',cmgc:'Construction · CMGC',cap:'Construction · CAP',om:'O&M',undetermined:'Undetermined'},q2:{mega:'Mega (≥$500M)',large:'Large ($100M–$499M)',small:'Small (<$100M)'},q3:{fcsa:'FCSA',congressional:'Congressionally Directed',iija:'IIJA','cap-auth':'CAP Authority',supplemental:'Supplemental (non-IIJA)',blended:'Blended / Multiple Sources',unsure:'Other / Unsure'},q4:{scratch:'Starting from Scratch',inheriting:'Inheriting a Project',restarting:'Restarting'}};
 const PROCS={
 initiation:[
 {id:'proc1000',code:'PROC1000',name:'Work Acceptance',artifactName:'Work Acceptance Decision Record',
@@ -1815,53 +1838,80 @@ const PROFILE_HTML=`
 <!-- PROGRAM TYPE SELECTOR -->
 <div class="program-type-selector" id="program-type-selector">
   <div class="program-type-label">Select Program Type</div>
-  <div class="program-type-grid" id="program-type-grid">
-    <button class="prog-type-btn" data-pt="cw" onclick="selectProgramType('cw')">
-      <span class="prog-type-icon">&#9880;</span>
-      <span class="prog-type-name">Civil Works</span>
-      <span class="prog-type-desc">WRDA-authorized water resources, navigation, flood risk, restoration</span>
+
+  <!-- Step 1: Top-level category -->
+  <div class="pt-category-grid">
+    <button class="pt-category-btn" data-cat="cw" onclick="selectProgramCategory('cw')">
+      <span class="pt-category-icon">&#9880;</span>
+      <span class="pt-category-name">Civil Works</span>
+      <span class="pt-category-desc">WRDA-authorized water resources, navigation, flood risk, restoration</span>
     </button>
-    <button class="prog-type-btn" data-pt="milcon-army" onclick="selectProgramType('milcon-army')">
-      <span class="prog-type-icon">&#9733;</span>
-      <span class="prog-type-name">Army MILCON</span>
-      <span class="prog-type-desc">Military construction funded by Army MILCON appropriation</span>
+    <button class="pt-category-btn" data-cat="milcon" onclick="selectProgramCategory('milcon')">
+      <span class="pt-category-icon">&#9733;</span>
+      <span class="pt-category-name">Military Construction</span>
+      <span class="pt-category-desc">MILCON, Host Nation, and IIS/SRM programs</span>
     </button>
-    <button class="prog-type-btn" data-pt="milcon-af" onclick="selectProgramType('milcon-af')">
-      <span class="prog-type-icon">&#9992;</span>
-      <span class="prog-type-name">Air Force MILCON</span>
-      <span class="prog-type-desc">MCAF/MMAF/MAFR funded Air Force construction</span>
-    </button>
-    <button class="prog-type-btn" data-pt="milcon-med" onclick="selectProgramType('milcon-med')">
-      <span class="prog-type-icon">&#10010;</span>
-      <span class="prog-type-name">Medical MILCON</span>
-      <span class="prog-type-desc">DHA/DHCA-directed medical facility construction</span>
-    </button>
-    <button class="prog-type-btn" data-pt="host-nation" onclick="selectProgramType('host-nation')">
-      <span class="prog-type-icon">&#9872;</span>
-      <span class="prog-type-name">Host Nation</span>
-      <span class="prog-type-desc">Host nation-funded construction program (HNFCP)</span>
-    </button>
-    <button class="prog-type-btn" data-pt="sec408" onclick="selectProgramType('sec408')">
-      <span class="prog-type-icon">&#9965;</span>
-      <span class="prog-type-name">Section 408 / CAP</span>
-      <span class="prog-type-desc">Non-federal modification of USACE Civil Works projects</span>
-    </button>
-    <button class="prog-type-btn" data-pt="environmental" onclick="selectProgramType('environmental')">
-      <span class="prog-type-icon">&#9748;</span>
-      <span class="prog-type-name">Environmental</span>
-      <span class="prog-type-desc">HTRW, FUDS, CERCLA, environmental restoration</span>
-    </button>
-    <button class="prog-type-btn" data-pt="iis-srm" onclick="selectProgramType('iis-srm')">
-      <span class="prog-type-icon">&#9775;</span>
-      <span class="prog-type-name">IIS / SRM</span>
-      <span class="prog-type-desc">Interagency/international services or sustainment/restoration</span>
-    </button>
-    <button class="prog-type-btn" data-pt="dam-levee" onclick="selectProgramType('dam-levee')">
-      <span class="prog-type-icon">&#127754;</span>
-      <span class="prog-type-name">Dam / Levee Safety</span>
-      <span class="prog-type-desc">Dam Safety Modification Study or Levee Safety Program</span>
+    <button class="pt-category-btn" data-cat="environmental" onclick="selectProgramCategory('environmental')">
+      <span class="pt-category-icon">&#9748;</span>
+      <span class="pt-category-name">Environmental</span>
+      <span class="pt-category-desc">HTRW, FUDS, CERCLA, environmental restoration</span>
     </button>
   </div>
+
+  <!-- Step 2a: Civil Works sub-options -->
+  <div id="pt-sub-cw" class="pt-sub-grid-wrap" style="display:none;">
+    <div class="pt-sub-label">Select Civil Works Program</div>
+    <div class="pt-sub-grid program-type-grid" id="program-type-grid">
+      <button class="prog-type-btn" data-pt="cw" onclick="selectProgramType('cw')">
+        <span class="prog-type-icon">&#9880;</span>
+        <span class="prog-type-name">Standard CW</span>
+        <span class="prog-type-desc">WRDA-authorized construction, navigation, flood risk, restoration</span>
+      </button>
+      <button class="prog-type-btn" data-pt="sec408" onclick="selectProgramType('sec408')">
+        <span class="prog-type-icon">&#9965;</span>
+        <span class="prog-type-name">CAP</span>
+        <span class="prog-type-desc">Continuing Authorities Program — small CW construction (§205, §206, §107, etc.)</span>
+      </button>
+      <button class="prog-type-btn" data-pt="dam-levee" onclick="selectProgramType('dam-levee')">
+        <span class="prog-type-icon">&#127754;</span>
+        <span class="prog-type-name">Dam / Levee Safety</span>
+        <span class="prog-type-desc">Dam Safety Modification Study or Levee Safety Program</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 2b: MILCON sub-options -->
+  <div id="pt-sub-milcon" class="pt-sub-grid-wrap" style="display:none;">
+    <div class="pt-sub-label">Select MILCON Program</div>
+    <div class="pt-sub-grid program-type-grid">
+      <button class="prog-type-btn" data-pt="milcon-army" onclick="selectProgramType('milcon-army')">
+        <span class="prog-type-icon">&#9733;</span>
+        <span class="prog-type-name">Army MILCON</span>
+        <span class="prog-type-desc">Military construction funded by Army MILCON appropriation</span>
+      </button>
+      <button class="prog-type-btn" data-pt="milcon-af" onclick="selectProgramType('milcon-af')">
+        <span class="prog-type-icon">&#9992;</span>
+        <span class="prog-type-name">Air Force MILCON</span>
+        <span class="prog-type-desc">MCAF/MMAF/MAFR funded Air Force construction</span>
+      </button>
+      <button class="prog-type-btn" data-pt="milcon-med" onclick="selectProgramType('milcon-med')">
+        <span class="prog-type-icon">&#10010;</span>
+        <span class="prog-type-name">Medical MILCON</span>
+        <span class="prog-type-desc">DHA/DHCA-directed medical facility construction</span>
+      </button>
+      <button class="prog-type-btn" data-pt="host-nation" onclick="selectProgramType('host-nation')">
+        <span class="prog-type-icon">&#9872;</span>
+        <span class="prog-type-name">Host Nation</span>
+        <span class="prog-type-desc">Host nation-funded construction program (HNFCP)</span>
+      </button>
+      <button class="prog-type-btn" data-pt="iis-srm" onclick="selectProgramType('iis-srm')">
+        <span class="prog-type-icon">&#9775;</span>
+        <span class="prog-type-name">IIS / SRM</span>
+        <span class="prog-type-desc">Interagency/international services or sustainment/restoration</span>
+      </button>
+    </div>
+  </div>
+
   <div id="pathway-selected-banner" style="display:none;" class="pathway-banner-inline"></div>
 </div>
 <!-- END PROGRAM TYPE SELECTOR -->
@@ -1874,10 +1924,11 @@ const PROFILE_HTML=`
 <div class="option-card" onclick="sel('q1','feasibility',this)"><div class="option-label">Feasibility Study</div><div class="option-sub">Planning-phase study evaluating alternatives</div></div>
 <div class="option-card" onclick="sel('q1','ped',this)"><div class="option-label">PED</div><div class="option-sub">Pre-construction Engineering & Design</div></div>
 <div class="option-card" onclick="sel('q1','dbb',this)"><div class="option-label">Construction · DBB</div><div class="option-sub">Design-Bid-Build delivery</div></div>
-<div class="option-card" onclick="sel('q1','db',this)"><div class="option-label">Design-Build</div><div class="option-sub">Single contract, design and construction</div></div>
-<div class="option-card" onclick="sel('q1','cmgc',this)"><div class="option-label">CMGC</div><div class="option-sub">Construction Manager / General Contractor</div></div>
-<div class="option-card" onclick="sel('q1','cap',this)"><div class="option-label">CAP / Small Project</div><div class="option-sub">Continuing Authority Program</div></div>
+<div class="option-card" onclick="sel('q1','db',this)"><div class="option-label">Construction · DB</div><div class="option-sub">Single contractontract, design and construction</div></div>
+<div class="option-card" onclick="sel('q1','cmgc',this)"><div class="option-label">Construction · CMGC</div><div class="option-sub">Construction Manager / General Contractor</div></div>
+<div class="option-card" onclick="sel('q1','cap',this)"><div class="option-label">Construction · CAP</div><div class="option-sub">Continuing Authority Program</div></div>
 <div class="option-card" onclick="sel('q1','om',this)"><div class="option-label">O&M</div><div class="option-sub">Operations and maintenance</div></div>
+<div class="option-card" onclick="sel('q1','undetermined',this)"><div class="option-label">Undetermined</div><div class="option-sub">Acquisition strategy not yet decided</div></div>
 </div></div>
 <div class="field-group"><label class="field-label">Project Scale (Total Project Cost)</label><div class="options-grid" id="q2-grid">
 <div class="option-card" onclick="sel('q2','mega',this)"><div class="option-label">Mega — ≥$500M</div><div class="option-sub">Enhanced oversight, HQUSACE engagement</div></div>
@@ -1887,9 +1938,11 @@ const PROFILE_HTML=`
 <div class="field-group"><label class="field-label">Primary Funding Authority</label><div class="options-grid" id="q3-grid">
 <div class="option-card" onclick="sel('q3','fcsa',this)"><div class="option-label">FCSA</div><div class="option-sub">Feasibility Cost Sharing Agreement</div></div>
 <div class="option-card" onclick="sel('q3','congressional',this)"><div class="option-label">Congressionally Directed</div><div class="option-sub">MILCON, Energy, direct appropriation</div></div>
-<div class="option-card" onclick="sel('q3','iija',this)"><div class="option-label">IIJA / Supplemental</div><div class="option-sub">Infrastructure Investment & Jobs Act</div></div>
+<div class="option-card" onclick="sel('q3','iija',this)"><div class="option-label">IIJA</div><div class="option-sub">Infrastructure Investment & Jobs Act</div></div>
 <div class="option-card" onclick="sel('q3','cap-auth',this)"><div class="option-label">CAP Authority</div><div class="option-sub">Continuing authority program funding</div></div>
-<div class="option-card" onclick="sel('q3','unsure',this)"><div class="option-label">Other / Unsure</div><div class="option-sub">Funding source still being determined</div></div>
+<div class="option-card" onclick="sel('q3','unsure',this)"><div class="option-label"><div class="option-card" onclick="sel('q3','supplemental',this)"><div class="option-label">Supplemental</div><div class="option-sub">Non-IIJA supplemental appropriation (Sandy, Katrina, etc.)</div></div>
+<div class="option-card" onclick="sel('q3','blended',this)"><div class="option-label">Blended / Multiple</div><div class="option-sub">Mix of regular CW and supplemental funding sources</div></div>
+Other / Unsure</div><div class="option-sub">Funding source still being determined</div></div>
 </div></div>
 <div class="field-group"><label class="field-label">Where is your PDT starting?</label><div class="options-grid" id="q4-grid">
 <div class="option-card" onclick="sel('q4','scratch',this)"><div class="option-label">Starting from Scratch</div><div class="option-sub">Project just authorized</div></div>
@@ -4885,6 +4938,15 @@ var PROC_TRAINING={
       {code:'PROSPECT 402',topic:'Project Closeout',desc:'Module 17 — Formal closeout processes, records management, and O&M transition.'}
     ],
     refs:['EM 5-1-11 Appendix E','PROC6004','ER 5-1-11']
+  }
+,
+  proc7160:{
+    courses:[
+      {code:'PROC7160-CAP',title:'CAP Project Delivery (EP 1105-2-58)',provider:'PROSPECT / District CAP Manager',format:'Self-study + OJT',audience:'PM, District CAP Manager, Cost Engineer, KO, Real Estate'},
+      {code:'EP-1105-2-58',title:'Continuing Authorities Program Pamphlet',provider:'HQUSACE',format:'Reference Document',audience:'All PDT Members'},
+      {code:'CAP-PM',title:'CAP Project Manager Role and Responsibilities',provider:'MSC CAP Manager / District',format:'Mentorship / OJT',audience:'Project Manager'}
+    ],
+    keyRefs:['EP 1105-2-58 (March 2019)','ER 1105-2-100 Appendix E','Annual Civil Works Program Execution Circular','CAP Database (P2)']
   }
 };
 // Learning moment callouts for high-complexity steps
@@ -9403,7 +9465,7 @@ var QS_PROC_OPTIONS = {
     {val:'proc7110',label:'PROC7110 · Air Force MILCON Program & Budget'},
     {val:'proc7120',label:'PROC7120 · Medical MILCON Program & Budget'},
     {val:'proc7130',label:'PROC7130 · Host Nation Program & Budget'},
-    {val:'proc7160',label:'PROC7160 · Section 408 Program Process'}
+    {val:'proc7160',label:'PROC7160 · CAP Program Process'}
   ],
   initiation:[
     {val:'proc1000',label:'PROC1000 · Work Acceptance'},
@@ -9843,6 +9905,36 @@ proc7000:{
     ],
     refs:['EM 5-1-11 Appendix E','PROC6004','PROC3020','CEFMS II']
   }
+,
+  proc7160:{
+    title:'PROC7160 · CAP Project Delivery',
+    code:'PROC7160',
+    purpose:'Execute a Continuing Authorities Program (CAP) project through two phases — Feasibility (F) and Design & Implementation (DI) — per EP 1105-2-58. CAP allows USACE to plan, design, and construct small water resources projects without project-specific congressional authorization, subject to per-project Federal cost limits and non-Federal sponsor cost share.',
+    actions:[
+      'Receive initial work allowance; create P2 project using CAP templates; enter in CAP Database as Unstarted',
+      'Conduct initial site visit using Coordination Account funds; screen for CAP eligibility',
+      'Complete Federal Interest Determination (FID) within 4 months using first $50K of Federal funds; obtain MSC approval',
+      'Prepare Project Management Plan (PMP) and Review Plan (RP); negotiate and execute FCSA (50/50 above $100K)',
+      'Conduct feasibility study: formulate alternatives, technical analyses, NEPA compliance',
+      'Conduct MSC Decision Meeting (MDM) prior to release of draft decision document',
+      'Complete Decision Document with DQC/ATR review and legal sufficiency; MSC Commander approves (non-delegable)',
+      'Request DI work allowance; negotiate and execute Project Partnership Agreement (PPA)',
+      'Complete design (plans & specs); Value Engineering at or before 35% design; DQC/ATR review',
+      'Real Estate Chief certifies sufficient real property interests; issue solicitation; award construction contract',
+      'Supervise and administer construction; conduct monitoring/adaptive management if required',
+      'Notify non-Federal sponsor of physical completion; deliver OMRR&R Manual; complete fiscal closeout'
+    ],
+    watchItems:[
+      'NEVER open bids prior to PPA execution and receipt of non-Federal sponsor cash — this policy will not be waived',
+      'MSC Commander approval of Decision Document is NON-DELEGABLE to District Commander',
+      'Federal per-project cost limits are hard stops: §205/$10M, §206/$10M, §107/$10M, §208/$500K',
+      'FID must be completed within 4 months of receiving funding using only the first $50K',
+      'Feasibility phase must be completed within 18 months of FCSA execution',
+      'Ecosystem restoration projects (§206, §1135, §204) require monitoring and adaptive management plan'
+    ],
+    outputs:['Federal Interest Determination','PMP','FCSA','Decision Document','PPA','Plans & Specs','OMRR&R Manual','Project Completion Report'],
+    refs:['EP 1105-2-58 (March 2019)','ER 1105-2-100 Appendix E','ER 1165-2-208']
+  }
 };
 
 function genQuickStartFocused(){
@@ -10066,7 +10158,7 @@ function scrollToStep(procId, idx){
 // ===== PROGRAM TYPE / PATHWAY =====
 var PROG_TYPE_LABELS={
   'cw':'Civil Works','milcon-army':'Army MILCON','milcon-af':'Air Force MILCON',
-  'milcon-med':'Medical MILCON','host-nation':'Host Nation','sec408':'Section 408 / CAP',
+  'milcon-med':'Medical MILCON','host-nation':'Host Nation','sec408':'CAP',
   'environmental':'Environmental','iis-srm':'IIS / SRM','dam-levee':'Dam / Levee Safety'
 };
 
@@ -10086,13 +10178,32 @@ var PROG_TYPE_REF={
   'milcon-af':'REF8011G · PAX/DIRNET Interface · AFCEC/AFRC Authorization Chain',
   'milcon-med':'REF8011G · DIRNET Interface · DHA/DHCA Authorization Chain',
   'host-nation':'REF8011G · Host Nation Agreement · P&DMP',
-  'sec408':'33 U.S.C. § 408 · EC 1165-2-220 · Section 408 Database',
+  'sec408':'EP 1105-2-58 · CAP Sections 107, 111, 204, 205, 206, 208, 1135',
   'environmental':'REF8012G · CERCLA/RCRA · FUDMIS Interface',
   'iis-srm':'REF8017G · REF8030G · MOA/IAA · Economy Act',
   'dam-levee':'REF8031G · REF8032G · Federal Dam Safety Risk Framework'
 };
 
 function selectProgramType(pt){
+  // Highlight parent category button
+  var catMap = {
+    'cw':'cw','sec408':'cw','dam-levee':'cw',
+    'milcon-army':'milcon','milcon-af':'milcon','milcon-med':'milcon',
+    'host-nation':'milcon','iis-srm':'milcon',
+    'environmental':'environmental'
+  };
+  var cat = catMap[pt];
+  if(cat) {
+    document.querySelectorAll('.pt-category-btn').forEach(function(b){ b.classList.remove('selected'); });
+    var catBtn = document.querySelector('.pt-category-btn[data-cat="'+cat+'"]');
+    if(catBtn) catBtn.classList.add('selected');
+    // Show correct sub-grid
+    var cwSub = document.getElementById('pt-sub-cw');
+    var milconSub = document.getElementById('pt-sub-milcon');
+    if(cwSub) cwSub.style.display = (cat==='cw') ? 'block' : 'none';
+    if(milconSub) milconSub.style.display = (cat==='milcon') ? 'block' : 'none';
+  }
+
   S.programType = pt;
   // Update button states
   document.querySelectorAll('.prog-type-btn').forEach(function(btn){
@@ -10392,18 +10503,31 @@ var PROGRAM_PROCS = {
 // ─── SECTION 408 ───
 'sec408': [
   {
-    id:'proc7160', code:'PROC7160', name:'Section 408 Program Process',
+    id:'proc7160', code:'PROC7160', name:'CAP Project Delivery',
     phase:'program', programType:'sec408',
-    overview:'Describes the Section 408 review process for non-federal requests to alter USACE Civil Works projects (33 U.S.C. § 408). Regulatory is the Initial Point of Entry. Review must be completed within 90 days of completeness determination. Non-Federal Sponsor "Statement of No Objection" required unless requester IS the NFS.',
+    overview:'The Continuing Authorities Program (CAP) allows USACE to plan, design, and implement small water resources projects under nine pre-authorized legislative authorities (EP 1105-2-58, March 2019) without project-specific congressional authorization. CAP projects are implemented in two phases: Feasibility (F) and Design & Implementation (DI), each under a separate cost-sharing agreement with a non-Federal sponsor. Projects are scaled for size and complexity. Per-project Federal cost limits apply: §205 $10M, §206 $10M, §107 $10M, §204 $10M, §1135 $10M, §208 $500K. MSC Commander retains key approval authorities including decision document and PPA approval.',
     endResult:['Section 408 permission decision is rendered (joint with Regulatory or standalone Section 408 decision).'],
     tableRef:'Table 34-1',
     steps:[
-      {role:'Regulatory',main:'Receive request as Initial Point of Entry; determine if Section 408 coordination is needed',detail:'Follow local SOP to determine when activities need Section 408 Coordinator coordination. If coordination not needed, Regulatory processes the request under 33 CFR parts 320-331 without Section 408.',ref:'Table 34-1 Steps 1-2'},
-      {role:'Section 408 Coordinator',main:'Review request to determine if Section 408 applies',detail:'If Section 408 applies, continue. If not, Regulatory processes without further Section 408 coordination.',ref:'Table 34-1 Step 3'},
-      {role:'Section 408 Coordinator',main:'Determine if submittal is incomplete; provide written notification if incomplete within 30 days',detail:'If incomplete: provide requester written notification of missing information within 30 days of receipt. If complete: proceed.',ref:'Table 34-1 Steps 4-5'},
-      {role:'Section 408 Coordinator',main:'Coordinate with Regulatory on Public Notice; provide completeness determination within 30 days; issue Public Notice',detail:'Completeness determination provided to requester within 30 days of receipt. Issue Public Notice as applicable.',ref:'Table 34-1 Step 6'},
-      {role:'District Technical Staff',main:'Conduct technical review, environmental compliance, real estate review, public interest determination, and issue decision',detail:'Reviews and final decision notification should be completed within 90 days after completeness determination. Issue joint decision with Regulatory or standalone Section 408 decision. Note: Non-Federal Sponsor "Statement of No Objection" generally required if requester is not the NFS.',ref:'Table 34-1 Steps 7-8'}
-    ]
+{role:'Project Manager',main:'Receive initial work allowance from HQUSACE; create project in P2 using CAP templates; enter project in CAP Database as “Unstarted”',detail:'HQUSACE Programs Integration Division (CECW-I) issues the initial work allowance to start the Feasibility Phase. PM must create the P2 project using CAP templates and enter the project in the CAP Database before the Feasibility Phase begins. Mark project status as “Unstarted” and enter project details including current capability. Maintain communication with the non-Federal sponsor until funding is available.',ref:'EP 1105-2-58 ¶ 13–14',type:'action'},
+{role:'Project Manager / PDT',main:'Conduct initial site visit using Coordination Account funds; screen for CAP eligibility',detail:'Corps staff conduct an initial site visit using Coordination Account funds. Staff must be experienced enough to determine if the project is potentially eligible for CAP. Verify the sponsor understands their responsibilities. Use coordination funds to screen out ineligible situations. Update CAP Database once eligibility is confirmed.',ref:'EP 1105-2-58 ¶ 13.b.(3)',type:'action'},
+{role:'Project Manager',main:'Complete Federal Interest Determination (FID) within 4 months of receiving funding; using first $50K of Federal funds',detail:'Using the first $50,000 of Federally funded feasibility money, identify problems and opportunities, identify potential solutions, assess whether expected costs vs. benefits are reasonable, identify environmental impacts, and determine whether an FCSA will be required. FID must go through DQC review and be scalable to project size and complexity. Must be completed within 4 months of receipt of funding. FID is not a decision document.',ref:'EP 1105-2-58 ¶ 14.e.(1)',type:'action'},
+{role:'MSC Commander / District Commander',main:'MSC Commander approves Federal Interest Determination',detail:'If Federal interest is found by the district, the FID is approved by the MSC Commander. Upon approval, the district must update the CAP Database with the approval date and request the remainder of the Federally funded $100,000 to prepare the PMP, negotiate and execute the FCSA, and continue the feasibility study. Approval authority may be delegated from MSC Commander to MSC Planning Chief.',ref:'EP 1105-2-58 ¶ 14.e.(1)',type:'action'},
+{role:'Project Manager / PDT',main:'Prepare Project Management Plan (PMP); initiate Development of Review Plan (RP)',detail:'Prepare the PMP prior to execution of the FCSA. The PMP identifies all actions, review requirements, processes, costs, and schedules as integrated features of project execution. The PMP supports the FCSA and is the District’s project management document. Simultaneously develop the Review Plan (RP) as a component of the QMP in the PMP, describing all appropriate levels of review: DQC, ATR, IEPR, and Policy/Legal Review.',ref:'EP 1105-2-58 ¶ 14.b–14.c',type:'action'},
+{role:'Project Manager / Contracting Officer (KO)',main:'Negotiate and execute Feasibility Cost Sharing Agreement (FCSA) with non-Federal sponsor (50/50 above $100K)',detail:'Any feasibility phase costs in excess of $100,000 will be shared equally (50/50) with the non-Federal sponsor under the terms of a CAP FCSA, except for Section 204 (100% Federal) and Section 111 (cost shared as construction navigation project). Execute FCSA during the 100% Federally funded portion of the feasibility phase. No funds in excess of $100,000 will be allotted until FCSA is executed. Non-Federal sponsor must sign Self-Certification of Financial Capability. Feasibility phase must be completed within 18 months of executing the FCSA.',ref:'EP 1105-2-58 ¶ 14.d',type:'action'},
+{role:'Project Manager / PDT',main:'Conduct feasibility study: formulate alternatives, perform technical analyses, environmental compliance, and NEPA',detail:'Feasibility encompasses the entire range of planning activities to demonstrate Federal participation is warranted. Formulate alternatives using SMART planning principles at a level of detail appropriate for the scope and complexity. Perform benefit/cost, risk/uncertainty, cost-effectiveness, and incremental cost analyses. Comply with NEPA and other applicable statutes. Scaled appropriately for CAP project size and complexity. Complete within 18 months of FCSA execution.',ref:'EP 1105-2-58 ¶ 14.a, 7.h',type:'action'},
+{role:'MSC Commander / District Commander',main:'MSC Decision Meeting (MDM): MSC concurs with tentatively selected plan prior to release of draft decision document',detail:'After alternative plans have been formulated, conduct the MSC Decision Meeting (MDM) prior to public release of the draft decision document. Purpose: ensure plans are properly formulated, legal and policy issues are identified and resolved, and the MSC concurs with the tentatively selected plan. Process and procedure for completing the MDM is at the discretion of each MSC.',ref:'EP 1105-2-58 ¶ 14.e.(2)',type:'action'},
+{role:'Project Manager / PDT',main:'Complete Decision Document; conduct ATR/DQC review; obtain District Counsel legal sufficiency statement',detail:'Decision document must contain at minimum: clear description of recommended plan; project justification per applicable CAP purpose; NEPA and environmental compliance documentation; completed Real Estate Plan; non-Federal sponsor Self-Certification of Financial Capability and Letter of Intent; Real Estate certification; detailed description of non-Federal local cooperation requirements; anticipated OMRR&R activities and costs; ATR certification; and District Counsel legal sufficiency statement. Decision document requirements are scalable to project size and complexity.',ref:'EP 1105-2-58 ¶ 14.f.(2)',type:'action'},
+{role:'MSC Commander',main:'MSC Commander approves Decision Document; issues approval letter to District Commander with copy to HQ RIT',detail:'Approval of the decision document is by letter from the MSC Commander to the District Commander, with a copy to the appropriate HQ RIT. The approval letter certifies: requirements for approval have been satisfied; findings, conclusions, and rationale for approval; and the project is justified and policy compliant (or has received necessary policy waivers). This authority may NOT be further delegated to the District Commander. Update CAP Database with actual decision document approval date.',ref:'EP 1105-2-58 ¶ 14.f.(5)',type:'action'},
+{role:'Project Manager',main:'Request initial DI work allowance (up to $100K); update CAP Database; initiate PPA negotiation',detail:'Upon MSC approval of the decision document, update the CAP Database with approval date and mark the feasibility phase as completed. Request up to $100,000 to pay Federal costs of negotiating the PPA and initiating design. These costs are initially 100% Federally funded but become total project costs once the PPA is executed. No additional funds in excess of $100,000 will be allotted until the PPA is executed. Non-Federal sponsor must sign Self-Certification of Financial Capability prior to PPA execution.',ref:'EP 1105-2-58 ¶ 15.c.(1)',type:'action'},
+{role:'Project Manager / Contracting Officer (KO)',main:'Negotiate and execute Project Partnership Agreement (PPA) with non-Federal sponsor',detail:'The DI Phase is conducted under provisions of the PPA executed by the District Commander and the non-Federal sponsor. Use the appropriate Model PPA. Authority to approve and execute the PPA must be consistent with the implementation memo for the applicable Model PPA. Update the CAP Database with the actual PPA execution date and show capability by fiscal year. Update the PMP. All DI costs are shared with the non-Federal sponsor per the applicable CAP authority cost-sharing requirements.',ref:'EP 1105-2-58 ¶ 15.d',type:'action'},
+{role:'Project Manager / PDT',main:'Complete design (plans & specifications); conduct DQC and ATR review; verify environmental compliance',detail:'Design portion concludes with completion of plans and specifications. Conduct DQC review of all deliverables. Perform ATR of cost estimate by pre-certified district cost personnel within the region or by the Cost Engineering MCX (Walla Walla District). Verify compliance with all applicable environmental laws and regulations including NEPA and Section 401 of the Federal Water Pollution Control Act before initiating construction. Perform Value Engineering at or before 35% design.',ref:'EP 1105-2-58 ¶ 15.d.(1), 26',type:'action'},
+{role:'District Real Estate Chief',main:'Real Estate Chief certifies in writing that sufficient real property interests are available to support construction',detail:'Construction contracts will not be awarded until the District Chief of Real Estate certifies in writing that sufficient real property interests are available to support implementation. Solicitations for construction contracts will not be issued prior to PPA execution without advance MSC Commander approval. Solicitation documents must advise potential bidders if sufficient real property interests are not yet in place.',ref:'EP 1105-2-58 ¶ 15.e–15.g',type:'action'},
+{role:'Contracting Officer (KO)',main:'Issue solicitation; open bids; award construction contract',detail:'No contract bids will be opened prior to PPA execution and prior to receipt of the non-Federal sponsor’s required cash contribution — this policy will not be waived. Award construction contract after Real Estate certification. Update P2 project schedule and CAP Database with capability by fiscal year.',ref:'EP 1105-2-58 ¶ 15.f–15.g',type:'action'},
+{role:'Project Manager / PDT',main:'Supervise and administer construction; conduct cost-shared monitoring and adaptive management if required',detail:'Following contract award, request additional funds for Supervision & Administration (S&A). For ecosystem restoration projects (§206, §1135, §204): conduct monitoring and adaptive management per the approved plan. Monitoring cost-shared within 10 years of construction completion; monitoring beyond 10 years is 100% non-Federal. Adaptive management plan must be appropriately scoped to project scale.',ref:'EP 1105-2-58 ¶ 15.h, 24',type:'action'},
+{role:'Project Manager / District Commander',main:'Provide written notice of physical completion to non-Federal sponsor; deliver OMRR&R Manual',detail:'When the entire project or a functional portion is physically complete, the District Commander notifies the non-Federal sponsor in writing. Upon receipt of notice, the non-Federal sponsor assumes responsibility to operate, maintain, repair, rehabilitate, and replace the project per the OMRR&R Manual. Non-Federal OMRR&R is a permanent post-project responsibility.',ref:'EP 1105-2-58 ¶ 15.i',type:'action'},
+{role:'Project Manager',main:'Complete fiscal closeout; submit Project Completion Report to MSC; post success story to CAP SharePoint',detail:'After project completion, final audit, and monitoring/adaptive management activities, fiscally close out the project. District Commander transmits a Project Completion Report to the MSC containing: short project description, final Federal and non-Federal feasibility and DI costs by phase, and date non-Federal sponsor was notified of physical completion. Post a success story with before/after photos and Completion Report to the CAP SharePoint site.',ref:'EP 1105-2-58 ¶ 15.j–15.k, 18',type:'action'}
+]
   }
 ],
 
@@ -10518,6 +10642,36 @@ function exitBrowseMode(){
   });
   switchPhase('welcome');
 }
+
+function selectProgramCategory(cat) {
+  // Highlight selected category button
+  document.querySelectorAll('.pt-category-btn').forEach(function(b){
+    b.classList.remove('selected');
+  });
+  var btn = document.querySelector('.pt-category-btn[data-cat="'+cat+'"]');
+  if(btn) btn.classList.add('selected');
+
+  // Hide all sub-grids
+  var cwSub = document.getElementById('pt-sub-cw');
+  var milconSub = document.getElementById('pt-sub-milcon');
+  if(cwSub) cwSub.style.display = 'none';
+  if(milconSub) milconSub.style.display = 'none';
+
+  // Reset sub-selections
+  document.querySelectorAll('.prog-type-btn').forEach(function(b){
+    b.classList.remove('selected');
+  });
+
+  if(cat === 'cw') {
+    if(cwSub) cwSub.style.display = 'block';
+  } else if(cat === 'milcon') {
+    if(milconSub) milconSub.style.display = 'block';
+  } else if(cat === 'environmental') {
+    // Goes direct — no sub-selection needed
+    selectProgramType('environmental');
+  }
+}
+
 </script>
 <div class="tour-overlay hidden" id="tour-overlay">
   <div class="tour-box">
