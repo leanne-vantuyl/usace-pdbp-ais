@@ -1981,7 +1981,7 @@ const PROC_SEL_OPTIONS=`<option value="">— Select PROC —</option>
 <optgroup label="Planning"><option value="proc2000">PROC2000 · PMP/PgMP Development</option><option value="proc2010">PROC2010 · Scope &amp; Stakeholder</option><option value="proc2020">PROC2020 · Team Establishment</option><option value="proc2030">PROC2030 · Activity &amp; Schedule</option><option value="proc2040">PROC2040 · Resource Estimate</option><option value="proc2050">PROC2050 · Acquisition Planning</option><option value="proc2070">PROC2070 · PMP/PgMP Approval</option></optgroup>
 <optgroup label="Execution"><option value="proc3000">PROC3000 · Execution &amp; Control</option><option value="proc3010">PROC3010 · Change Management</option><option value="proc3020">PROC3020 · After Action Review</option></optgroup>
 <optgroup label="Closeout"><option value="proc4000">PROC4000 · Phase/Project Closeout</option></optgroup>`;
-const CHARTER_ROLES=['Project Manager (PM)','Deputy Program Manager (DPM)','Program Manager (PgM)','Cost Engineer','Scheduler','Real Estate Specialist','Environmental Specialist','Regulatory/Permitting','Legal Counsel','Contracting Officer','Contracting Specialist','Safety Manager','Geotechnical Engineer','Structural Engineer','Hydraulics/Hydrology','Value Engineer','Operations/O&M Lead','PDT Member','Other'];
+const CHARTER_ROLES=['Project Manager (PM)','Deputy for Programs and Project Management (DPM)','Program Manager (PgM)','Cost Engineer','Scheduler','Real Estate Specialist','Environmental Specialist','Regulatory/Permitting','Legal Counsel','Contracting Officer','Contracting Specialist','Safety Manager','Geotechnical Engineer','Structural Engineer','Hydraulics/Hydrology','Value Engineer','Operations/O&M Lead','PDT Member','Other'];
 const CHARTER_ROLE_OPTIONS=CHARTER_ROLES.map(function(r){return '<option value="'+r+'">'+r+'</option>';}).join('');
 const DEFAULT_NORMS=[
   'We will attend all scheduled PDT meetings prepared and on time.',
@@ -2448,7 +2448,7 @@ const GLOSSARY_ENTRIES=[
 {t:'MSC',f:'Major Subordinate Command',d:'The Division-level command (e.g., LRD, SWD, NAD) that provides oversight and resource management for Districts within its geographic area.',cat:'Orgs & Roles'},
 {t:'RBC',f:'Regional Business Center',d:'The organizational structure through which MSC Commanders manage workload, resources, and functional capacity across Districts within their region.',cat:'Orgs & Roles'},
 {t:'DCG-CEO',f:'Deputy Commanding General, Civil and Emergency Operations',d:'Senior USACE leader who issued the Interim Guidance on Civil Works Change Management (superseding EC 5-2-1) and retains CCB approval authority for significant changes that exceed District and MSC thresholds.',cat:'Orgs & Roles',ref:'EC 5-2-1'},
-{t:'DPM',f:'Deputy Program Manager',d:'The program management official responsible for oversight of project delivery within a District, and the primary approval authority for PMPs and PDT charters.',cat:'Orgs & Roles',procs:['proc1000','proc2070']},
+{t:'DPM',f:'Deputy for Programs and Project Management',d:'The program management official responsible for oversight of project delivery within a District, and the primary approval authority for PMPs and PDT charters.',cat:'Orgs & Roles',procs:['proc1000','proc2070']},
 {t:'PgM',f:'Program Manager',d:'Responsible for managing a portfolio of related projects within a program. May serve in lieu of a Senior PM for work acceptance decisions per local SOPs.',cat:'Orgs & Roles',procs:['proc1000','proc1020']},
 {t:'PM',f:'Project Manager',d:'The named individual responsible for delivery of a specific project from initiation through closeout. PM of record is designated at work acceptance.',cat:'Orgs & Roles',procs:['proc1000']},
 {t:'PDT',f:'Project Delivery Team',d:'The multidisciplinary team of functional specialists responsible for delivering a project. Established and chartered per PROC2020.',cat:'Orgs & Roles',procs:['proc2020']},
@@ -3245,7 +3245,7 @@ const OUTPUTS_HTML=`
         <select id="qs-role" style="${SEL_STYLE}">
           <option value="">All Roles</option>
           <option value="pm">Project Manager (PM)</option>
-          <option value="dpm">Deputy Program Manager (DPM)</option>
+          <option value="dpm">Deputy for Programs and Project Management (DPM)</option>
           <option value="pgm">Program Manager (PgM)</option>
           <option value="cost">Cost Engineer</option>
           <option value="scheduler">Scheduler</option>
@@ -4006,7 +4006,7 @@ var ROLE_MAP={
            'unified command']
 };
 var ROLE_LABELS={
-  all:'All Roles',pm:'Project Manager',dpm:'Deputy Program Manager',
+  all:'All Roles',pm:'Project Manager',dpm:'Deputy for Programs and Project Management',
   pgm:'Program Manager',cost:'Cost Engineer',scheduler:'Scheduler',
   contracting:'Contracting Officer',rmo:'Resource Management',
   command:'Command / Leadership',pdt:'PDT Member'
@@ -6020,7 +6020,7 @@ function genPhaseRecord(){
   lines.push('');
   lines.push('_________________________________');
   lines.push('[DPM NAME]');
-  lines.push('Deputy Program Manager');
+  lines.push('Deputy for Programs and Project Management');
   lines.push('Date: ___________');
   lines.push('');
   lines.push('='.repeat(60));
