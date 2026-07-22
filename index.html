@@ -1983,8 +1983,8 @@ const HEALTH_HTML=`
 <div class="health-item"><div class="health-question">Is there a designated PM of record?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h3','yes')">Yes</button><button class="toggle-btn no" onclick="ht(this,'h3','no')">No</button></div></div>
 </div>
 <div class="health-section"><div class="health-section-title">Continuity</div>
-<div class="health-item"><div class="health-question">Is this the same team that worked the prior phase? <span style="font-size:0.6rem;color:var(--gold-dim);font-style:italic;">(N/A for new projects)</span></div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h4','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h4','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h4','no')">No</button></div></div>
-<div class="health-item"><div class="health-question">Is institutional knowledge of this project retained on the PDT? <span style="font-size:0.6rem;color:var(--gold-dim);font-style:italic;">(N/A for new projects)</span></div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h5','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h5','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h5','no')">No</button></div></div>
+<div class="health-item"><div class="health-question">Is this the same team that worked the prior phase? <span style="font-size:0.6rem;color:var(--gold-dim);font-style:italic;">(N/A for new projects)</span></div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h4','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h4','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h4','no')">No</button><button class="toggle-btn na" onclick="ht(this,'h4','na')">N/A</button></div></div>
+<div class="health-item"><div class="health-question">Is institutional knowledge of this project retained on the PDT? <span style="font-size:0.6rem;color:var(--gold-dim);font-style:italic;">(N/A for new projects)</span></div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h5','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h5','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h5','no')">No</button><button class="toggle-btn na" onclick="ht(this,'h5','na')">N/A</button></div></div>
 </div>
 <div class="health-section"><div class="health-section-title">Alignment</div>
 <div class="health-item"><div class="health-question">Has the PDT had a formal kickoff or chartering session?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h6','yes')">Yes</button><button class="toggle-btn no" onclick="ht(this,'h6','no')">No</button></div></div>
@@ -3517,7 +3517,7 @@ function sel(q,v,el){
 }
 function validateProfile(){
   if(!['q1','q2','q3','q4'].every(function(q){return S.profile[q];})){alert('Please answer all four profile questions.');return;}
-  switchPhase('health');
+  switchPhase('health');setTimeout(autoSetHealthNA,100);
 }
 function ht(btn,key,val){
   btn.closest('.health-toggle').querySelectorAll('.toggle-btn').forEach(function(b){b.classList.remove('selected');});
@@ -3528,6 +3528,7 @@ function calcScore(){
   var w={yes:2,partial:1,no:0};
   Object.keys(S.health).forEach(function(k){
     var v=S.health[k];
+    if(v==='na')return;
     m+=2;
     t+=k==='h10'?(v==='no'?2:v==='partial'?1:0):(w[v]||0);
   });
@@ -3555,7 +3556,7 @@ function launchRoadmap(){
   var pgBtn=document.getElementById('pnav-program');
   if(pgBtn)pgBtn.style.display=(S.programType&&PROGRAM_PROCS[S.programType]&&PROGRAM_PROCS[S.programType].length>0)?'':'none';
   var outBtn=document.getElementById('pnav-outputs');
-  if(outBtn)outBtn.classList.remove('locked');
+  if(outBtn){outBtn.classList.remove('locked');outBtn.style.display='';}
   showRoleBar();
   showSessionBar();
   setTimeout(showSPSyncBar,200);
@@ -10828,6 +10829,15 @@ function renderLaunchPanel() {
 
 
 function qsPrePopulateRole(){try{if(S&&S.role&&S.role!=="all"){var r=document.getElementById("qs-role");if(r)r.value=S.role;}}catch(e){}}
+
+function autoSetHealthNA(){
+  if(S.profile&&S.profile.q4==='scratch'){
+    ['h4','h5'].forEach(function(key){
+      if(!S.health[key]){S.health[key]='na';}
+    });
+  }
+}
+
 </script>
 <div class="tour-overlay hidden" id="tour-overlay">
   <div class="tour-box">
