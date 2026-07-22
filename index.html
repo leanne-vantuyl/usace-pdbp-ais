@@ -1983,8 +1983,8 @@ const HEALTH_HTML=`
 <div class="health-item"><div class="health-question">Is there a designated PM of record?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h3','yes')">Yes</button><button class="toggle-btn no" onclick="ht(this,'h3','no')">No</button></div></div>
 </div>
 <div class="health-section"><div class="health-section-title">Continuity</div>
-<div class="health-item"><div class="health-question">Is this the same team that worked the prior phase?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h4','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h4','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h4','no')">No</button></div></div>
-<div class="health-item"><div class="health-question">Is institutional knowledge of this project retained on the PDT?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h5','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h5','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h5','no')">No</button></div></div>
+<div class="health-item"><div class="health-question">Is this the same team that worked the prior phase? <span style="font-size:0.6rem;color:var(--gold-dim);font-style:italic;">(N/A for new projects)</span></div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h4','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h4','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h4','no')">No</button></div></div>
+<div class="health-item"><div class="health-question">Is institutional knowledge of this project retained on the PDT? <span style="font-size:0.6rem;color:var(--gold-dim);font-style:italic;">(N/A for new projects)</span></div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h5','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h5','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h5','no')">No</button></div></div>
 </div>
 <div class="health-section"><div class="health-section-title">Alignment</div>
 <div class="health-item"><div class="health-question">Has the PDT had a formal kickoff or chartering session?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h6','yes')">Yes</button><button class="toggle-btn no" onclick="ht(this,'h6','no')">No</button></div></div>
@@ -3509,6 +3509,11 @@ function switchPhase(phase){
 function sel(q,v,el){
   el.closest('.options-grid').querySelectorAll('.option-card').forEach(function(c){c.classList.remove('selected');});
   el.classList.add('selected');S.profile[q]=v;
+  // Auto-set h4+h5 to N/A when starting from scratch
+  if(q==='q4' && v==='scratch'){
+    if(!S.health.h4) S.health.h4='na';
+    if(!S.health.h5) S.health.h5='na';
+  }
 }
 function validateProfile(){
   if(!['q1','q2','q3','q4'].every(function(q){return S.profile[q];})){alert('Please answer all four profile questions.');return;}
