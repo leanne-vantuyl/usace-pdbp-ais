@@ -148,6 +148,9 @@ label.field-label{font-family:'DM Mono',monospace;font-size:0.5625rem;letter-spa
 .toggle-btn:hover{border-color:var(--gold-dim);color:var(--white);}
 .toggle-btn.yes.selected{background:var(--army-green);border-color:var(--accent);color:var(--white);}
 .toggle-btn.no.selected{background:rgba(192,57,43,.2);border-color:var(--danger);color:#E07C73;}
+.toggle-btn.na{color:var(--white-dim);border-color:var(--border);}
+.toggle-btn.na:hover{border-color:var(--gold-dim);color:var(--white);}
+.toggle-btn.na.selected{background:rgba(128,128,128,.2);border-color:#888;color:var(--white-dim);}
 .toggle-btn.partial.selected{background:rgba(200,168,75,.12);border-color:var(--gold-dim);color:var(--gold-light);}
 .proc-detail{display:none;}
 .proc-detail.active{display:block;animation:fadeUp .28s ease both;}
@@ -1397,9 +1400,97 @@ body.light-mode .pt-sub-grid-wrap{background:rgba(90,64,16,.03);border-color:rgb
 body.light-mode .tool-select{background:#FFFFFF !important;border:1px solid rgba(90,64,16,.3) !important;color:#1A1F14 !important;}
 body.light-mode .tool-select:focus{border-color:#5A4010 !important;}
 
+
+body.light-mode .charter-input{background:#FFFFFF;border-color:rgba(90,64,16,.25);color:#1A1F14;}
+body.light-mode .charter-input:focus{border-color:#8B6914;}
+body.light-mode .charter-input::placeholder{color:#888;opacity:.7;}
+body.light-mode .charter-textarea{background:#FFFFFF;border-color:rgba(90,64,16,.25);color:#1A1F14;}
+body.light-mode .charter-textarea:focus{border-color:#8B6914;}
+body.light-mode .charter-textarea::placeholder{color:#888;opacity:.7;}
+body.light-mode .charter-section-title{color:#1A1F14;}
+body.light-mode .charter-section-header{background:rgba(139,105,20,.05);border-color:rgba(90,64,16,.2);}
+body.light-mode .charter-section{border-color:rgba(90,64,16,.2);}
+
+
+/* ── Compliance Acknowledgment Banner ── */
+.compliance-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;}
+.compliance-modal{background:var(--army-mid);border:2px solid var(--gold);border-radius:4px;max-width:560px;width:100%;padding:28px 32px;}
+.compliance-modal-header{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--gold);margin-bottom:6px;}
+.compliance-modal-sub{font-family:'DM Mono',monospace;font-size:0.5625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:16px;}
+.compliance-modal-body{font-family:'DM Sans',sans-serif;font-size:0.8125rem;color:var(--text-primary);line-height:1.6;margin-bottom:20px;}
+.compliance-modal-body strong{color:var(--gold);}
+.compliance-modal-body ul{margin:10px 0 10px 18px;padding:0;}
+.compliance-modal-body li{margin-bottom:6px;}
+.compliance-ack-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:18px;padding:12px;background:rgba(200,168,75,.06);border:1px solid var(--border);border-radius:2px;}
+.compliance-ack-row input[type=checkbox]{margin-top:2px;flex-shrink:0;accent-color:var(--gold);width:16px;height:16px;cursor:pointer;}
+.compliance-ack-label{font-family:'DM Sans',sans-serif;font-size:0.8125rem;color:var(--text-primary);line-height:1.5;cursor:pointer;}
+.compliance-ack-btn{width:100%;padding:11px;background:var(--gold);color:#0F0F0F;font-family:'DM Mono',monospace;font-size:0.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;opacity:.4;transition:opacity .2s;}
+.compliance-ack-btn:not(:disabled){opacity:1;}
+.compliance-ack-btn:disabled{cursor:not-allowed;}
+body.light-mode .compliance-modal{background:#F0EDE5;border-color:#8B6914;}
+body.light-mode .compliance-modal-header{color:#5A4010;}
+body.light-mode .compliance-ack-row{background:rgba(90,64,16,.05);border-color:rgba(90,64,16,.2);}
+body.light-mode .compliance-ack-btn{color:#FFFFFF;background:#7B5C00;}
+
+
+.proc-print-btn{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 10px;border:1px solid var(--border);
+  background:transparent;color:var(--gold-dim);cursor:pointer;border-radius:2px;
+  transition:all .15s;margin-left:auto;flex-shrink:0;}
+.proc-print-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,168,75,.06);}
+.proc-detail-header{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+body.light-mode .proc-print-btn{color:#8B6914;border-color:rgba(90,64,16,.3);}
+body.light-mode .proc-print-btn:hover{border-color:#5A4010;color:#5A4010;}
+
+
+/* ── Step completion timestamp ── */
+.step-ts-badge{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:.04em;
+  background:rgba(76,175,80,.15);border:1px solid rgba(76,175,80,.35);color:#4CAF50;
+  padding:1px 6px;border-radius:2px;white-space:nowrap;}
+body.light-mode .step-ts-badge{background:rgba(42,122,58,.08);border-color:rgba(42,122,58,.3);color:#2a7a3a;}
+
+
+/* ── Profile-aware tip banner ── */
+.profile-tip-banner{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;
+  margin:10px 0;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.2);
+  border-left:3px solid var(--gold);border-radius:0 2px 2px 0;}
+.profile-tip-icon{font-size:1rem;flex-shrink:0;line-height:1.3;}
+.profile-tip-text{font-family:'DM Sans',sans-serif;font-size:0.75rem;
+  color:var(--text-primary);line-height:1.5;}
+.profile-tip-text strong{color:var(--gold);font-size:0.6875rem;
+  text-transform:uppercase;letter-spacing:.06em;}
+body.light-mode .profile-tip-banner{background:rgba(90,64,16,.04);border-color:rgba(90,64,16,.2);border-left-color:#8B6914;}
+body.light-mode .profile-tip-text strong{color:#5A4010;}
+
 </style>
 </head>
 <body class="light-mode">
+
+<div id="compliance-overlay" class="compliance-overlay" style="display:none;">
+  <div class="compliance-modal" role="dialog" aria-modal="true" aria-labelledby="compliance-title">
+    <div class="compliance-modal-header" id="compliance-title">PDBP Lifecycle Guide</div>
+    <div class="compliance-modal-sub">PPM Community of Practice · USACE · UNCLASSIFIED</div>
+    <div class="compliance-modal-body">
+      <strong>This tool is UNCLASSIFIED and intended for official use within USACE.</strong>
+      <ul>
+        <li>Do <strong>NOT</strong> enter Controlled Unclassified Information (CUI), Sensitive But Unclassified (SBU), or classified data into this tool.</li>
+        <li>Do <strong>NOT</strong> enter Personally Identifiable Information (PII) beyond names and position titles.</li>
+        <li>Project data entered is stored locally in your browser only — it is not transmitted or stored on any server.</li>
+        <li>This tool is publicly accessible. Treat all content as UNCLASSIFIED // FOR OFFICIAL USE WITHIN USACE.</li>
+      </ul>
+    </div>
+    <div class="compliance-ack-row">
+      <input type="checkbox" id="compliance-ack-cb" onchange="toggleComplianceAck()">
+      <label class="compliance-ack-label" for="compliance-ack-cb">
+        I understand this tool is UNCLASSIFIED. I will not enter CUI, SBU, classified, or sensitive personal information.
+      </label>
+    </div>
+    <button class="compliance-ack-btn" id="compliance-ack-btn" onclick="acknowledgeCompliance()" disabled>
+      I Understand — Enter Tool
+    </button>
+  </div>
+</div>
+
 <script>
 window.onerror=function(msg,src,line,col,err){
   if(msg==='Script error.'||msg==='Script error'){return false;}
@@ -1548,7 +1639,7 @@ window.onerror=function(msg,src,line,col,err){
   </div>
 </footer>
 <script>
-const S={profile:{},health:{},procStatus:{},artifacts:{},activePhase:'welcome',activeProc:null,role:'all',assignments:{},stepState:{},programType:'',pdtName:'',pmName:'',
+const S={profile:{},health:{},procStatus:{},artifacts:{},activePhase:'welcome',activeProc:null,role:'all',assignments:{},stepState:{},stepTimestamps:{},programType:'',pdtName:'',pmName:'',
 project:{
   name:'',p2:'',district:'',authDoc:'',charterDate:'',
   pdt:[],
@@ -1595,7 +1686,7 @@ steps:[
 {role:'Resource Provider(s) / PM',main:'Change activity scope, schedule, or resources to resolve CFY workload conflicts',detail:'Adjust scope, schedule, or resource assignments while meeting stakeholder expectations. May require stakeholder coordination. Document all decisions in PMP/PgMP. If resolved → end. If conflicts remain → Step 4.',type:'action'},
 {role:'Branch Function Chief',main:'[ESCALATION] Determine if alternatives are available to resolve the conflict',detail:'Analyze alternatives at the branch level. PM/RP communicates decisions to the district and documents in PMP/PgMP. If resolved → end. If not → escalate to Local Division Function Chief (Step 5).',type:'decision'},
 {role:'Local Division Function Chief',main:'[ESCALATION] Determine if alternatives are available to resolve the conflict',detail:'Analyzes district workload; resolves conflicts not resolved by Branch Function Chiefs. Communicates with other Functional Division Chiefs and Regional Function Chiefs. Documents in PMP/PgMP. If resolved → end. If not → Step 6.',type:'decision'},
-{role:'Regional Function Chief',main:'Execute PROMIS Regional Resource Workload Analysis; evaluate function workload vs. capacity',detail:'Pull the regional report from PROMIS. Evaluate function workload versus capacity across the Regional Business Center. Reference PROC6003 for regional-level procedures.',type:'action',ref:'PROC6003 · PROMIS Regional Report'},
+{role:'Regional Function Chief',main:'Execute PROMIS Regional Resource Workload Analysis; evaluate function worklo For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. May require spend plan amendment and Congressional notification.ad vs. capacity',detail:'Pull the regional report from PROMIS. Evaluate function workload versus capacity across the Regional Business Center. Reference PROC6003 for regional-level procedures.',type:'action',ref:'PROC6003 · PROMIS Regional Report'},
 {role:'Regional Function Chief',main:'Provide recommendation to MSC Commander',detail:'Develop recommendation on resource resolution: reallocation, augmentation, or contracting. Reference PROC6003.',type:'action',ref:'PROC6003'},
 {role:'MSC Commander',main:'[DECISION] Approve or reject Regional Function Chief recommendation',detail:'If approved → Step 9. If rejected → return to Regional Function Chief for revised recommendation (Step 6).',type:'decision'},
 {role:'MSC Commander',main:'Notify Regional Function Chief and District Commander of decision',detail:'PM/RP communicates workforce decisions and documents in PMP/PgMP. END OF ACTIVITY.',type:'action'}
@@ -1767,11 +1858,11 @@ steps:[
 {id:'proc3010',code:'PROC3010',name:'Change Management',artifactName:'Change Request & CCB Package Draft',
 overview:'Governs identification, evaluation, documentation, approval, and implementation of changes to the approved Performance Measurement Baseline (PMB). PROC3010 must be initiated BEFORE a change is implemented — never after. CRITICAL POLICY (DCG-CEO Memo 18 Jul 2025, MG Jason E. Kelly): DCG-CEO or designee approves IN WRITING any change that has exceeded OR IS FORECASTED TO EXCEED authorized cost plus inflation. MSCs and Districts have NO delegated authority to exceed this. HQUSACE CCB is the prescribed mechanism — not optional. The Change Management Plan (CMP), a required PMP document per REF8009G, defines project-specific decision thresholds, contingency usage, and the Change/Decision Log. Authority: DCG-CEO Interim Guidance 18 Jul 2025; EM 5-1-11 PROC3010; REF8009G; ER 1105-2-100 Appendix G (Section 902); ER 1110-2-1302.',
 endResult:['Change Request documented with Analysis of Alternatives','Decision recorded in Change/Decision Log','PMB updated in PROMIS (CW Benchmark initiated if required)','PMP updated and all PDT members notified','Cost MCX certification obtained if HQUSACE CCB required','DCG-CEO written approval obtained for any change that has exceeded OR IS FORECASTED TO EXCEED authorized cost plus inflation (MSCs/Districts have no authority to exceed this)'],
-pathway:'Track ALL changes cumulatively from the authorized project cost. MSCs and Districts have NO delegated authority to exceed authorized cost plus inflation or an already approved HQUSACE cost amount. DCG-CEO written approval required for changes that have exceeded OR ARE FORECASTED TO EXCEED this threshold. HQUSACE CCB is the prescribed mechanism. Must communicate what CAN be accomplished within the authorized cost plus inflation that will deliver benefits to stakeholders. Future projects without reasonable consideration for separable elements will be highly scrutinized (DCG-CEO Memo 18 Jul 2025).',
+pathway:'Track ALL changes cumulatively from the authorized project cost. MSCs and Districts have NO delegated authority to exceed authorized cost plus inflation or an already approved HQUSACE cost amount. DCG-CEO written approval required for changes that have exceeded OR ARE FORECASTED TO EXCEED this threshold. HQUSACE CCB is the prescribed mechanism. Must communicate what CAN be accomplished within the authorized cost plus inflation that will deliver benefits to stakeholders. Future projects without reasonable consideration for separable elements will be highly scrutinized (DCG-CEO Memo 18 Jul 2025). For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. May require spend plan amendment and Congressional notification.',
 steps:[
 {role:'PM / PDT Member',main:'Any PDT member identifies a change — notify PM immediately',detail:'PDT members and stakeholders are responsible for notifying the PM when changes are proposed to scope, schedule, or cost — including when cost is FORECASTED TO EXCEED authorized cost plus inflation (forecasted exceedance is a trigger event equal to actual exceedance). Do not wait until the change has already occurred. PM logs the change request in the Change/Decision Log immediately upon receipt.',type:'action',ref:'DCG-CEO CW Change Mgmt Guidance · REF8009G'},
 {role:'Project Manager',main:'Initiate a Change Request; determine if the change has impacted or could impact the PMB',detail:'Document the proposed change on the Change Request Form (EM 5-1-11 Table 43-3): description, cause, type (scope/schedule/cost/quality), measurable impact (e.g., 3 miles of levee, 12-month delay, $10M), who requested it, and date submitted. Include an Analysis of Alternatives showing courses of action considered — this is recommended for all change requests. Log in Change/Decision Log.',type:'action',ref:'EM 5-1-11 Table 43-3 · REF8009G · DCG-CEO Guidance'},
-{role:'Project Scheduler / PDT Member',main:'Create or modify a "What If" version of the project in PROMIS',detail:'Answer: What are the schedule and budget impacts of the change? This is a required step before CCB convenes. Captures the schedule a For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. Supplemental spend plans are subject to Congressional review and may require a spend plan amendment before funds can be obligated.nd cost impact in PROMIS without affecting the current PMB baseline.',type:'action',ref:'PROMIS · DCG-CEO Guidance Table B-1 Step 6'},
+{role:'Project Scheduler / PDT Member',main:'Create or modify a "What If" version of the project in PROMIS',detail:'Answer: What are the schedule and budget impacts of the change? This is a required step before CCB convenes. Captures the schedule a For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. May require spend plan amendment and Congressional notification. For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. May require spend plan amendment and Congressional notification. For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. Supplemental spend plans are subject to Congressional review and may require a spend plan amendment before funds can be obligated.nd cost impact in PROMIS without affecting the current PMB baseline.',type:'action',ref:'PROMIS · DCG-CEO Guidance Table B-1 Step 6'},
 {role:'Project Manager',main:'[DECISION] Does the cumulative change exceed the PDT’s CMP thresholds?',detail:'Assess cumulative impact — total of ALL changes to date including this one. Compare against decision thresholds documented in the approved CMP. If NO: PM makes decision, documents in Change/Decision Log, updates PMP and PROMIS. Determine if the change warrants Lessons Learned documentation (PROC3020). If YES: proceed to District CCB.',type:'decision',ref:'CMP · EM 5-1-11 Table 43-3'},
 {role:'Project Manager',main:'Schedule District CCB',detail:'Schedule the District Change Control Board meeting. District CCBs must maintain a minimum monthly battle rhythm. CCB function may be combined with PRBs or Executive Sessions but must not be diminished. District CCB membership minimum: DPM (Chair), Engineering & Construction Division Chief, Planning & Policy Chief.',type:'action',ref:'DCG-CEO Guidance · REF8009G'},
 {role:'DE / DPM',main:'Conduct District CCB; decide and document',detail:'District CCB reviews, evaluates, and recommends to the District Engineer (DE) or designee: approve, delay, or reject. DE or designee makes the decision. Document decision in Change/Decision Log with approval signatures. Transmit decision to PM/PDT. District threshold: authorized cost plus inflation OR already approved HQUSACE cost amount — cannot exceed.',type:'decision',ref:'DCG-CEO Guidance · ER 1105-2-100 Appendix G'},
@@ -3536,11 +3627,34 @@ function calcScore(){
 }
 function getFlags(){
   var f=[];
+  // Health-based flags
   if(S.health.h1!=='yes')f.push({c:'red',t:'PDT not fully assigned — address before PROC1000'});
   if(S.health.h3==='no')f.push({c:'red',t:'No PM of record — required for PROC1000 Step 18'});
   if(S.health.h6==='no')f.push({c:'yellow',t:'No PDT kickoff — schedule before PROC2020'});
   if(S.health.h5==='no')f.push({c:'yellow',t:'Knowledge gap — document project history'});
   if(S.health.h10==='yes')f.push({c:'yellow',t:'Resource constraints — flag in REF8007G Risk Register'});
+  // Process status auto-flags
+  var phase=S.activePhase||'';
+  var ps=S.procStatus||{};
+  var ss=S.stepState||{};
+  // PMP not complete entering Execution
+  if((phase==='execution'||phase==='closeout')&&ps.proc2000!=='complete'){
+    f.push({c:'red',t:'PROC2000 PMP not marked complete — required before Execution phase'});
+  }
+  // Financial/CEFMS not started entering Planning
+  if((phase==='planning'||phase==='execution'||phase==='closeout')&&ps.proc1040==='pending'){
+    f.push({c:'yellow',t:'PROC1040 Financial Management not started — begin CEFMS entry'});
+  }
+  // Change Management key steps unchecked in Execution
+  if(phase==='execution'){
+    var ccbUnchecked=!ss['proc3010-0']||!ss['proc3010-1'];
+    if(ccbUnchecked)f.push({c:'yellow',t:'PROC3010 Change Management: CCB notification steps not confirmed — verify all changes are logged'});
+  }
+  // Supplemental/IIJA project in Execution without change management
+  var q3=S.profile&&S.profile.q3;
+  if((q3==='iija'||q3==='supplemental')&&phase==='execution'&&ps.proc3010==='pending'){
+    f.push({c:'red',t:'IIJA/Supplemental project: PROC3010 Change Management not initiated — spend plan compliance required'});
+  }
   if(!f.length)f.push({c:'green',t:'No critical gaps — proceed through initiation'});
   return f;
 }
@@ -3618,6 +3732,8 @@ function renderStepHTML(s,i,proc,phase){
   if(s.ref)meta+='<span class="step-ref">'+s.ref+'</span>';
   if(s.type==='decision')meta+='<span class="step-type-badge">Decision Gate</span>';
   var stepKey=proc.id+'-'+i;
+  var tsVal=S.stepTimestamps&&S.stepTimestamps[stepKey];
+  if(tsVal) meta+='<span class="step-ts-badge" title="Completed '+tsVal+'">&#10003; '+tsVal+'</span>';
   var riskHTML=renderRiskFlag(stepKey);
   var assignKey=proc.id+'_'+i;
   var assignVal=S.assignments[assignKey]||'';
@@ -3654,8 +3770,10 @@ function renderProcHTML(proc,phase){
     +'<div class="proc-detail-header">'
       +'<span class="proc-code-badge">'+proc.code+'</span>'
       +'<h3 class="proc-detail-title">'+proc.name+'</h3>'
+      +'<button class="proc-print-btn" onclick="printProc(\''+proc.id+'\',\''+phase+'\')" title="Print this PROC">&#128424; Print</button>'
     +'</div>'
     +'<div class="proc-overview">'+proc.overview+'</div>'
+    +getProfileTip(proc.id)
      +failModeHTML
      +(PROC_TOOL_MAP[proc.id]?'<div class="tool-link-banner" onclick="selectTool(\''+PROC_TOOL_MAP[proc.id].tool+'\')">'+
        '<span class="tool-link-icon">'+PROC_TOOL_MAP[proc.id].icon+'</span>'+
@@ -3710,6 +3828,11 @@ function toggleStep(procId,idx,phase){
   var el=document.getElementById('step-'+procId+'-'+idx);
   if(el&&el.classList.contains('checked'))checkPrereqs(procId,idx);
   updateStatus(procId,phase);
+  // Update phase progress indicators
+  var key=procId+'-'+idx;
+  if(!S.stepState)S.stepState={};
+  S.stepState[key]=el?el.classList.contains('checked'):false;
+  setTimeout(renderPhaseProgress,50);
 }
 function updateStatus(procId,phase){
   var steps=document.querySelectorAll('#steps-'+procId+' .step-item');
@@ -4590,8 +4713,8 @@ function autoSaveSession(){saveSession(true);projSaveCurrent(true);}
 function saveSession(silent){
   try{
     // Start with in-memory state (preserves steps from non-active pathways)
-    var stepState=Object.assign({},S.stepState||{});
-    // Overlay with live DOM state for currently-rendered steps
+        var stepState=Object.assign({},S.stepState||{});
+    var buildTimestamps=Object.assign({},S.stepTimestamps||{}); // Overlay with live DOM state for currently-rendered steps
     allProcs().forEach(function(proc){
       proc.steps.forEach(function(s,i){
         var el=document.getElementById('step-'+proc.id+'-'+i);
@@ -4600,7 +4723,7 @@ function saveSession(silent){
     });
     var data={version:5,savedAt:new Date().toISOString(),pdtName:S.pdtName,pmName:S.pmName,programType:S.programType,
       profile:S.profile,health:S.health,procStatus:S.procStatus,role:S.role,project:S.project,riskRegister:S.project.riskRegister,scope:S.project.scope,charterGenerated:S.project.charterGenerated,
-      assignments:S.assignments,ccbLog:CCB_LOG,stepState:stepState};
+      assignments:S.assignments,ccbLog:CCB_LOG,stepState:stepState,stepTimestamps:buildTimestamps};
     try{localStorage.setItem(SESSION_KEY,JSON.stringify(data));}catch(e){}
     _sessionDirty=false;
     var dot=document.getElementById('session-dot');
@@ -4631,6 +4754,7 @@ function loadSession(){
     if(data.ccbLog)CCB_LOG=data.ccbLog;
     if(data.programType)S.programType=data.programType;
     if(data.stepState)S.stepState=Object.assign({},data.stepState);
+    S.stepTimestamps=Object.assign({},data.stepTimestamps||{});
     return data;
   }catch(e){return false;}
 }
@@ -9240,7 +9364,7 @@ function projBuildSessionData(){
     procStatus:S.procStatus,role:S.role,project:S.project,
     riskRegister:S.project.riskRegister,scope:S.project.scope,
     charterGenerated:S.project.charterGenerated,
-    ccbLog:CCB_LOG,assignments:S.assignments,stepState:stepState};
+    ccbLog:CCB_LOG,assignments:S.assignments,stepState:stepState,stepTimestamps:buildTimestamps};
 }
 function projSaveCurrent(silent){
   var key=projGetActiveKey();
@@ -9482,7 +9606,13 @@ function initProjectLibrary(){
 }
 // Fire tour on initial page load — shows on the welcome screen for first-time visitors
 document.addEventListener('DOMContentLoaded', function(){
+  checkComplianceAck();
   maybeStartTour();
+  // Apply default large font on first visit
+  try{
+    var savedFont=localStorage.getItem('pdbp-fontsize');
+    applyFontSize(savedFont||'font-l');
+  }catch(e){ applyFontSize('font-l'); }
 });
 
 // ===== FOCUS / COLLAPSE MODE =====
@@ -10836,6 +10966,148 @@ function autoSetHealthNA(){
       if(!S.health[key]){S.health[key]='na';}
     });
   }
+}
+
+
+function checkComplianceAck(){
+  var acked=false;
+  try{acked=!!localStorage.getItem('pdbp-compliance-ack');}catch(e){}
+  if(!acked){
+    var overlay=document.getElementById('compliance-overlay');
+    if(overlay)overlay.style.display='flex';
+  }
+}
+
+
+function renderPhaseProgress(){
+  var phases=['initiation','planning','execution','closeout'];
+  var role=S.role||'all';
+  phases.forEach(function(ph){
+    var label=document.getElementById('pp-'+ph);
+    var bar=document.getElementById('ppb-'+ph);
+    if(!label||!bar) return;
+    var phaseProcs=PROCS[ph]||[];
+    var total=0,checked=0;
+    phaseProcs.forEach(function(proc){
+      proc.steps.forEach(function(s,i){
+        var rel=roleMatchesStep(role,s.role);
+        if(role==='all'||rel!=='other'){
+          total++;
+          var key=proc.id+'-'+i;
+          if(S.stepState&&S.stepState[key]) checked++;
+        }
+      });
+    });
+    if(total===0){label.textContent='';bar.style.width='0%';bar.classList.remove('complete');return;}
+    var pct=Math.round((checked/total)*100);
+    label.textContent=checked+'/'+total;
+    bar.style.width=pct+'%';
+    if(pct>=100){bar.classList.add('complete');}else{bar.classList.remove('complete');}
+  });
+}
+
+
+function printProc(procId,phase){
+  var proc=allProcs().find(function(p){return p.id===procId;});
+  if(!proc) return;
+  var roleKey=S.role||'all';
+  var roleName=ROLE_LABELS[roleKey]||'All Roles';
+  var date=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var tbl=tableMap&&tableMap[proc.code]?tableMap[proc.code]:'—';
+  var rows='';
+  var stepNum=0;
+  proc.steps.forEach(function(s,i){
+    if(roleKey!=='all'){
+      if(roleMatchesStep(roleKey,s.role)==='other') return;
+    }
+    stepNum++;
+    var key=proc.id+'-'+i;
+    var isDone=S.stepState&&S.stepState[key];
+    rows+='<tr style="border-bottom:1px solid #eee;">'
+      +'<td style="width:22px;padding:6px 4px;vertical-align:top;text-align:center;">'
+      +'<div style="width:13px;height:13px;border:1.5px solid #555;display:inline-block;'
+      +(isDone?'background:#2a7a3a;border-color:#2a7a3a;':'')+'"></div></td>'
+      +'<td style="width:26px;padding:6px 4px;vertical-align:top;font-size:8pt;color:#888;text-align:right;">'+stepNum+'.</td>'
+      +'<td style="padding:6px 8px;vertical-align:top;">'
+      +'<div style="font-size:8pt;color:#8B7235;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;">'+s.role+'</div>'
+      +'<div style="font-size:10pt;font-weight:600;color:#1a1a1a;">'+s.main+'</div>'
+      +(s.detail?'<div style="font-size:9pt;color:#444;margin-top:3px;">'+s.detail+'</div>':'')
+      +(s.ref?'<div style="font-size:8pt;color:#3D5229;font-family:monospace;margin-top:3px;">'+s.ref+'</div>':'')
+      +'</td></tr>';
+  });
+  var watchHtml=proc.pathway?'<div style="margin:14px 0 8px;padding:10px 14px;background:#FFF8E7;border-left:3px solid #C8A84B;font-size:9pt;color:#333;"><strong style="font-size:8pt;text-transform:uppercase;letter-spacing:.1em;color:#8B7235;">Pathway Note</strong><br>'+proc.pathway+'</div>':'';
+  var html='<!DOCTYPE html><html><head><title>'+proc.code+' — '+proc.name+'</title>'
+    +'<style>body{font-family:Arial,sans-serif;font-size:11pt;margin:28px 36px;color:#1a1a1a;}'
+    +'h1{font-size:14pt;border-bottom:2px solid #C8A84B;padding-bottom:6px;}'
+    +'.meta{font-size:8pt;color:#666;margin-bottom:4px;}'
+    +'.overview{font-size:9pt;color:#333;margin:10px 0;padding:10px 14px;background:#f5f5f5;border-left:3px solid #aaa;}'
+    +'table{width:100%;border-collapse:collapse;margin-top:12px;}'
+    +'@media print{@page{margin:15mm;size:portrait;}}'
+    +'</style></head><body>'
+    +'<h1>'+proc.code+' — '+proc.name+'</h1>'
+    +'<div class="meta">PPM Community of Practice &middot; USACE &nbsp;|&nbsp; EM 5-1-11 Rev Aug 2024 &nbsp;|&nbsp; Table '+tbl+' &nbsp;|&nbsp; '+date+'</div>'
+    +'<div class="meta">Project: '+(S.pdtName||'[PROJECT NAME]')+' &nbsp;|&nbsp; PM: '+(S.pmName||'[PM]')+(roleKey!=='all'?' &nbsp;|&nbsp; Role: '+roleName:'')+'</div>'
+    +'<div class="overview">'+(proc.overview||'').slice(0,400)+'</div>'
+    +watchHtml
+    +'<table>'+rows+'</table>'
+    +'</body></html>';
+  var w=window.open('','_blank');
+  if(!w){alert('Pop-up blocked. Allow pop-ups and try again.');return;}
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(function(){w.print();},400);
+}
+
+
+// ── Profile-aware PROC tips ──
+var PROC_PROFILE_TIPS = {
+  proc1000: [
+    {q:'q4', v:'inheriting', tip:'Inheriting a project: request the previous PM\u2019s session export, verify existing Work Plan against current authorization, and confirm Charter is still valid before proceeding.', icon:'\u26a0\ufe0f'},
+    {q:'q4', v:'restarting', tip:'Restarting a project: verify whether the original Work Acceptance is still valid or requires a new one. Check for scope, cost, or authorization changes since the last active period.', icon:'\u26a0\ufe0f'}
+  ],
+  proc2000: [
+    {q:'q4', v:'inheriting', tip:'Inheriting: request the existing PMP and CSRA from the previous PM before beginning updates. Do not start from scratch \u2014 build on the established baseline.', icon:'\u1f4cb'},
+    {q:'q2', v:'mega', tip:'Mega project (\u2265$500M): PMP requires enhanced governance review, independent CSRA, and DCG-CEO visibility. Coordinate with HQ early.', icon:'\u2b50'}
+  ],
+  proc2040: [
+    {q:'q2', v:'mega', tip:'Mega project: resource estimate requires independent validation. Engage Cost Engineering MCX (Walla Walla) for ATR of cost estimate at or before 60% design.', icon:'\u2b50'},
+    {q:'q2', v:'large', tip:'Large project ($100M\u2013$499M): ensure estimate is reviewed by certified cost personnel within the region per EP 1105-2-58 requirements.', icon:'\u1f4ca'}
+  ],
+  proc2050: [
+    {q:'q1', v:'db', tip:'Design-Build delivery: solicitation must include A-E qualifications as part of the DB RFP. Ensure the RFP has clear performance specs, not prescriptive design requirements.', icon:'\u1f3d7\ufe0f'},
+    {q:'q1', v:'cmgc', tip:'CMGC delivery: negotiate GMP before issuing the construction amendment. Ensure the preconstruction services contract includes scope, schedule, and cost risk sharing provisions.', icon:'\u1f3d7\ufe0f'},
+    {q:'q1', v:'dbb', tip:'Construction \u00b7 DBB delivery: confirm contract type (FFP vs. cost-reimbursable) and ensure IGCE is complete and independently reviewed before solicitation.', icon:'\u1f4dd'},
+    {q:'q1', v:'feasibility', tip:'Feasibility study phase: A-E solicitation must be scoped to feasibility-phase deliverables only. Do not pre-scope for PED in the feasibility A-E contract.', icon:'\u1f50d'}
+  ],
+  proc3010: [
+    {q:'q3', v:'iija', tip:'IIJA-funded project: any scope or cost change must be reviewed against the IIJA spend plan before initiating the CCB process. Spend plan amendments require ASA(CW) approval.', icon:'\u1f4b0'},
+    {q:'q3', v:'supplemental', tip:'Supplemental-funded project: confirm obligation deadlines and spend plan restrictions before any change request. Congressional notification may be required for scope changes.', icon:'\u1f4b0'},
+    {q:'q3', v:'blended', tip:'Blended funding: changes must be tracked separately by funding source. Verify which spend plan is affected before processing any CCB request.', icon:'\u1f4b0'},
+    {q:'q2', v:'mega', tip:'Mega project: all changes exceeding thresholds require DCG-CEO written approval. Do not approve any change that causes a FORECASTED breach of authorized cost without prior HQ coordination.', icon:'\u2b50'}
+  ],
+  proc3000: [
+    {q:'q4', v:'inheriting', tip:'Inheriting mid-execution: conduct a thorough project status review before resuming execution. Verify all open RFIs, submittals, and contract modifications are documented.', icon:'\u26a0\ufe0f'}
+  ],
+  proc2020: [
+    {q:'q4', v:'scratch', tip:'New team: use the PDT Charter Builder (Tools menu) to formally establish roles, authorities, decision rights, and ways of working before your first PDT meeting.', icon:'\u1f91d'}
+  ]
+};
+
+function getProfileTip(procId){
+  var tips = PROC_PROFILE_TIPS[procId];
+  if(!tips||!tips.length) return '';
+  var q = S.profile||{};
+  var matched = tips.filter(function(t){
+    return q[t.q] === t.v;
+  });
+  if(!matched.length) return '';
+  return matched.map(function(t){
+    return '<div class="profile-tip-banner">'
+      + '<span class="profile-tip-icon">'+t.icon+'</span>'
+      + '<div class="profile-tip-text"><strong>Profile Tip:</strong> '+t.tip+'</div>'
+      + '</div>';
+  }).join('');
 }
 
 </script>
