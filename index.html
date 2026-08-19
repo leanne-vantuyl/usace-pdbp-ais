@@ -5828,9 +5828,20 @@ function toggleComplianceAck(){
   if(btn)btn.disabled=!(cb&&cb.checked);
 }
 function acknowledgeCompliance(){
-  try{sessionStorage.setItem('pdbp-compliance-ack','1');}catch(e){}
-  var m=document.getElementById('compliance-modal');
-  if(m)m.classList.add('hidden');
+  try{
+    try{localStorage.setItem('pdbp-compliance-ack','1');}catch(e){}
+    try{sessionStorage.setItem('pdbp-compliance-ack','1');}catch(e){}
+    var overlay=document.getElementById('compliance-overlay');
+    if(overlay){
+      overlay.style.cssText='display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;';
+    }
+    var m=document.getElementById('compliance-modal');
+    if(m)m.style.display='none';
+  }catch(err){
+    // Fallback: remove the element entirely
+    var ov=document.getElementById('compliance-overlay');
+    if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);
+  }
 }
 (function(){
   if(!ASKSAGE_ENABLED)return; // No AI features — compliance modal not needed
@@ -10971,7 +10982,10 @@ function autoSetHealthNA(){
 
 function checkComplianceAck(){
   var acked=false;
-  try{acked=!!localStorage.getItem('pdbp-compliance-ack');}catch(e){}
+  try{
+    acked=!!localStorage.getItem('pdbp-compliance-ack')
+       ||sessionStorage.getItem('pdbp-compliance-ack')==='1';
+  }catch(e){}
   if(!acked){
     var overlay=document.getElementById('compliance-overlay');
     if(overlay)overlay.style.display='flex';
