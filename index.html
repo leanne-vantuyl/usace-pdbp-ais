@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PDBP Lifecycle Guide | PPM CoP · HQUSACE</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{--gold:#C8A84B;--gold-light:#E2C97E;--gold-dim:#B09040;--army-dark:#0F0F0F;--army-mid:#1A1A1A;--army-green:#2A2A2A;--army-green-light:#333333;--white:#F5F2EB;--white-dim:#C8C4B8;--accent:#888888;--danger:#C0392B;--warn:#D4A017;--border:rgba(200,168,75,0.2);--border-strong:rgba(200,168,75,0.5);--text-primary:#F5F2EB;--text-secondary:#C8C4B8;--text-muted:#B09040;}
@@ -79,6 +79,18 @@ header{border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:
 .phase-btn.locked{opacity:.3;cursor:not-allowed;}
 .phase-btn.complete{color:var(--accent);}
 .phase-btn.complete.active{background:var(--army-green);color:var(--white);}
+.phase-progress-badge{display:block;font-family:'DM Mono',monospace;font-size:0.42rem;letter-spacing:.06em;color:var(--gold-dim);margin-top:1px;line-height:1;}
+.phase-btn.active .phase-progress-badge{color:rgba(20,24,14,.6);}
+.phase-btn.complete .phase-progress-badge{color:var(--accent);}
+.phase-progress-bar-wrap{display:block;height:2px;background:rgba(255,255,255,.1);border-radius:1px;margin-top:2px;overflow:hidden;}
+.phase-btn.active .phase-progress-bar-wrap{background:rgba(20,24,14,.15);}
+.phase-progress-bar{display:block;height:100%;width:0%;background:var(--gold);border-radius:1px;transition:width .4s ease;}
+.phase-progress-bar.complete{background:var(--accent);}
+.phase-btn.active .phase-progress-bar{background:rgba(20,24,14,.5);}
+body.light-mode .phase-progress-badge{color:#8B6914;}
+body.light-mode .phase-btn.active .phase-progress-badge{color:rgba(255,255,255,.75);}
+body.light-mode .phase-progress-bar-wrap{background:rgba(0,0,0,.1);}
+body.light-mode .phase-progress-bar{background:#8B6914;}
 .version-badge{font-family:'DM Mono',monospace;font-size:0.5rem;color:var(--gold-dim);border:1px solid var(--border);padding:2px 7px;letter-spacing:.08em;}
 .app-layout{max-width:1060px;margin:0 auto;padding:28px 24px 80px;position:relative;z-index:1;display:grid;grid-template-columns:210px 1fr;gap:28px;}
 @media(max-width:760px){.app-layout{grid-template-columns:1fr;}.sidebar{display:none!important;}}
@@ -277,6 +289,49 @@ footer{border-top:1px solid var(--border);padding:16px 0;margin-top:20px;positio
 .role-chip.active{background:var(--gold);border-color:var(--gold);color:var(--army-dark);font-weight:700;}
 .role-chip.all{border-style:dashed;}
 .role-filter-info{font-family:'DM Mono',monospace;font-size:0.5rem;color:var(--gold-dim);white-space:nowrap;}
+.role-filter-info[onclick]{cursor:pointer;border-bottom:1px dashed var(--gold-dim);transition:color .15s,border-color .15s;}
+.role-filter-info[onclick]:hover{color:var(--gold);border-color:var(--gold);}
+/* Role Step List Modal */
+.rsl-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1200;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;}
+.rsl-modal.hidden{display:none;}
+.rsl-box{background:var(--army-mid);border:1px solid var(--border);border-radius:4px;width:100%;max-width:780px;max-height:80vh;display:flex;flex-direction:column;}
+.rsl-header{display:flex;align-items:flex-start;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);gap:12px;flex-shrink:0;}
+.rsl-title{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);}
+.rsl-sub{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dim);margin-top:3px;}
+.rsl-actions{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+.rsl-print-btn{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--gold-dim);background:transparent;color:var(--gold);cursor:pointer;border-radius:2px;transition:all .15s;}
+.rsl-print-btn:hover{background:rgba(200,168,75,.1);border-color:var(--gold);}
+.rsl-body{overflow-y:auto;padding:16px 20px 24px;flex:1;min-height:0;}
+.rsl-phase-head{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--border);padding-bottom:4px;margin:18px 0 10px;}
+.rsl-phase-head:first-child{margin-top:0;}
+.rsl-proc-block{margin-bottom:14px;}
+.rsl-proc-name{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:.06em;color:var(--white-dim);margin-bottom:6px;}
+.rsl-proc-code{color:var(--gold-dim);margin-right:6px;}
+.rsl-step-row{display:flex;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.rsl-step-row:last-child{border-bottom:none;}
+.rsl-step-num{font-family:'DM Mono',monospace;font-size:0.45rem;color:var(--gold-dim);flex-shrink:0;min-width:48px;}
+.rsl-step-role-badge{font-family:'DM Mono',monospace;font-size:0.42rem;letter-spacing:.05em;text-transform:uppercase;padding:1px 5px;border-radius:1px;flex-shrink:0;}
+.rsl-step-role-badge.primary{background:rgba(200,168,75,.15);color:var(--gold);}
+.rsl-step-role-badge.shared{background:rgba(255,255,255,.06);color:var(--white-dim);}
+.rsl-step-text{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--white-dim);line-height:1.5;}
+.rsl-ext-note{display:inline-block;margin-left:8px;font-family:'DM Mono',monospace;font-size:0.5rem;color:var(--gold-dim);opacity:.75;letter-spacing:.04em;cursor:default;vertical-align:middle;}
+.rsl-empty{font-family:'DM Mono',monospace;font-size:0.55rem;color:var(--gold-dim);padding:24px 0;text-align:center;}
+body.light-mode .rsl-box{background:#F5F2E8;border-color:rgba(90,64,16,.2);}
+body.light-mode .rsl-title{color:#1A1F14;}
+body.light-mode .rsl-sub{color:#8B6914;}
+body.light-mode .rsl-phase-head{color:#5A4010;border-color:rgba(90,64,16,.2);}
+body.light-mode .rsl-proc-name{color:#3A3A2A;}
+body.light-mode .rsl-proc-code{color:#8B6914;}
+body.light-mode .rsl-step-row{border-color:rgba(0,0,0,.06);}
+body.light-mode .rsl-step-num{color:#8B6914;}
+body.light-mode .rsl-step-text{color:#444433;}
+body.light-mode .rsl-ext-note{color:#8a6a00;}
+body.light-mode .rsl-step-role-badge.primary{background:rgba(139,105,20,.15);color:#5A4010;}
+body.light-mode .rsl-step-role-badge.shared{background:rgba(0,0,0,.06);color:#666655;}
+body.light-mode .rsl-print-btn{color:#5A4010;border-color:rgba(90,64,16,.4);}
+body.light-mode .rsl-print-btn:hover{background:rgba(90,64,16,.08);}
+body.light-mode .role-filter-info[onclick]:hover{color:#5A4010;border-color:#5A4010;}
+body.light-mode .role-filter-info[onclick]{border-color:rgba(90,64,16,.4);}
 /* STEP ROLE HIGHLIGHTING */
 .step-item.step-mine{border-left:3px solid var(--gold);background:rgba(200,168,75,.06);}
 .step-item.step-mine .step-main{color:var(--white);}
@@ -1325,6 +1380,10 @@ body.light-mode .step-goto:hover{color:#5A4010;border-color:rgba(90,64,16,.3);}
 
 /* Pathway banner — inline in profile + persistent in header area */
 .pathway-banner-inline{margin-top:10px;padding:8px 14px;background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.3);font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);}
+.pathway-note-inline{margin-top:8px;padding:9px 13px;background:rgba(200,168,75,.06);border-left:2px solid rgba(200,168,75,.4);font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:.04em;text-transform:none;color:var(--gold-dim);line-height:1.6;}
+.pathway-note-inline strong{color:var(--gold-light);}
+body.light-mode .pathway-note-inline{background:rgba(90,64,16,.05);border-color:rgba(90,64,16,.3);color:#5A4010;}
+body.light-mode .pathway-note-inline strong{color:#3A2808;}
 .pathway-persistent-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.25);font-family:'DM Mono',monospace;font-size:0.5625rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-dim);margin-left:10px;}
 .pathway-persistent-badge.active{color:var(--gold);border-color:rgba(200,168,75,.4);}
 
@@ -1480,15 +1539,17 @@ body.light-mode .profile-tip-text strong{color:#5A4010;}
       </ul>
     </div>
     <div class="compliance-ack-row">
-      <input type="checkbox" id="compliance-ack-cb" onchange="toggleComplianceAck()">
+      <input type="checkbox" id="compliance-ack-cb">
       <label class="compliance-ack-label" for="compliance-ack-cb">
         I understand this tool is UNCLASSIFIED. I will not enter CUI, SBU, classified, or sensitive personal information.
       </label>
     </div>
-    <button class="compliance-ack-btn" id="compliance-ack-btn" onclick="acknowledgeCompliance()" disabled>
+    <button class="compliance-ack-btn" id="compliance-ack-btn" onclick="complianceEnter()">
       I Understand — Enter Tool
     </button>
   </div>
+</div>
+
 </div>
 
 <script>
@@ -1562,14 +1623,14 @@ window.onerror=function(msg,src,line,col,err){
             </div>
             <div class="tools-menu-item" id="pnav-glossary" aria-label="Glossary of terms" onclick="selectTool('glossary')">
               <span class="tools-menu-icon" style="color:#7BBDD4;">&#128218;</span>
-              <div><div class="tools-menu-label">Glossary</div><div class="tools-menu-sub">134 terms · acronyms · doc codes</div></div>
+              <div><div class="tools-menu-label">Glossary</div><div class="tools-menu-sub">162 terms · acronyms · doc codes</div></div>
             </div>
           </div>
           <div class="tools-menu-section">
             <div class="tools-section-label">Training</div>
             <div class="tools-menu-item" id="pnav-quiz" aria-label="Knowledge check quiz" onclick="selectTool('quiz')">
               <span class="tools-menu-icon" style="color:var(--gold);">&#127979;</span>
-              <div><div class="tools-menu-label">Knowledge Quiz</div><div class="tools-menu-sub">60 questions · PROSPECT 355 prep</div></div>
+              <div><div class="tools-menu-label">Knowledge Quiz</div><div class="tools-menu-sub">62 questions · PROSPECT 355 prep</div></div>
             </div>
           </div>
         </div>
@@ -1578,12 +1639,12 @@ window.onerror=function(msg,src,line,col,err){
       <div class="phase-nav" role="navigation" aria-label="Section navigation">
         <button class="phase-btn active" onclick="switchPhase('welcome')" id="pnav-welcome" aria-label="Overview — project home">Overview</button>
         <button class="phase-btn" onclick="switchPhase('profile')" id="pnav-profile" aria-label="Profile — project setup">Profile</button>
-        <button class="phase-btn" onclick="switchPhase('program')" id="pnav-program" style="display:none;">Program</button>
-        <button class="phase-btn locked" onclick="switchPhase('initiation')" id="pnav-initiation" aria-label="Initiation phase">Initiation</button>
-        <button class="phase-btn locked" onclick="switchPhase('planning')" id="pnav-planning" aria-label="Planning phase">Planning</button>
-        <button class="phase-btn locked" onclick="switchPhase('execution')" id="pnav-execution" aria-label="Execution phase">Execution</button>
-        <button class="phase-btn locked" onclick="switchPhase('closeout')" id="pnav-closeout" aria-label="Closeout phase">Closeout</button>
-        <button class="phase-btn" onclick="switchPhase('outputs')" id="pnav-outputs">Outputs</button>
+        <button class="phase-btn" onclick="switchPhase('program')" id="pnav-program" style="display:none;" aria-label="Program phase — CW and MILCON budget cycles">Program<span class="phase-progress-badge" id="pp-program"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-program"></span></span></button>
+        <button class="phase-btn locked" onclick="switchPhase('initiation')" id="pnav-initiation" aria-label="Initiation phase" title="Complete your Project Profile to unlock">Initiation<span class="phase-progress-badge" id="pp-initiation"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-initiation"></span></span></button>
+        <button class="phase-btn locked" onclick="switchPhase('planning')" id="pnav-planning" aria-label="Planning phase" title="Complete your Project Profile to unlock">Planning<span class="phase-progress-badge" id="pp-planning"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-planning"></span></span></button>
+        <button class="phase-btn locked" onclick="switchPhase('execution')" id="pnav-execution" aria-label="Execution phase" title="Complete your Project Profile to unlock">Execution<span class="phase-progress-badge" id="pp-execution"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-execution"></span></span></button>
+        <button class="phase-btn locked" onclick="switchPhase('closeout')" id="pnav-closeout" aria-label="Closeout phase" title="Complete your Project Profile to unlock">Closeout<span class="phase-progress-badge" id="pp-closeout"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-closeout"></span></span></button>
+        <button class="phase-btn" onclick="switchPhase('outputs')" id="pnav-outputs" aria-label="Outputs — generated artifacts and documents">Outputs</button>
       </div>
     </div>
   </div>
@@ -1592,18 +1653,18 @@ window.onerror=function(msg,src,line,col,err){
   <div class="role-bar-inner">
     <span class="role-bar-label">Your Role:</span>
     <div class="role-chips">
-      <button class="role-chip all active" onclick="setRole('all',this)">All Roles</button>
-      <button class="role-chip" onclick="setRole('pm',this)">PM</button>
-      <button class="role-chip" onclick="setRole('dpm',this)">DPM</button>
-      <button class="role-chip" onclick="setRole('pgm',this)">PgM</button>
-      <button class="role-chip" onclick="setRole('cost',this)">Cost Engineer</button>
-      <button class="role-chip" onclick="setRole('scheduler',this)">Scheduler</button>
-      <button class="role-chip" onclick="setRole('contracting',this)">Contracting</button>
-      <button class="role-chip" onclick="setRole('rmo',this)">RMO</button>
-      <button class="role-chip" onclick="setRole('command',this)">Command</button>
-      <button class="role-chip" onclick="setRole('pdt',this)">PDT Member</button>
+      <button class="role-chip all active" onclick="setRole('all',this)" aria-label="Show steps for all roles" aria-pressed="true">All Roles</button>
+      <button class="role-chip" onclick="setRole('pm',this)" aria-label="Filter steps for Project Manager role" aria-pressed="false">PM</button>
+      <button class="role-chip" onclick="setRole('dpm',this)" aria-label="Filter steps for Deputy Project Manager role" aria-pressed="false">DPM</button>
+      <button class="role-chip" onclick="setRole('pgm',this)" aria-label="Filter steps for Program Manager role" aria-pressed="false">PgM</button>
+      <button class="role-chip" onclick="setRole('cost',this)" aria-label="Filter steps for Cost Engineer role" aria-pressed="false">Cost Engineer</button>
+      <button class="role-chip" onclick="setRole('scheduler',this)" aria-label="Filter steps for Scheduler role" aria-pressed="false">Scheduler</button>
+      <button class="role-chip" onclick="setRole('contracting',this)" aria-label="Filter steps for Contracting role" aria-pressed="false">Contracting</button>
+      <button class="role-chip" onclick="setRole('rmo',this)" aria-label="Filter steps for Resource Management Officer role" aria-pressed="false">RMO</button>
+      <button class="role-chip" onclick="setRole('command',this)" aria-label="Filter steps for Command role" aria-pressed="false">Command</button>
+      <button class="role-chip" onclick="setRole('pdt',this)" aria-label="Filter steps for PDT Member role" aria-pressed="false">PDT Member</button>
     </div>
-    <span class="role-filter-info" id="role-filter-info"></span>
+    <span class="role-filter-info" id="role-filter-info" onclick="openRoleStepList()" title="Click to see your steps"></span>
   </div>
 </div>
 <div class="session-bar" id="session-bar" style="display:none;">
@@ -1635,7 +1696,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 5.0</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 16.0</span>
   </div>
 </footer>
 <script>
@@ -1686,7 +1747,7 @@ steps:[
 {role:'Resource Provider(s) / PM',main:'Change activity scope, schedule, or resources to resolve CFY workload conflicts',detail:'Adjust scope, schedule, or resource assignments while meeting stakeholder expectations. May require stakeholder coordination. Document all decisions in PMP/PgMP. If resolved → end. If conflicts remain → Step 4.',type:'action'},
 {role:'Branch Function Chief',main:'[ESCALATION] Determine if alternatives are available to resolve the conflict',detail:'Analyze alternatives at the branch level. PM/RP communicates decisions to the district and documents in PMP/PgMP. If resolved → end. If not → escalate to Local Division Function Chief (Step 5).',type:'decision'},
 {role:'Local Division Function Chief',main:'[ESCALATION] Determine if alternatives are available to resolve the conflict',detail:'Analyzes district workload; resolves conflicts not resolved by Branch Function Chiefs. Communicates with other Functional Division Chiefs and Regional Function Chiefs. Documents in PMP/PgMP. If resolved → end. If not → Step 6.',type:'decision'},
-{role:'Regional Function Chief',main:'Execute PROMIS Regional Resource Workload Analysis; evaluate function worklo For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. May require spend plan amendment and Congressional notification.ad vs. capacity',detail:'Pull the regional report from PROMIS. Evaluate function workload versus capacity across the Regional Business Center. Reference PROC6003 for regional-level procedures.',type:'action',ref:'PROC6003 · PROMIS Regional Report'},
+{role:'Regional Function Chief',main:'Execute PROMIS Regional Resource Workload Analysis; evaluate function workload vs. capacity',detail:'Pull the regional report from PROMIS. Evaluate function workload versus capacity across the Regional Business Center. Reference PROC6003 for regional-level procedures.',type:'action',ref:'PROC6003 · PROMIS Regional Report'},
 {role:'Regional Function Chief',main:'Provide recommendation to MSC Commander',detail:'Develop recommendation on resource resolution: reallocation, augmentation, or contracting. Reference PROC6003.',type:'action',ref:'PROC6003'},
 {role:'MSC Commander',main:'[DECISION] Approve or reject Regional Function Chief recommendation',detail:'If approved → Step 9. If rejected → return to Regional Function Chief for revised recommendation (Step 6).',type:'decision'},
 {role:'MSC Commander',main:'Notify Regional Function Chief and District Commander of decision',detail:'PM/RP communicates workforce decisions and documents in PMP/PgMP. END OF ACTIVITY.',type:'action'}
@@ -1862,7 +1923,7 @@ pathway:'Track ALL changes cumulatively from the authorized project cost. MSCs a
 steps:[
 {role:'PM / PDT Member',main:'Any PDT member identifies a change — notify PM immediately',detail:'PDT members and stakeholders are responsible for notifying the PM when changes are proposed to scope, schedule, or cost — including when cost is FORECASTED TO EXCEED authorized cost plus inflation (forecasted exceedance is a trigger event equal to actual exceedance). Do not wait until the change has already occurred. PM logs the change request in the Change/Decision Log immediately upon receipt.',type:'action',ref:'DCG-CEO CW Change Mgmt Guidance · REF8009G'},
 {role:'Project Manager',main:'Initiate a Change Request; determine if the change has impacted or could impact the PMB',detail:'Document the proposed change on the Change Request Form (EM 5-1-11 Table 43-3): description, cause, type (scope/schedule/cost/quality), measurable impact (e.g., 3 miles of levee, 12-month delay, $10M), who requested it, and date submitted. Include an Analysis of Alternatives showing courses of action considered — this is recommended for all change requests. Log in Change/Decision Log.',type:'action',ref:'EM 5-1-11 Table 43-3 · REF8009G · DCG-CEO Guidance'},
-{role:'Project Scheduler / PDT Member',main:'Create or modify a "What If" version of the project in PROMIS',detail:'Answer: What are the schedule and budget impacts of the change? This is a required step before CCB convenes. Captures the schedule a For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. May require spend plan amendment and Congressional notification. For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. May require spend plan amendment and Congressional notification. For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. Supplemental spend plans are subject to Congressional review and may require a spend plan amendment before funds can be obligated.nd cost impact in PROMIS without affecting the current PMB baseline.',type:'action',ref:'PROMIS · DCG-CEO Guidance Table B-1 Step 6'},
+{role:'Project Scheduler / PDT Member',main:'Create or modify a "What If" version of the project in PROMIS',detail:'Answer: What are the schedule and budget impacts of the change? This is a required step before CCB convenes. Captures the schedule and cost impact in PROMIS without affecting the current PMB baseline. For SUPPLEMENTAL-funded projects (IIJA, DRSAA 2022/2023/2025, BBA 2018, DRA 2019): confirm obligation deadlines and spend plan restrictions before initiating ANY scope or cost change. Supplemental spend plans are subject to Congressional review and may require a spend plan amendment before funds can be obligated.',type:'action',ref:'PROMIS · DCG-CEO Guidance Table B-1 Step 6'},
 {role:'Project Manager',main:'[DECISION] Does the cumulative change exceed the PDT’s CMP thresholds?',detail:'Assess cumulative impact — total of ALL changes to date including this one. Compare against decision thresholds documented in the approved CMP. If NO: PM makes decision, documents in Change/Decision Log, updates PMP and PROMIS. Determine if the change warrants Lessons Learned documentation (PROC3020). If YES: proceed to District CCB.',type:'decision',ref:'CMP · EM 5-1-11 Table 43-3'},
 {role:'Project Manager',main:'Schedule District CCB',detail:'Schedule the District Change Control Board meeting. District CCBs must maintain a minimum monthly battle rhythm. CCB function may be combined with PRBs or Executive Sessions but must not be diminished. District CCB membership minimum: DPM (Chair), Engineering & Construction Division Chief, Planning & Policy Chief.',type:'action',ref:'DCG-CEO Guidance · REF8009G'},
 {role:'DE / DPM',main:'Conduct District CCB; decide and document',detail:'District CCB reviews, evaluates, and recommends to the District Engineer (DE) or designee: approve, delay, or reject. DE or designee makes the decision. Document decision in Change/Decision Log with approval signatures. Transmit decision to PM/PDT. District threshold: authorized cost plus inflation OR already approved HQUSACE cost amount — cannot exceed.',type:'decision',ref:'DCG-CEO Guidance · ER 1105-2-100 Appendix G'},
@@ -1920,14 +1981,17 @@ steps:[
 // ===== STATIC SCREENS =====
 const WELCOME_HTML=`
 <div class="screen active" id="screen-welcome">
-<p class="welcome-eyebrow">Step-by-Step Delivery System · EM 5-1-11 PDBP · Version 5</p>
+<p class="welcome-eyebrow">Step-by-Step Delivery System · EM 5-1-11 PDBP · Version 16</p>
 <h1 class="welcome-title">Deliver your project<br><em>by the doctrine.</em></h1>
 <div class="welcome-rule"></div>
-<p class="welcome-body">This tool guides <strong>Project Delivery Teams</strong> through the complete PDBP lifecycle — work acceptance through project closeout — step by step, process by process. It adapts to your project profile and generates draft artifacts at every stage.<br><br>Built and maintained by the <strong>PPM Community of Practice · USACE.</strong> Process steps verified against EM 5-1-11 (Aug 2024 revision) including all branching pathways, decision gates, escalation hierarchies, and role assignments per published step tables. Click Sidebar on top to fill or minimize the screen.</p>
+<p class="welcome-body">This tool guides <strong>Project Delivery Teams</strong> through the complete PDBP lifecycle — work acceptance through project closeout — step by step, process by process. It adapts to your project profile and generates draft artifacts at every stage.<br><br>Built and maintained by the <strong>PPM Community of Practice · USACE.</strong> Process steps verified against EM 5-1-11 (Aug 2024 revision) including all branching pathways, decision gates, escalation hierarchies, and role assignments per published step tables.</p>
 <div class="ref-tags"><span class="ref-tag">EM 5-1-11</span><span class="ref-tag">ER 5-1-11</span><span class="ref-tag">ER 1140-1-211</span><span class="ref-tag">ER 5-1-10</span><span class="ref-tag">REF8001G</span><span class="ref-tag">REF8003G</span><span class="ref-tag">REF8005G</span><span class="ref-tag">REF8007G</span><span class="ref-tag">REF8014G</span></div>
 <button class="btn-primary" onclick="projNew()">New Project &rarr;</button>
       <button class="btn-secondary" onclick="startTour()" style="margin-left:10px;">&#10067; How to Use This Tool</button>
       <button class="btn-secondary" onclick="enterBrowseMode()" style="margin-left:10px;">&#128214; Browse / General Reference</button>
+<div id="welcome-start-callout" style="display:none;margin:18px 0 0;padding:12px 16px;background:rgba(200,168,75,.07);border-left:3px solid var(--gold);border-radius:2px;font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:.05em;color:var(--gold-dim);line-height:1.7;">
+  <strong style="color:var(--gold-light);">&#9658; Start here:</strong> Click <strong style="color:var(--white-dim);">New Project</strong> above to set your program type, answer four quick profile questions, and unlock your step-by-step PDBP roadmap. The phase tabs (Initiation through Closeout) unlock automatically once your profile is complete.
+</div>
 <div class="lifecycle-grid">
 <div class="lifecycle-card"><div class="lifecycle-phase">Initiation</div><div class="lifecycle-codes">PROC1000–1040</div><div class="lifecycle-desc">Work acceptance through funds receipt</div></div>
 <div class="lifecycle-card"><div class="lifecycle-phase">Planning</div><div class="lifecycle-codes">PROC2000–2070</div><div class="lifecycle-desc">PMP development through approval</div></div>
@@ -1982,7 +2046,7 @@ const PROFILE_HTML=`
       <button class="prog-type-btn" data-pt="sec408" onclick="selectProgramType('sec408')">
         <span class="prog-type-icon">&#9965;</span>
         <span class="prog-type-name">CAP</span>
-        <span class="prog-type-desc">Continuing Authorities Program — small CW construction (§205, §206, §107, etc.)</span>
+        <span class="prog-type-desc">Continuing Authorities Program — pre-authorized small water resources projects (§205, §206, §107, §204, §1135, §208). No project-specific congressional authorization required.</span>
       </button>
       <button class="prog-type-btn" data-pt="dam-levee" onclick="selectProgramType('dam-levee')">
         <span class="prog-type-icon">&#127754;</span>
@@ -2052,9 +2116,9 @@ const PROFILE_HTML=`
 <div class="option-card" onclick="sel('q3','congressional',this)"><div class="option-label">Congressionally Directed</div><div class="option-sub">MILCON, Energy, direct appropriation</div></div>
 <div class="option-card" onclick="sel('q3','iija',this)"><div class="option-label">IIJA</div><div class="option-sub">Infrastructure Investment & Jobs Act</div></div>
 <div class="option-card" onclick="sel('q3','cap-auth',this)"><div class="option-label">CAP Authority</div><div class="option-sub">Continuing authority program funding</div></div>
-<div class="option-card" onclick="sel('q3','unsure',this)"><div class="option-label"><div class="option-card" onclick="sel('q3','supplemental',this)"><div class="option-label">Supplemental</div><div class="option-sub">Non-IIJA supplemental appropriation (Sandy, Katrina, etc.)</div></div>
+<div class="option-card" onclick="sel('q3','supplemental',this)"><div class="option-label">Supplemental</div><div class="option-sub">Non-IIJA supplemental appropriation (Sandy, Katrina, etc.)</div></div>
 <div class="option-card" onclick="sel('q3','blended',this)"><div class="option-label">Blended / Multiple</div><div class="option-sub">Mix of regular CW and supplemental funding sources</div></div>
-Other / Unsure</div><div class="option-sub">Funding source still being determined</div></div>
+<div class="option-card" onclick="sel('q3','unsure',this)"><div class="option-label">Other / Unsure</div><div class="option-sub">Funding source still being determined</div></div>
 </div></div>
 <div class="field-group"><label class="field-label">Where is your PDT starting?</label><div class="options-grid" id="q4-grid">
 <div class="option-card" onclick="sel('q4','scratch',this)"><div class="option-label">Starting from Scratch</div><div class="option-sub">Project just authorized</div></div>
@@ -2272,7 +2336,7 @@ const PMP_HTML_SCREEN=`
 <div class="charter-guidance" style="margin-bottom:14px;">
   <strong>Build your PMP section by section.</strong> Fields pre-populated from your Project Profile and PDT Charter are marked in gold. Complete each section, then click \u201cGenerate PMP\u201d to produce a formatted, REF8005G-compliant draft ready for DPM review. No section should be marked TBD at submission &mdash; the DPM will return it.
 </div>
-<div class="pmp-progress-label" id="pmp-progress-label">Sections complete: 0 of 10</div>
+<div class="pmp-progress-label" id="pmp-progress-label">Sections visited: 0 of 12</div>
 <div class="pmp-progress-bar"><div class="pmp-progress-fill" id="pmp-progress-fill" style="width:0%"></div></div>
 <div class="pmp-nav" id="pmp-nav">
   <button class="pmp-nav-btn active" onclick="switchPMPSection('s1',this)" id="pmpnav-s1">1 \u00b7 Identity</button>
@@ -3348,7 +3412,7 @@ const OUTPUTS_HTML=`
 <div class="screen" id="screen-outputs">
 <p class="screen-eyebrow">Outputs &amp; Exports</p>
 <h2 class="screen-title">Generate deliverables for your PDT.</h2>
-<p class="screen-desc">14 output types — from role-filtered checklists to full PMP documents, risk reports, scope statements, and project health dashboards. All generated from your current session data and project profile.</p>
+<p class="screen-desc">10 output types — from role-filtered checklists to full PMP documents, risk reports, scope statements, and project health dashboards. All generated from your current session data and project profile.</p>
 <div class="outputs-grid">
   <div class="output-card" style="grid-column:1/-1;">
     <div class="output-card-icon">&#9654;</div>
@@ -3402,6 +3466,15 @@ const OUTPUTS_HTML=`
     </div>
   </div>
 
+  <div class="output-card" style="grid-column:1/-1;">
+    <div class="output-card-icon">&#128506;</div>
+    <div class="output-card-title">Full Project Roadmap</div>
+    <div class="output-card-desc">Every step across all phases for your project type — Initiation, Planning, Execution, Closeout, and your Program phase (CW, MILCON, Environmental, etc.) — in a single printable reference document. If a role is selected, your primary and shared steps are highlighted. Works for all nine program types.</div>
+    <div class="output-card-actions">
+      <button class="btn-primary" onclick="printFullRoadmap()" style="padding:8px 14px;font-size:9px;">&#128424; Print / Save as PDF</button>
+    </div>
+  </div>
+
   <div class="output-card">
     <div class="output-card-icon">&#9776;</div>
     <div class="output-card-title">Process Checklist</div>
@@ -3414,7 +3487,7 @@ const OUTPUTS_HTML=`
   <div class="output-card">
     <div class="output-card-icon">&#128100;</div>
     <div class="output-card-title">My Steps — Role View</div>
-    <div class="output-card-desc">Your personal action list across all 15 PROCs — only the steps where your selected role is primary or shared, grouped by phase, with completion status from this session.</div>
+    <div class="output-card-desc">Your personal action list across all phases — only the steps where your selected role is primary or shared, grouped by phase and process, with completion status from this session.</div>
     <div class="output-card-actions">
       <button class="btn-primary" onclick="genMySteps()" style="padding:8px 14px;font-size:9px;">Generate My Steps</button>
     </div>
@@ -3438,7 +3511,7 @@ const OUTPUTS_HTML=`
   <div class="output-card">
     <div class="output-card-icon">&#9650;</div>
     <div class="output-card-title">CCB Threshold Tracker</div>
-    <div class="output-card-desc">Log project changes, track cumulative cost and schedule variance per DCG-CEO CW Change Management Guidance against EC 5-2-1 thresholds, and generate a formatted change log ready for CCB submission.</div>
+    <div class="output-card-desc">Log project changes, track cumulative cost and schedule variance per DCG-CEO CW Change Management Guidance (supersedes EC 5-2-1), and generate a formatted change log ready for CCB submission.</div>
     <div class="output-card-actions">
       <button class="btn-primary" onclick="openCCBTracker()" style="padding:8px 14px;font-size:9px;">Open Tracker</button>
     </div>
@@ -3479,7 +3552,7 @@ const OUTPUTS_HTML=`
 <!-- CCB TRACKER PANEL -->
 <div id="ccb-tracker-panel" style="display:none;border:1px solid var(--border);background:rgba(26,26,26,.3);margin-top:18px;">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 15px;border-bottom:1px solid var(--border);background:rgba(200,168,75,.04);">
-    <span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;">&#9650; CCB Threshold Tracker &mdash; EC 5-2-1</span>
+    <span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;">&#9650; CCB Threshold Tracker</span>
     <button class="btn-ghost" onclick="closeCCBTracker()">&#10005; Close</button>
   </div>
   <div style="padding:14px 15px;">
@@ -3577,7 +3650,10 @@ function switchPhase(phase){
     return;
   }
   var btn=document.getElementById('pnav-'+phase);
-  if(btn&&btn.classList.contains('locked'))return;
+  if(btn&&btn.classList.contains('locked')){
+    showToast('Roadmap locked — complete your Project Profile first. Click "Profile" in the nav or "New Project" on the Overview screen.');
+    return;
+  }
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
   document.getElementById('screen-'+phase)?.classList.add('active');
   document.querySelectorAll('.phase-btn').forEach(function(b){b.classList.remove('active');});
@@ -3682,6 +3758,7 @@ function launchRoadmap(){
   addHelpButton();
   if(ASKSAGE_ENABLED&&!getAPIKey()){setTimeout(function(){openAPIKeyModal();},600);}
   setTimeout(applyRoleHighlighting,100);
+  setTimeout(renderPhaseProgress,200);
 }
 function renderSidebar(phase){
   var p=S.profile;
@@ -3745,7 +3822,7 @@ function renderStepHTML(s,i,proc,phase){
     +' oninput="saveAssignment(\''+assignKey+'\',this.value)"/>'
     +(assignVal?'<span class="step-assign-badge">'+assignVal+'</span>':'')
     +'</div>';
-  return '<div class="'+cls+'" id="step-'+proc.id+'-'+i+'" onclick="toggleStep(\''+proc.id+'\','+i+',\''+phase+'\')">'
+  return '<div class="'+cls+'" id="step-'+proc.id+'-'+i+'" onclick="toggleStep(\''+proc.id+'\','+i+',\''+phase+'\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleStep(\''+proc.id+'\','+i+',\''+phase+'\');}" role="checkbox" aria-checked="false" tabindex="0" aria-label="Step '+(i+1)+': '+s.main.replace(/"/g,'&quot;').substring(0,80)+(s.main.length>80?'…':'')+'">'
     +'<div class="step-check"><span class="step-check-inner">&#10003;</span></div>'
     +'<div class="step-content">'
       +h('div','step-main','<span class="step-goto" onclick="event.stopPropagation();scrollToStep(\''+proc.id+'\','+i+')" title="Go to step '+(i+1)+'">#'+(i+1)+'</span> '+s.main)
@@ -3770,7 +3847,7 @@ function renderProcHTML(proc,phase){
     +'<div class="proc-detail-header">'
       +'<span class="proc-code-badge">'+proc.code+'</span>'
       +'<h3 class="proc-detail-title">'+proc.name+'</h3>'
-      +'<button class="proc-print-btn" onclick="printProc(\''+proc.id+'\',\''+phase+'\')" title="Print this PROC">&#128424; Print</button>'
+      +'<button class="proc-print-btn" onclick="printProc(\''+proc.id+'\',\''+phase+'\')" title="Print this PROC" aria-label="Print '+proc.name+' ('+proc.code+')">&#128424; Print</button>'
     +'</div>'
     +'<div class="proc-overview">'+proc.overview+'</div>'
     +getProfileTip(proc.id)
@@ -3827,6 +3904,8 @@ function toggleStep(procId,idx,phase){
   document.getElementById('step-'+procId+'-'+idx)?.classList.toggle('checked');
   var el=document.getElementById('step-'+procId+'-'+idx);
   if(el&&el.classList.contains('checked'))checkPrereqs(procId,idx);
+  // Sync aria-checked for 508 compliance
+  if(el) el.setAttribute('aria-checked', el.classList.contains('checked')?'true':'false');
   updateStatus(procId,phase);
   // Update phase progress indicators
   var key=procId+'-'+idx;
@@ -3835,13 +3914,22 @@ function toggleStep(procId,idx,phase){
   setTimeout(renderPhaseProgress,50);
 }
 function updateStatus(procId,phase){
-  var steps=document.querySelectorAll('#steps-'+procId+' .step-item');
-  var checked=document.querySelectorAll('#steps-'+procId+' .step-item.checked').length;
-  document.getElementById('sbn-'+procId)?.classList.toggle('complete',checked===steps.length&&steps.length>0);
+  // Use data step count as source of truth (DOM may be partially rendered)
+  var procData=allProcs().find(function(p){return p.id===procId;});
+  var dataStepCount=procData?procData.steps.length:0;
+  var checkedKeys=0;
+  if(S.stepState){
+    Object.keys(S.stepState).forEach(function(k){
+      if(k.indexOf(procId+'-')===0&&S.stepState[k])checkedKeys++;
+    });
+  }
+  // Also sync DOM checked count for visual badge
+  var domChecked=document.querySelectorAll('#steps-'+procId+' .step-item.checked').length;
+  document.getElementById('sbn-'+procId)?.classList.toggle('complete',dataStepCount>0&&checkedKeys>=dataStepCount);
   var prev=S.procStatus[procId];
-  S.procStatus[procId]=checked===0?'pending':checked<steps.length?'in-progress':'complete';
-  // Fire completion trigger when PROC first becomes complete
-  if(prev!=='complete'&&S.procStatus[procId]==='complete'){
+  S.procStatus[procId]=checkedKeys===0?'pending':(dataStepCount>0&&checkedKeys>=dataStepCount)?'complete':'in-progress';
+  // Fire completion trigger only when PROC genuinely fully checked per data
+  if(prev!=='complete'&&S.procStatus[procId]==='complete'&&dataStepCount>0){
     showCompletionNotify(procId);
   }
   // Refresh dep panel to reflect new status
@@ -3991,7 +4079,7 @@ function openJumpModal(){
     el.innerHTML='<div class="modal-box">'
       +'<div class="modal-header"><div><div class="modal-title">Jump to Process</div>'
       +'<div class="modal-sub">Select where you are in the lifecycle</div></div>'
-      +'<button class="modal-close" onclick="closeJumpModal()">&#10005;</button></div>'
+      +'<button class="modal-close" onclick="closeJumpModal()" aria-label="Close Jump to Process dialog">&#10005;</button></div>'
       +'<div class="modal-body">'
       +'<div class="modal-section"><div class="modal-section-label">Select Phase</div>'
       +'<div class="jump-phase-row" id="jump-phase-row">'+phaseBtns+'</div></div>'
@@ -4215,22 +4303,305 @@ function applyRoleHighlighting(){
   if(info){
     if(roleKey==='all'){
       info.textContent='';
+      info.title='';
+      info.style.cursor='';
     } else {
       var mine=document.querySelectorAll('.step-mine').length;
       var shared=document.querySelectorAll('.step-shared').length;
-      info.textContent=mine+' primary · '+shared+' shared';
+      info.textContent=mine+' primary · '+shared+' shared — view all ↗';
+      info.title='Click to see your full step list';
     }
   }
 }
 function setRole(roleKey,btn){
   S.role=roleKey;
-  document.querySelectorAll('.role-chip').forEach(function(c){c.classList.remove('active');});
+  document.querySelectorAll('.role-chip').forEach(function(c){
+    c.classList.remove('active');
+    c.setAttribute('aria-pressed','false');
+  });
   btn.classList.add('active');
+  btn.setAttribute('aria-pressed','true');
   applyRoleHighlighting();
+  setTimeout(renderPhaseProgress,50);
 }
 function showRoleBar(){
   var rb=document.getElementById('role-bar');
   if(rb)rb.style.display='block';
+}
+// ===== ROLE STEP LIST MODAL =====
+var EXTERNAL_ACTOR_PATTERNS=[
+  /\bomb\b/i,/\bcongress\b/i,/\bsenate\b/i,/\bhouse\b/i,/\bpotus\b/i,/\bpresident\b/i,
+  /\boasa\b/i,/\basa\(cw\)/i,/\bosd\b/i,/\bda\b(?!\s*member)/i,/\bdepartment of the army\b/i,
+  /\btreasury\b/i,/\boffice of management\b/i,/\bbudget office\b/i
+];
+function isExternalActor(roleStr){
+  if(!roleStr)return false;
+  return EXTERNAL_ACTOR_PATTERNS.some(function(p){return p.test(roleStr);});
+}
+function openRoleStepList(){
+  var roleKey=S.role;
+  if(!roleKey||roleKey==='all'){showToast('Select a specific role to view your step list.');return;}
+  var roleLabel=ROLE_LABELS[roleKey]||roleKey;
+  var phaseOrder=['initiation','planning','execution','closeout','program'];
+  var phaseLabels={initiation:'Initiation',planning:'Planning',execution:'Execution',closeout:'Closeout',program:'Program'};
+  // Build result structure: {phase:[{proc, steps:[{idx,main,role,match}]}]}
+  var results={};
+  phaseOrder.forEach(function(ph){
+    var procs=ph==='program'?(S.programType&&PROGRAM_PROCS[S.programType]||[]):(PROCS[ph]||[]);
+    procs.forEach(function(proc){
+      proc.steps.forEach(function(s,i){
+        var match=roleMatchesStep(roleKey,s.role||'');
+        if(match==='mine'||match==='shared'){
+          if(!results[ph])results[ph]=[];
+          var existing=results[ph].find(function(r){return r.procId===proc.id;});
+          if(!existing){existing={procId:proc.id,procCode:proc.code,procName:proc.name,steps:[]};results[ph].push(existing);}
+          existing.steps.push({idx:i,main:s.main,role:s.role,match:match,external:isExternalActor(s.role)});
+        }
+      });
+    });
+  });
+  // Count totals
+  var totalPrimary=0,totalShared=0;
+  phaseOrder.forEach(function(ph){
+    (results[ph]||[]).forEach(function(p){
+      p.steps.forEach(function(s){s.match==='mine'?totalPrimary++:totalShared++;});
+    });
+  });
+  // Build HTML
+  var bodyHTML='';
+  var hasAny=false;
+  phaseOrder.forEach(function(ph){
+    if(!results[ph]||!results[ph].length)return;
+    hasAny=true;
+    bodyHTML+='<div class="rsl-phase-head">'+phaseLabels[ph]+' Phase</div>';
+    results[ph].forEach(function(p){
+      bodyHTML+='<div class="rsl-proc-block">'
+        +'<div class="rsl-proc-name"><span class="rsl-proc-code">'+p.procCode+'</span>'+p.procName+'</div>';
+      p.steps.forEach(function(s){
+        bodyHTML+='<div class="rsl-step-row">'
+          +'<span class="rsl-step-num">Step '+(s.idx+1)+'</span>'
+          +'<span class="rsl-step-role-badge '+(s.match==='mine'?'primary':'shared')+'">'+(s.match==='mine'?'Primary':'Shared')+'</span>'
+          +'<span class="rsl-step-text">'+s.main+(s.external?'<span class="rsl-ext-note" title="This step is owned by an external actor outside USACE. Your role is awareness and coordination.">&#9432; External actor</span>':'')+'</span>'
+          +'</div>';
+      });
+      bodyHTML+='</div>';
+    });
+  });
+  if(!hasAny)bodyHTML='<div class="rsl-empty">No steps found for this role in the current roadmap.</div>';
+  // Render modal
+  var existing=document.getElementById('rsl-modal');
+  if(existing)existing.remove();
+  var el=document.createElement('div');
+  el.id='rsl-modal';
+  el.className='rsl-modal';
+  el.innerHTML='<div class="rsl-box">'
+    +'<div class="rsl-header">'
+      +'<div><div class="rsl-title">'+roleLabel+' — Step Responsibility Summary</div>'
+      +'<div class="rsl-sub">'+totalPrimary+' primary steps &middot; '+totalShared+' shared steps</div></div>'
+      +'<div class="rsl-actions">'
+        +'<button class="rsl-print-btn" onclick="printRoleStepList()" aria-label="Print role step summary">&#128424; Print</button>'
+        +'<button class="modal-close" onclick="closeRoleStepList()" aria-label="Close role step list">&#10005;</button>'
+      +'</div>'
+    +'</div>'
+    +'<div class="rsl-body" id="rsl-body">'+bodyHTML+'</div>'
+    +'</div>';
+  el.addEventListener('click',function(e){if(e.target===el)closeRoleStepList();});
+  document.body.appendChild(el);
+  document.addEventListener('keydown',_rslEscHandler);
+}
+function _rslEscHandler(e){if(e.key==='Escape')closeRoleStepList();}
+function closeRoleStepList(){
+  var el=document.getElementById('rsl-modal');
+  if(el)el.remove();
+  document.removeEventListener('keydown',_rslEscHandler);
+}
+function printRoleStepList(){
+  var roleKey=S.role;
+  if(!roleKey||roleKey==='all'){showToast('Select a role first to print your step summary.');return;}
+  var roleLabel=ROLE_LABELS[roleKey]||roleKey;
+  function pe(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  var phaseOrder=['initiation','planning','execution','closeout','program'];
+  var phaseLabels={initiation:'Initiation',planning:'Planning',execution:'Execution',closeout:'Closeout',program:'Program'};
+  var results={};
+  phaseOrder.forEach(function(ph){
+    var procs=ph==='program'?(S.programType&&PROGRAM_PROCS[S.programType]||[]):(PROCS[ph]||[]);
+    procs.forEach(function(proc){
+      proc.steps.forEach(function(s,i){
+        var match=roleMatchesStep(roleKey,s.role||'');
+        if(match==='mine'||match==='shared'){
+          if(!results[ph])results[ph]=[];
+          var existing=results[ph].find(function(r){return r.procId===proc.id;});
+          if(!existing){existing={procId:proc.id,procCode:proc.code,procName:proc.name,steps:[]};results[ph].push(existing);}
+          existing.steps.push({idx:i,main:s.main,role:s.role,match:match,external:isExternalActor(s.role)});
+        }
+      });
+    });
+  });
+  var totalPrimary=0,totalShared=0;
+  phaseOrder.forEach(function(ph){
+    (results[ph]||[]).forEach(function(p){
+      p.steps.forEach(function(s){s.match==='mine'?totalPrimary++:totalShared++;});
+    });
+  });
+  var projName=S.pdtName||S.project&&S.project.name||'';
+  var today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var rows='';
+  phaseOrder.forEach(function(ph){
+    if(!results[ph]||!results[ph].length)return;
+    rows+='<tr class="phase-hdr"><td colspan="4">'+phaseLabels[ph]+' Phase</td></tr>';
+    results[ph].forEach(function(p){
+      var first=true;
+      p.steps.forEach(function(s){
+        rows+='<tr>'
+          +'<td class="proc-cell">'+(first?'<strong>'+pe(p.procCode)+'</strong><br><span class="proc-name-small">'+pe(p.procName)+'</span>':'')+'</td>'
+          +'<td class="step-num-cell">'+(s.idx+1)+'</td>'
+          +'<td class="badge-cell"><span class="badge '+(s.match==='mine'?'primary':'shared')+'">'+(s.match==='mine'?'Primary':'Shared')+'</span></td>'
+          +'<td class="step-text-cell">'+pe(s.main)+(s.external?'<br><span class="ext-note">&#9432; External actor — awareness &amp; coordination only</span>':'')+'</td>'
+          +'</tr>';
+        first=false;
+      });
+    });
+  });
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8">'
+    +'<title>'+pe(roleLabel)+' Step Summary — PDBP AIS</title>'
+    +'<style>'
+    +'*{box-sizing:border-box;margin:0;padding:0;}'
+    +'body{font-family:Georgia,serif;font-size:10pt;color:#1a1a1a;padding:28px 36px;}'
+    +'h1{font-size:15pt;margin-bottom:2px;}'
+    +'.sub{font-size:8pt;color:#555;font-family:monospace;letter-spacing:.05em;margin-bottom:4px;}'
+    +'.meta{font-size:8pt;color:#777;font-family:monospace;margin-bottom:18px;}'
+    +'table{width:100%;border-collapse:collapse;font-size:9pt;}'
+    +'th{text-align:left;font-size:7.5pt;font-family:monospace;letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border-bottom:2px solid #333;color:#333;}'
+    +'td{padding:5px 8px;vertical-align:top;border-bottom:1px solid #ddd;}'
+    +'.phase-hdr td{background:#1a1a1a;color:#fff;font-family:monospace;font-size:7.5pt;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;font-weight:bold;}'
+    +'.proc-cell{width:22%;color:#444;font-size:8.5pt;}'
+    +'.proc-name-small{font-size:7.5pt;color:#777;display:block;margin-top:2px;}'
+    +'.step-num-cell{width:6%;text-align:center;font-family:monospace;color:#888;font-size:8pt;}'
+    +'.badge-cell{width:10%;}'
+    +'.badge{display:inline-block;font-family:monospace;font-size:7pt;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:2px;}'
+    +'.badge.primary{background:#f0e8c8;color:#5a4010;border:1px solid #c8a84b;}'
+    +'.badge.shared{background:#f0f0f0;color:#555;border:1px solid #ccc;}'
+    +'.step-text-cell{width:62%;line-height:1.5;}'
+    +'.ext-note{font-size:7pt;color:#888;font-family:monospace;font-style:italic;}'
+    +'@media print{body{padding:0;}}'
+    +'</style></head><body>'
+    +'<h1>'+pe(roleLabel)+'</h1>'
+    +'<div class="sub">STEP RESPONSIBILITY SUMMARY · EM 5-1-11 · PDBP AIS</div>'
+    +(projName?'<div class="meta">Project: '+pe(projName)+' &nbsp;·&nbsp; ':'<div class="meta">')+'Generated: '+today+'</div>'
+    +'<table><thead><tr>'
+    +'<th>Process</th><th>#</th><th>Type</th><th>Step</th>'
+    +'</tr></thead><tbody>'
+    +rows
+    +'</tbody></table>'
+    +'<div style="margin-top:20px;font-size:7.5pt;color:#888;font-family:monospace;">'+totalPrimary+' primary steps · '+totalShared+' shared steps · PPM Community of Practice · HQUSACE</div>'
+    +'</body></html>';
+  var w=window.open('','_blank','width=900,height=700');
+  if(w){w.document.write(html);w.document.close();setTimeout(function(){w.print();},400);}
+  else{showToast('Pop-up blocked — allow pop-ups for this page and try again.');}
+}
+function printFullRoadmap(){
+  var roleKey=S.role&&S.role!=='all'?S.role:null;
+  var roleLabel=roleKey?(ROLE_LABELS[roleKey]||roleKey):null;
+  var progType=S.programType||null;
+  var progLabels={'cw':'Civil Works','milcon-army':'MILCON — Army','milcon-af':'MILCON — Air Force','milcon-med':'MILCON — Medical','host-nation':'Host Nation','sec408':'CAP','environmental':'Environmental','iis-srm':'IIS / SRM','dam-levee':'Dam & Levee Safety'};
+  var progLabel=progType?(progLabels[progType]||progType):null;
+  function pe(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  var phaseOrder=['initiation','planning','execution','closeout'];
+  var phaseLabels={initiation:'Initiation',planning:'Planning',execution:'Execution',closeout:'Closeout'};
+  var projName=S.pdtName||S.project&&S.project.name||'';
+  var today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var totalSteps=0,totalMine=0,totalShared=0;
+  var rows='';
+  function buildRows(procs,phaseLabel){
+    if(!procs||!procs.length)return;
+    rows+='<tr class="phase-hdr"><td colspan="'+(roleKey?5:4)+'">'+phaseLabel+'</td></tr>';
+    procs.forEach(function(proc){
+      var first=true;
+      proc.steps.forEach(function(s,i){
+        totalSteps++;
+        var match=roleKey?roleMatchesStep(roleKey,s.role||''):'other';
+        var isMine=match==='mine',isShared=match==='shared';
+        if(isMine)totalMine++;
+        if(isShared)totalShared++;
+        var ext=isExternalActor(s.role||'');
+        var rowClass=isMine?'row-mine':isShared?'row-shared':'';
+        rows+='<tr class="'+rowClass+'">'
+          +'<td class="proc-cell">'+(first?'<strong>'+pe(proc.code)+'</strong><br><span class="proc-name-small">'+pe(proc.name)+'</span>':'')+'</td>'
+          +'<td class="step-num-cell">'+(i+1)+'</td>'
+          +'<td class="role-cell">'+pe(s.role||'')+(ext?'<br><span class="ext-note">&#9432; External</span>':'')+'</td>'
+          +(roleKey?'<td class="badge-cell">'+(isMine?'<span class="badge primary">Primary</span>':isShared?'<span class="badge shared">Shared</span>':'')+'</td>':'')
+          +'<td class="step-text-cell">'+pe(s.main)+'</td>'
+          +'</tr>';
+        first=false;
+      });
+    });
+  }
+  phaseOrder.forEach(function(ph){buildRows(PROCS[ph]||[],phaseLabels[ph]+' Phase');});
+  if(progType&&PROGRAM_PROCS[progType]&&PROGRAM_PROCS[progType].length){
+    buildRows(PROGRAM_PROCS[progType],'Program Phase — '+(progLabel||progType));
+  }
+  var roleColHeader=roleKey?'<th>Type</th>':'';
+  var legendHTML='';
+  if(roleKey){
+    legendHTML='<div class="legend">'
+      +'<span class="leg-item"><span class="leg-swatch mine"></span>Primary ('+totalMine+' steps)</span>'
+      +'<span class="leg-item"><span class="leg-swatch shared"></span>Shared ('+totalShared+' steps)</span>'
+      +'<span class="leg-item leg-note">Role: '+pe(roleLabel)+'</span>'
+      +'</div>';
+  }
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8">'
+    +'<title>Full Project Roadmap — PDBP AIS</title>'
+    +'<style>'
+    +'*{box-sizing:border-box;margin:0;padding:0;}'
+    +'body{font-family:Georgia,serif;font-size:9.5pt;color:#1a1a1a;padding:24px 32px;}'
+    +'h1{font-size:14pt;margin-bottom:2px;}'
+    +'.sub{font-size:7.5pt;color:#555;font-family:monospace;letter-spacing:.05em;margin-bottom:4px;}'
+    +'.meta{font-size:7.5pt;color:#777;font-family:monospace;margin-bottom:8px;}'
+    +'.legend{display:flex;gap:18px;align-items:center;margin-bottom:12px;font-size:7.5pt;font-family:monospace;border:1px solid #ddd;padding:6px 10px;background:#fafafa;}'
+    +'.leg-item{display:flex;align-items:center;gap:5px;}'
+    +'.leg-swatch{display:inline-block;width:11px;height:11px;border-radius:2px;}'
+    +'.leg-swatch.mine{background:#f0e8c8;border:1px solid #c8a84b;}'
+    +'.leg-swatch.shared{background:#f0f0f0;border:1px solid #ccc;}'
+    +'.leg-note{color:#888;margin-left:8px;}'
+    +'table{width:100%;border-collapse:collapse;font-size:8.5pt;}'
+    +'th{text-align:left;font-size:7pt;font-family:monospace;letter-spacing:.1em;text-transform:uppercase;padding:5px 7px;border-bottom:2px solid #333;color:#333;background:#f5f5f5;}'
+    +'td{padding:4px 7px;vertical-align:top;border-bottom:1px solid #e8e8e8;}'
+    +'.phase-hdr td{background:#1a1a1a;color:#fff;font-family:monospace;font-size:7pt;letter-spacing:.12em;text-transform:uppercase;padding:5px 7px;font-weight:bold;}'
+    +'.proc-cell{width:16%;color:#444;font-size:8pt;}'
+    +'.proc-name-small{font-size:7pt;color:#888;display:block;margin-top:2px;line-height:1.3;}'
+    +'.step-num-cell{width:4%;text-align:center;font-family:monospace;color:#999;font-size:7.5pt;}'
+    +'.role-cell{width:19%;font-size:7.5pt;color:#555;line-height:1.4;}'
+    +'.badge-cell{width:9%;}'
+    +'.step-text-cell{line-height:1.5;}'
+    +'.badge{display:inline-block;font-family:monospace;font-size:6.5pt;letter-spacing:.06em;text-transform:uppercase;padding:2px 5px;border-radius:2px;}'
+    +'.badge.primary{background:#f0e8c8;color:#5a4010;border:1px solid #c8a84b;}'
+    +'.badge.shared{background:#f0f0f0;color:#555;border:1px solid #ccc;}'
+    +'.row-mine td{background:#fffdf2;}'
+    +'.row-shared td{background:#fafafa;}'
+    +'.ext-note{font-size:6.5pt;color:#aaa;font-family:monospace;font-style:italic;}'
+    +'.footer{margin-top:16px;font-size:7pt;color:#aaa;font-family:monospace;padding-top:8px;border-top:1px solid #eee;}'
+    +'@media print{'
+    +'body{padding:0;font-size:8.5pt;}'
+    +'.phase-hdr td,.row-mine td,.row-shared td{-webkit-print-color-adjust:exact;print-color-adjust:exact;}'
+    +'th{background:#f5f5f5;-webkit-print-color-adjust:exact;print-color-adjust:exact;}'
+    +'}'
+    +'</style></head><body>'
+    +'<h1>Full Project Roadmap</h1>'
+    +'<div class="sub">EM 5-1-11 · PDBP AIS · PPM COMMUNITY OF PRACTICE · HQUSACE</div>'
+    +(projName?'<div class="meta">Project: '+pe(projName)+' &nbsp;&middot;&nbsp; ':'<div class="meta">')
+    +(progLabel?'Program Type: '+pe(progLabel)+' &nbsp;&middot;&nbsp; ':'')
+    +'Generated: '+today+'</div>'
+    +legendHTML
+    +'<table><thead><tr>'
+    +'<th>Process</th><th>#</th><th>Role</th>'+roleColHeader+'<th>Step</th>'
+    +'</tr></thead><tbody>'
+    +rows
+    +'</tbody></table>'
+    +'<div class="footer">'+totalSteps+' total steps'+(roleKey?' &nbsp;&middot;&nbsp; '+totalMine+' primary &nbsp;&middot;&nbsp; '+totalShared+' shared for '+pe(roleLabel):'')+' &nbsp;&middot;&nbsp; EM 5-1-11 &nbsp;&middot;&nbsp; PPM Community of Practice &nbsp;&middot;&nbsp; HQUSACE</div>'
+    +'</body></html>';
+  var w=window.open('','_blank','width=1050,height=800');
+  if(w){w.document.write(html);w.document.close();setTimeout(function(){w.print();},400);}
+  else{showToast('Pop-up blocked — allow pop-ups for this page and try again.');}
 }
 // ===== PHASE 3: STEP-LEVEL INTELLIGENCE =====
 var FAIL_MODES={
@@ -4305,15 +4676,17 @@ function renderRiskFlag(stepKey){
   if(!risk)return '';
   var iconClass='risk-icon-'+risk.level;
   var label=risk.level==='high'?'Compliance Risk':risk.level==='warn'?'Common Failure':'Guidance Note';
-  return '<div class="step-risk '+risk.level+'" onclick="event.stopPropagation();toggleRisk(this)">'
-    +'<div class="step-risk-header"><span class="'+iconClass+'">'+label+'</span><span class="step-risk-toggle">&#9660;</span></div>'
+  return '<div class="step-risk '+risk.level+'" onclick="event.stopPropagation();toggleRisk(this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();event.stopPropagation();toggleRisk(this);}" role="button" tabindex="0" aria-expanded="false" aria-label="'+label+': click to expand risk details">'
+    +'<div class="step-risk-header"><span class="'+iconClass+'">'+label+'</span><span class="step-risk-toggle" aria-hidden="true">&#9660;</span></div>'
     +'<div class="step-risk-body">'+risk.msg+'</div>'
     +'</div>';
 }
 function toggleRisk(el){
   el.classList.toggle('open');
+  var isOpen=el.classList.contains('open');
+  el.setAttribute('aria-expanded',isOpen?'true':'false');
   var arrow=el.querySelector('.step-risk-toggle');
-  if(arrow)arrow.innerHTML=el.classList.contains('open')?'&#9650;':'&#9660;';
+  if(arrow)arrow.innerHTML=isOpen?'&#9650;':'&#9660;';
 }
 function renderFailMode(procId){
   var msg=FAIL_MODES[procId];
@@ -4437,7 +4810,7 @@ function genPMPShell(){
   lines.push('Project Type:         '+type);
   lines.push('Project Scale:        '+scale);
   lines.push('Funding Authority:    '+funding);
-  lines.push('District:             [DISTRICT NAME]');
+  lines.push('District:             '+(S.project.district||'[DISTRICT]'));
   var _pmM=(S.project.pdt||[]).find(function(m){return m.role&&m.role.indexOf('Project Manager')>=0;});
 lines.push('PM of Record:         '+(_pmM?(_pmM.name+(_pmM.grade?' '+_pmM.grade:'')+'  '+_pmM.org):'[NAME, GRADE, POSITION]'));
   var _dpmM=(S.project.pdt||[]).find(function(m){return m.role&&m.role.indexOf('Deputy')>=0;});
@@ -4664,8 +5037,8 @@ function genCCBLog(){
   lines.push('CHANGE CONTROL LOG');
   lines.push('='.repeat(60));
   lines.push('Reference: DCG-CEO CW Change Management Guidance (supersedes EC 5-2-1) | EM 5-1-11 PROC3010');
-  lines.push('Project:   [PROJECT NAME / P2 NUMBER]');
-  lines.push('PM:        [PM NAME]');
+  lines.push('Project:   '+(S.project.name||S.pdtName||'[PROJECT NAME]')+(S.project.p2?' / '+S.project.p2:''));
+  lines.push('PM:        '+(S.pmName||'[PM NAME]'));
   lines.push('Generated: '+date);
   lines.push('');
   lines.push('No.  Date          Description                    Cost($K)  Sched(d)');
@@ -4721,7 +5094,7 @@ function saveSession(silent){
         if(el)stepState[proc.id+'-'+i]=el.classList.contains('checked');
       });
     });
-    var data={version:5,savedAt:new Date().toISOString(),pdtName:S.pdtName,pmName:S.pmName,programType:S.programType,
+    var data={version:6,savedAt:new Date().toISOString(),pdtName:S.pdtName,pmName:S.pmName,programType:S.programType,
       profile:S.profile,health:S.health,procStatus:S.procStatus,role:S.role,project:S.project,riskRegister:S.project.riskRegister,scope:S.project.scope,charterGenerated:S.project.charterGenerated,
       assignments:S.assignments,ccbLog:CCB_LOG,stepState:stepState,stepTimestamps:buildTimestamps};
     try{localStorage.setItem(SESSION_KEY,JSON.stringify(data));}catch(e){}
@@ -4765,15 +5138,20 @@ function restoreStepState(stepState){
     if(stepState[key]){
       var parts=key.split('-');
       var el=document.getElementById('step-'+parts[0]+'-'+parts[1]);
-      if(el)el.classList.add('checked');
+      if(el){el.classList.add('checked');el.setAttribute('aria-checked','true');}
     }
   });
+  setTimeout(renderPhaseProgress,300);
 }
 function restoreRoleChips(){
-  document.querySelectorAll('.role-chip').forEach(function(c){c.classList.remove('active');});
   var roleKey=S.role||'all';
   document.querySelectorAll('.role-chip').forEach(function(c){
-    if(c.getAttribute('onclick')&&c.getAttribute('onclick').indexOf("'"+roleKey+"'")>=0)c.classList.add('active');
+    c.classList.remove('active');
+    c.setAttribute('aria-pressed','false');
+    if(c.getAttribute('onclick')&&c.getAttribute('onclick').indexOf("'"+roleKey+"'")>=0){
+      c.classList.add('active');
+      c.setAttribute('aria-pressed','true');
+    }
   });
 }
 function restoreProfileCards(){
@@ -4818,7 +5196,7 @@ function exportSession(){
         if(el)stepState[proc.id+'-'+i]=el.classList.contains('checked');
       });
     });
-    var data={version:5,exportedAt:new Date().toISOString(),pdtName:S.pdtName,pmName:S.pmName,programType:S.programType,
+    var data={version:6,exportedAt:new Date().toISOString(),pdtName:S.pdtName,pmName:S.pmName,programType:S.programType,
       profile:S.profile,health:S.health,procStatus:S.procStatus,role:S.role,stepState:Object.assign({},S.stepState,stepState),project:S.project,riskRegister:S.project.riskRegister,scope:S.project.scope,charterGenerated:S.project.charterGenerated,
       assignments:S.assignments,ccbLog:CCB_LOG,artifacts:S.artifacts,stepState:stepState};
     var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
@@ -4835,7 +5213,7 @@ function importSession(event){
   reader.onload=function(e){
     try{
       var data=JSON.parse(e.target.result);
-      if(!data||data.version!==4){alert('Not a valid PDBP AIS v5 session file.');return;}
+      if(!data||data.version!==4){alert('Not a valid PDBP AIS session file.');return;}
       if(!confirm('Import session from "'+file.name+'"?\nThis will replace your current session.'))return;
       if(data.profile)S.profile=data.profile;if(data.health)S.health=data.health;
       if(data.procStatus)S.procStatus=data.procStatus;if(data.role)S.role=data.role;
@@ -4863,7 +5241,7 @@ function openShareModal(){
     el.innerHTML='<div class="modal-box share-modal-box">'
       +'<div class="modal-header"><div><div class="modal-title">Share Progress</div>'
       +'<div class="modal-sub">Generate a link to share your PDT\'s current progress</div></div>'
-      +'<button class="modal-close" onclick="closeShareModal()">&#10005;</button></div>'
+      +'<button class="modal-close" onclick="closeShareModal()" aria-label="Close Share Progress dialog">&#10005;</button></div>'
       +'<div class="modal-body">'
       +'<div class="share-section"><div class="share-section-label">Progress Link</div>'
       +'<div class="share-link-box" id="share-link-box">Click "Generate Link" to create a shareable URL.</div>'
@@ -5531,6 +5909,45 @@ var COMPLETION_TRIGGERS={
   proc4000:{
     msg:'Project lifecycle complete. All phases documented. Archive all artifacts per PROC6004, confirm CPARS submissions, reconcile all ULOs, and close the project record in PROMIS.',
     action:null
+  },
+  // ─── CW PROGRAM PROCS ───
+  proc7000:{
+    msg:'CW Program & Budget Cycle overview is complete. PROC7020 (President\'s Budget & OMB Submission) and PROC7040 (Budget Defense & Workplan) run as overlapping 34-month cycles — both should be running concurrently with the current CFY. Confirm your district\'s WRDA project is active in P2 and PROMIS.',
+    action:{label:'Go to PROC7020 →',proc:'proc7020',phase:'program'}
+  },
+  proc7020:{
+    msg:'President\'s Budget and OMB submission steps are complete for this cycle. The next major action is defense of the President\'s Budget and Workplan development (PROC7040). Coordinate with Division Budget Officer on Congressional staff briefings.',
+    action:{label:'Go to PROC7040 →',proc:'proc7040',phase:'program'}
+  },
+  proc7040:{
+    msg:'Budget defense and Workplan development are complete. PPA execution (Steps 33-34) is now done. PROC1040 (Receipt of Funds/Allotment) is the next project-level action — confirm the Work Allowance Document (WAD) has been received and recorded in PROMIS before proceeding.',
+    action:{label:'Go to PROC1040 →',proc:'proc1040',phase:'initiation'}
+  },
+  proc7050:{
+    msg:'Allotment and execution tracking steps are complete for this cycle. Confirm ULOs are reconciled, end-of-year obligations are documented, and Carryover/Reprogramming requests are submitted per HQ deadlines. Return to PROC3000 for ongoing execution monitoring.',
+    action:{label:'Return to PROC3000 →',proc:'proc3000',phase:'execution'}
+  },
+  // ─── MILCON PROGRAM PROCS ───
+  proc7100:{
+    msg:'Army MILCON program and budget cycle steps are complete. Confirm DD Form 1391 submissions are in RPLANS and that your project\'s Design-Build or Design-Bid-Build designation is locked in before moving to PROC2050 (Acquisition Planning) and PROC3000 (Execution).',
+    action:{label:'Go to PROC2050 →',proc:'proc2050',phase:'planning'}
+  },
+  proc7110:{
+    msg:'Air Force MILCON program and budget steps are complete. Confirm the AF Civil Engineer Center (AFCEC) Facility Requirements validation is current and DD Form 1391 is approved. Coordinate with the appropriate Program Manager and contracting office for next steps.',
+    action:{label:'Go to PROC2050 →',proc:'proc2050',phase:'planning'}
+  },
+  proc7120:{
+    msg:'Medical MILCON (DHA/MEDCOM) program and budget steps are complete. Confirm facility requirements are validated through the Joint Facilities Utilization Board (JFUB) process and the DD Form 1391 reflects current DHA standards. Proceed to acquisition planning.',
+    action:{label:'Go to PROC2050 →',proc:'proc2050',phase:'planning'}
+  },
+  proc7130:{
+    msg:'Host Nation program and budget steps are complete. Confirm Status of Forces Agreement (SOFA) requirements, Host Nation cost-sharing percentages, and Agreement authority are documented in the project record. Coordinate with OASA(IE&E) for any unresolved policy questions before execution.',
+    action:{label:'Go to PROC3000 →',proc:'proc3000',phase:'execution'}
+  },
+  // ─── CAP / SEC408 PROC ───
+  proc7160:{
+    msg:'CAP project delivery steps are complete. Confirm all Feasibility Report, Environmental Assessment, and cost-sharing Agreement requirements are fully documented in PROMIS. Notify the Division Commander of project completion status and submit lessons learned to the CAP program office.',
+    action:{label:'Go to PROC4000 →',proc:'proc4000',phase:'closeout'}
   }
 };
 // Show completion notification
@@ -5687,21 +6104,25 @@ var TOUR_STORAGE='pdbp-tour-seen';
 var TOUR_STEP=0;
 var TOUR_STEPS=[
   {title:'Welcome to the PDBP Step System',
-   body:'This tour (9 steps) walks you through everything the tool offers. Skip it anytime — replay it later from the <strong>&#10067; Help</strong> button in the session bar. Built by the <strong>PPM Community of Practice</strong> against EM 5-1-11 (Aug 2024).'},
+   body:'This tour (11 steps) walks you through everything the tool offers. Skip it anytime — replay it later from the <strong>&#10067; How to Use This Tool</strong> button on the Overview screen. Built by the <strong>PPM Community of Practice</strong> against EM 5-1-11 (Aug 2024).'},
   {title:'Start with Your Project Profile',
    body:'Before the roadmap unlocks, answer four questions about your project — type, scale, funding, and where you are in delivery. These answers shape the entire experience: which steps are emphasized, which outputs are relevant, and what the health dashboard tracks.'},
   {title:'Phase Navigation',
-   body:'The tabs across the top — <strong>Initiation, Planning, Execution, Closeout</strong> — are the four PDBP lifecycle phases. Each phase contains its PROC codes, step-by-step. Click any unlocked phase to jump to it. <strong>Outputs</strong> is always available regardless of progress.'},
+   body:'The tabs across the top — <strong>Initiation, Planning, Execution, Closeout</strong> — are the four PDBP lifecycle phases. Each phase contains its PROC codes, step-by-step. Click any unlocked phase to jump to it. <strong>Outputs</strong> is always available regardless of progress. Each phase tab shows a live <strong>X/Y step count</strong> and a small progress bar so you can see where you stand at a glance.'},
+  {title:'Program Phase — CW &amp; MILCON Budget Cycles',
+   body:'If your project is <strong>Civil Works or MILCON</strong>, a <strong>Program</strong> tab appears between Profile and Initiation. This tab contains the PROC7000-series — the CW Budget Cycle (PROC7000–7050) and MILCON Program &amp; Budget PROCs (PROC7100–7160). Per EM 5-1-11, these run concurrently with the four delivery phases. For IIS/SRM, Environmental, and Dam/Levee Safety projects, the Program tab is not shown — those projects follow the base PROC1000–4000 sequence; see the pathway note under Profile for details.'},
   {title:'Role Bar — Filter to Your Steps',
-   body:'Select <strong>your role</strong> from the bar below the phase nav — PM, DPM, Cost Engineer, Scheduler, Contracting Officer, RMO, or Command. <strong>Gold border</strong> = your primary steps. <strong>Dimmer border</strong> = shared steps. Dimmed = other roles. Updates across all 15 PROCs instantly.'},
+   body:'Select <strong>your role</strong> from the bar below the phase nav — PM, DPM, PgM, Cost Engineer, Scheduler, Contracting Officer, RMO, Command, or PDT Member. <strong>Gold border</strong> = your primary steps. <strong>Dimmer border</strong> = shared steps. Dimmed = other roles. Updates across all PROCs instantly, including the phase tab progress counts.'},
   {title:'Working Through Steps',
    body:'Each PROC lists its steps from EM 5-1-11. Check the box to mark a step complete — the PROC tracks in-progress vs. complete automatically. <strong>Risk flags</strong> (red/amber/blue) call out compliance failures, fail modes, and step prerequisites. When a PROC completes, a notification fires with the next recommended action.'},
+  {title:'Clickable Reference Documents',
+   body:'Throughout the tool — in step panels, pathway notes, and the glossary — you\'ll see <strong>reference codes</strong> like <em>EM 5-1-11</em>, <em>REF8001G</em>, or <em>ER 5-1-11</em>. Click any of them to see the full document name, type, and description in a popup. This keeps the regulatory context visible without leaving the tool.'},
   {title:'Tools — Data Collection &amp; Reference',
    body:'The <strong>Tools ▾</strong> button in the header opens a dropdown with everything beyond process guidance: <strong>PDT Charter Builder, PMP Builder, Scope Statement Builder, Risk Register</strong> for data collection; <strong>Dashboard</strong> and <strong>Glossary</strong> for reference; and <strong>Knowledge Quiz</strong> for training. Key PROCs also show a direct link to their supporting tool.'},
   {title:'Project Health Dashboard &amp; Risk Register',
    body:'The <strong>Dashboard</strong> shows phase completion, PDT health score, milestone status, and CCB threshold tracking — all from your session data. The <strong>Risk Register</strong> tracks risks through execution: add risks, score them, and when one materializes, link it directly to a CCB change entry.'},
-  {title:'14 Output Types',
-   body:'The <strong>Outputs</strong> tab generates 14 ready-to-use deliverables — process checklists, role-filtered step lists, PMP documents, risk reports, scope statements, CCB logs, phase completion records, and more. All pre-filled from your session. The PMP Builder will warn you if required sections are empty before generating.'},
+  {title:'10 Output Types',
+   body:'The <strong>Outputs</strong> tab generates 10 ready-to-use deliverables — process checklists, role-filtered step lists, PMP documents, risk reports, scope statements, CCB logs, phase completion records, and more. All pre-filled from your session. The PMP Builder will warn you if required sections are empty before generating.'},
   {title:'Session Bar — Save, Share, Hand Off',
    body:'The bar at the top lets you <strong>name, save, export, import, or share</strong> your session. Progress auto-saves every 45 seconds. Use <strong>Export</strong> to hand off to another PDT member — they import the file and pick up exactly where you left off. Use <strong>Share</strong> to generate a URL that encodes the current session state.'}
 ];
@@ -5827,38 +6248,18 @@ function toggleComplianceAck(){
   var btn=document.getElementById('compliance-ack-btn');
   if(btn)btn.disabled=!(cb&&cb.checked);
 }
-function acknowledgeCompliance(){
-  try{
-    try{localStorage.setItem('pdbp-compliance-ack','1');}catch(e){}
-    try{sessionStorage.setItem('pdbp-compliance-ack','1');}catch(e){}
-    var overlay=document.getElementById('compliance-overlay');
-    if(overlay){
-      overlay.style.cssText='display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;';
-    }
-    var m=document.getElementById('compliance-modal');
-    if(m)m.style.display='none';
-  }catch(err){
-    // Fallback: remove the element entirely
-    var ov=document.getElementById('compliance-overlay');
-    if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);
+function complianceEnter(){
+  var cb = document.getElementById('compliance-ack-cb');
+  if(!cb || !cb.checked){
+    cb && cb.focus();
+    return;
   }
+  try{localStorage.setItem('pdbp-compliance-ack','1');}catch(e){}
+  var ov = document.getElementById('compliance-overlay');
+  if(ov) ov.parentNode.removeChild(ov);
 }
-(function(){
-  if(!ASKSAGE_ENABLED)return; // No AI features — compliance modal not needed
-  var acked=false;
-  try{acked=sessionStorage.getItem('pdbp-compliance-ack')==='1';}catch(e){}
-  if(!acked){
-    var m=document.getElementById('compliance-modal');
-    if(m)m.classList.remove('hidden');
-  }
-})();
-document.addEventListener('click',function(e){
-  if(!document.getElementById('search-wrap')?.contains(e.target))closeSearchResults();
-  if(!document.getElementById('tools-dropdown')?.contains(e.target))closeToolsMenu();
-  var pm=document.getElementById('proj-library-modal');
-  if(pm&&!pm.classList.contains('hidden')&&!pm.querySelector('.proj-modal-box')?.contains(e.target))closeProjLibrary();
-});
-// ===== OUTPUT UTILITIES =====
+function acknowledgeCompliance(){ complianceEnter(); }
+
 function showOutputPreview(title,body){
   try{
     var pt=document.getElementById('output-preview-title');
@@ -7905,7 +8306,7 @@ function openRiskModal(idx){
     '<div class="modal-header">'
       +'<div><div class="modal-title">'+(isNew?'Add New Risk':'Edit Risk')+'</div>'
       +'<div class="modal-sub" id="rr-modal-sub">'+esc(r.id||'New')+'</div></div>'
-      +'<button class="modal-close" onclick="closeRiskModal()">&#10005;</button>'
+      +'<button class="modal-close" onclick="closeRiskModal()" aria-label="Close Risk Register entry dialog">&#10005;</button>'
     +'</div>'
     +'<div class="modal-body">'
       +'<div class="rr-modal-grid">'
@@ -8895,7 +9296,7 @@ async function getSPDigest(){
 }
 function buildSPSessionData(){
   return JSON.stringify({
-    version:5,
+    version:6,
     profile:S.profile,health:S.health,procStatus:S.procStatus,role:S.role,
     project:S.project,riskRegister:S.project.riskRegister,scope:S.project.scope,charterGenerated:S.project.charterGenerated,
     ccbLog:CCB_LOG,pdtName:S.pdtName,pmName:S.pmName,
@@ -9067,7 +9468,7 @@ function showSPSyncBar(){
       +'<div class="modal-header">'
         +'<div><div class="modal-title">Load Shared Session</div>'
         +'<div class="modal-sub">PDBP sessions synced to this SharePoint library</div></div>'
-        +'<button class="modal-close" onclick="closeSPBrowser()">&#10005;</button>'
+        +'<button class="modal-close" onclick="closeSPBrowser()" aria-label="Close SharePoint session browser">&#10005;</button>'
       +'</div>'
       +'<div id="sp-browser-body" style="padding:4px 0;"></div>'
       +'</div>';
@@ -9239,7 +9640,7 @@ function openPhaseGate(phase){
     '<div class="modal-header">'
       +'<div><div class="modal-title">'+esc(gate.label)+'</div>'
       +'<div class="modal-sub">Minimum conditions check \u00b7 EM 5-1-11</div></div>'
-      +'<button class="modal-close" onclick="closePhaseGate()">&#10005;</button>'
+      +'<button class="modal-close" onclick="closePhaseGate()" aria-label="Close Phase Gate checklist">&#10005;</button>'
     +'</div>'
     +'<div class="gate-phase-banner" style="background:rgba(200,168,75,.06);border-bottom:1px solid var(--border);">'
       +'<span class="gate-phase-icon">'+phaseIcons[phase]+'</span>'
@@ -9255,6 +9656,13 @@ function closePhaseGate(){
   var m=document.getElementById('gate-modal');
   if(m)m.classList.add('hidden');
 }
+// ===== PATHWAY NOTES (program-type explanatory text shown below banner) =====
+var PATHWAY_NOTES={
+  'iis-srm':'<strong>IIS / SRM Pathway Note:</strong> Interagency and International Services (IIS) and Sustainment, Restoration, and Modernization (SRM) projects do not have a separate PROC series in EM 5-1-11. Per <span class="ref-tag">REF8017G</span> and <span class="ref-tag">REF8030G</span>, IIS projects follow the delivery process of the underlying work type — CW milestones for water resources, Military Program format for vertical construction, Environmental format for CERCLA/RCRA work, and Non-Construction Technical Services format for technical services. The base PROC1000–PROC4000 sequence applies to all IIS/SRM work. Agreement authority (<span class="ref-tag">REF8017G</span>: Economy Act, Project Order, MOA/IAA per ER 1140-1-211) is established in PROC1000 Step 13 before work begins.',
+  'environmental':'<strong>Environmental Pathway Note:</strong> Environmental projects follow the base PROC1000–PROC4000 sequence. Program-specific PROMIS data requirements, WBS codes, and milestone formats are governed by <span class="ref-tag">REF8012G</span>. CERCLA/RCRA regulatory drivers may impose additional sequencing constraints outside the PDBP.',
+  'dam-levee':'<strong>Dam &amp; Levee Safety Pathway Note:</strong> Dam and levee safety projects follow the base PROC1000–PROC4000 sequence. Program-specific requirements are governed by <span class="ref-tag">REF8031G</span> and <span class="ref-tag">REF8032G</span>. Inspection, rating, and remediation sequencing requirements from the Dam Safety Program and Levee Safety Program apply in addition to the standard PDBP.'
+};
+
 // ===== REF DOCUMENT LOOKUP =====
 var REF_LOOKUP={
   'REF8001G':{name:'Computation and Payment of PDT Services',short:'PDT Services Computation',type:'EM 5-1-11 Reference Guide',desc:'Provides standard computations, cost rates, and qualification requirements for Project Delivery Team services. Used for determining appropriate service levels and escalation hierarchy for PDT conflicts.'},
@@ -9275,7 +9683,10 @@ var REF_LOOKUP={
   'REF8025G':{name:'Real Estate Plan',short:'Real Estate Plan',type:'EM 5-1-11 Reference Guide',desc:'Defines real estate acquisition planning requirements for USACE projects, including land acquisition timelines, LER coordination, and integration with project schedules. Typically required for larger Civil Works and MILCON projects.'},
   'REF8028G':{name:'Program Management Plan (PgMP)',short:'Program Management Plan',type:'EM 5-1-11 Reference Guide',desc:'Defines content and approval requirements for the Program Management Plan — used for programs comprising multiple related projects. Complements REF8005G (PMP) for individual projects within a program.'},
   'REF8030G':{name:'Sustainment, Restoration, and Modernization (SRM) Project Records',short:'SRM Project Records',type:'EM 5-1-11 Reference Guide',desc:'Program-specific reference for SRM project data and PROMIS record requirements. Covers installation support projects, facility condition data, and SRM-specific documentation requirements.'},
-  'REF9270G':{name:'Geospatial Data Management',short:'Geospatial Data',type:'EM 5-1-11 Reference Guide',desc:'Defines geospatial data requirements for USACE projects, including coordinate systems, data standards, and GIS integration. Typically required for larger projects involving significant spatial data or mapping deliverables.'}
+  'REF9270G':{name:'Geospatial Data Management',short:'Geospatial Data',type:'EM 5-1-11 Reference Guide',desc:'Defines geospatial data requirements for USACE projects, including coordinate systems, data standards, and GIS integration. Typically required for larger projects involving significant spatial data or mapping deliverables.'},
+  'REF8031G':{name:'Dam Safety Program-Specific Information',short:'Dam Safety Records',type:'EM 5-1-11 Reference Guide',desc:'Program-specific reference for Dam Safety projects. Covers PROMIS data requirements, WBS codes, inspection-driven milestone requirements, and integration with the Dam Safety Action Classification (DSAC) rating system.'},
+  'REF8032G':{name:'Levee Safety Program-Specific Information',short:'Levee Safety Records',type:'EM 5-1-11 Reference Guide',desc:'Program-specific reference for Levee Safety projects. Covers PROMIS data requirements, WBS codes, levee system inspection milestones, and integration with the Levee Safety Action Classification (LSAC) rating system and the National Levee Database (NLD).'},
+  'REF8012G':{name:'Environmental Program-Specific Information',short:'Environmental Records',type:'EM 5-1-11 Reference Guide',desc:'Program-specific reference for Environmental (HTRW/CERCLA/RCRA) projects. Covers PROMIS data requirements, WBS codes for remedial investigation, feasibility study, and remedial action phases, and FUDMIS/Regulatory interface requirements.'}
 };
 function showRefPopup(code,event){
   var ref=REF_LOOKUP[code];
@@ -9311,9 +9722,14 @@ function wireRefTags(){
     var text=el.textContent.trim();
     var match=text.match(/^(REF\d{4}[A-Z]?)$/);
     if(match&&REF_LOOKUP[match[1]]){
+      var ref=REF_LOOKUP[match[1]];
       el.style.cursor='pointer';
-      el.title=REF_LOOKUP[match[1]].name;
+      el.title=ref.name;
+      el.setAttribute('role','button');
+      el.setAttribute('tabindex','0');
+      el.setAttribute('aria-label','Reference '+match[1]+': '+ref.name+' — click to view details');
       el.onclick=function(e){e.stopPropagation();showRefPopup(match[1],e);};
+      el.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();showRefPopup(match[1],e);}};
       el.classList.add('ref-clickable');
     }
   });
@@ -9369,7 +9785,7 @@ function projBuildSessionData(){
       if(el)stepState[proc.id+'-'+i]=el.classList.contains('checked');
     });
   });
-  return {version:5,savedAt:new Date().toISOString(),
+  return {version:6,savedAt:new Date().toISOString(),
     pdtName:S.pdtName,pmName:S.pmName,programType:S.programType,
     profile:S.profile,health:S.health,
     procStatus:S.procStatus,role:S.role,project:S.project,
@@ -9578,6 +9994,12 @@ function renderWelcomeProjects(){
   if(!container)return;
   var list=projGetList();
   renderProjCards(list,container,'No saved projects yet. Click \u201cNew Project\u201d to begin.');
+  // Show/hide start callout based on whether any project is active
+  var callout=document.getElementById('welcome-start-callout');
+  if(callout){
+    var hasActive=!!projGetActiveKey()&&list.length>0;
+    callout.style.display=hasActive?'none':'block';
+  }
 }
 // ── Startup: migrate old session or init ──────────────────────
 function initProjectLibrary(){
@@ -10447,9 +10869,13 @@ function selectProgramType(pt){
     var ref = PROG_TYPE_REF[pt]||'';
     var series = PROG_TYPE_PROC_SERIES[pt]||[];
     var seriesStr = series.length ? series.map(function(p){return p.toUpperCase().replace('PROC','PROC');}).join(' → ')+' → ' : '';
+    // Turn REF codes in the ref string into clickable spans
+    var refHTML = ref.replace(/(REF\d{4}[A-Z]?)/g,'<span class="ref-tag">$1</span>');
+    var noteHTML = (PATHWAY_NOTES&&PATHWAY_NOTES[pt]) ? '<div class="pathway-note-inline">'+PATHWAY_NOTES[pt]+'</div>' : '';
     banner.innerHTML = '⚑ <strong>'+label+' Pathway</strong> selected &nbsp;|&nbsp; Program Series: '+
-      (seriesStr||'None — ')+' PROC1000–4000 &nbsp;|&nbsp; '+ref;
+      (seriesStr||'None — ')+' PROC1000–4000 &nbsp;|&nbsp; '+refHTML+noteHTML;
     banner.style.display='block';
+    wireRefTags();
   }
   // Update persistent pathway badge in header if it exists
   updatePathwayBadge();
@@ -10731,13 +11157,13 @@ var PROGRAM_PROCS = {
   }
 ],
 
-// ─── SECTION 408 ───
+// ─── CAP (Continuing Authorities Program) ───
 'sec408': [
   {
     id:'proc7160', code:'PROC7160', name:'CAP Project Delivery',
     phase:'program', programType:'sec408',
     overview:'The Continuing Authorities Program (CAP) allows USACE to plan, design, and implement small water resources projects under nine pre-authorized legislative authorities (EP 1105-2-58, March 2019) without project-specific congressional authorization. CAP projects are implemented in two phases: Feasibility (F) and Design & Implementation (DI), each under a separate cost-sharing agreement with a non-Federal sponsor. Projects are scaled for size and complexity. Per-project Federal cost limits apply: §205 $10M, §206 $10M, §107 $10M, §204 $10M, §1135 $10M, §208 $500K. MSC Commander retains key approval authorities including decision document and PPA approval.',
-    endResult:['Section 408 permission decision is rendered (joint with Regulatory or standalone Section 408 decision).'],
+    endResult:['CAP project is delivered through Feasibility (F) and Design &amp; Implementation (DI) phases. Decision document is approved by MSC Commander. Cost-sharing PPA is executed. Project is recorded as complete in the CAP Database and P2.'],
     tableRef:'Table 34-1',
     steps:[
 {role:'Project Manager',main:'Receive initial work allowance from HQUSACE; create project in P2 using CAP templates; enter project in CAP Database as “Unstarted”',detail:'HQUSACE Programs Integration Division (CECW-I) issues the initial work allowance to start the Feasibility Phase. PM must create the P2 project using CAP templates and enter the project in the CAP Database before the Feasibility Phase begins. Mark project status as “Unstarted” and enter project details including current capability. Maintain communication with the non-Federal sponsor until funding is available.',ref:'EP 1105-2-58 ¶ 13–14',type:'action'},
@@ -11018,6 +11444,30 @@ function renderPhaseProgress(){
     bar.style.width=pct+'%';
     if(pct>=100){bar.classList.add('complete');}else{bar.classList.remove('complete');}
   });
+  // Program phase progress (PROGRAM_PROCS for current program type)
+  var progLabel=document.getElementById('pp-program');
+  var progBar=document.getElementById('ppb-program');
+  if(progLabel&&progBar){
+    var progProcs=(S.programType&&PROGRAM_PROCS&&PROGRAM_PROCS[S.programType])||[];
+    var ptotal=0,pchecked=0;
+    progProcs.forEach(function(proc){
+      (proc.steps||[]).forEach(function(s,i){
+        var rel=roleMatchesStep(role,s.role);
+        if(role==='all'||rel!=='other'){
+          ptotal++;
+          var key=proc.id+'-'+i;
+          if(S.stepState&&S.stepState[key]) pchecked++;
+        }
+      });
+    });
+    if(ptotal===0){progLabel.textContent='';progBar.style.width='0%';progBar.classList.remove('complete');}
+    else{
+      var ppct=Math.round((pchecked/ptotal)*100);
+      progLabel.textContent=pchecked+'/'+ptotal;
+      progBar.style.width=ppct+'%';
+      if(ppct>=100){progBar.classList.add('complete');}else{progBar.classList.remove('complete');}
+    }
+  }
 }
 
 
@@ -11148,7 +11598,7 @@ function getProfileTip(procId){
     <div class="modal-header">
       <div><div class="modal-title">AskSage API Key</div>
       <div class="modal-sub">Required for AI Guidance &amp; Artifact Generation</div></div>
-      <button class="modal-close" onclick="closeAPIKeyModal()">&#10005;</button>
+      <button class="modal-close" onclick="closeAPIKeyModal()" aria-label="Close API Key settings dialog">&#10005;</button>
     </div>
     <div class="modal-body">
       <p style="font-size:11px;color:var(--white-dim);line-height:1.6;margin-bottom:14px;">
