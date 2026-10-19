@@ -122,7 +122,7 @@ body.light-mode .phase-progress-bar{background:#8B6914;}
 .welcome-body{font-size:0.8125rem;line-height:1.75;color:var(--white-dim);max-width:580px;margin-bottom:24px;}
 .welcome-body strong{color:var(--white);font-weight:600;}
 .ref-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:32px;}
-.ref-tag{font-family:'DM Mono',monospace;font-size:0.5625rem;color:var(--gold-dim);border:1px solid var(--border);padding:4px 8px;letter-spacing:.07em;}
+.ref-tag{font-family:'DM Mono',monospace;font-size:0.5625rem;color:var(--gold-dim);border:1px solid var(--border);padding:4px 8px;letter-spacing:.07em;}.ref-tag a{color:inherit;text-decoration:none;}.ref-tag a:hover{text-decoration:underline;}
 .lifecycle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin-top:28px;}
 .lifecycle-card{border:1px solid var(--border);padding:14px;background:rgba(26,26,26,.3);}
 .lifecycle-phase{font-family:'DM Serif Display',serif;font-size:0.8125rem;color:var(--white);margin-bottom:3px;}
@@ -1696,7 +1696,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 16.0</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 17.0</span>
   </div>
 </footer>
 <script>
@@ -1981,11 +1981,11 @@ steps:[
 // ===== STATIC SCREENS =====
 const WELCOME_HTML=`
 <div class="screen active" id="screen-welcome">
-<p class="welcome-eyebrow">Step-by-Step Delivery System · EM 5-1-11 PDBP · Version 16</p>
+<p class="welcome-eyebrow">Step-by-Step Delivery System · EM 5-1-11 PDBP · Version 17</p>
 <h1 class="welcome-title">Deliver your project<br><em>by the doctrine.</em></h1>
 <div class="welcome-rule"></div>
 <p class="welcome-body">This tool guides <strong>Project Delivery Teams</strong> through the complete PDBP lifecycle — work acceptance through project closeout — step by step, process by process. It adapts to your project profile and generates draft artifacts at every stage.<br><br>Built and maintained by the <strong>PPM Community of Practice · USACE.</strong> Process steps verified against EM 5-1-11 (Aug 2024 revision) including all branching pathways, decision gates, escalation hierarchies, and role assignments per published step tables.</p>
-<div class="ref-tags"><span class="ref-tag">EM 5-1-11</span><span class="ref-tag">ER 5-1-11</span><span class="ref-tag">ER 1140-1-211</span><span class="ref-tag">ER 5-1-10</span><span class="ref-tag">REF8001G</span><span class="ref-tag">REF8003G</span><span class="ref-tag">REF8005G</span><span class="ref-tag">REF8007G</span><span class="ref-tag">REF8014G</span></div>
+<div class="ref-tags"><span class="ref-tag"><a href="https://www.publications.usace.army.mil/Portals/76/EM%205-1-11_Project%20Delivery%20Business%20Process_2024%2008%2030.pdf" target="_blank" rel="noopener">EM 5-1-11</a></span><span class="ref-tag"><a href="https://www.publications.usace.army.mil/Portals/76/EM%205-1-11_Project%20Delivery%20Business%20Process_2024%2008%2030.pdf" target="_blank" rel="noopener">ER 5-1-11</a></span><span class="ref-tag"><a href="https://www.publications.usace.army.mil/Portals/76/EM%205-1-11_Project%20Delivery%20Business%20Process_2024%2008%2030.pdf" target="_blank" rel="noopener">ER 1140-1-211</a></span><span class="ref-tag"><a href="https://www.publications.usace.army.mil/Portals/76/EM%205-1-11_Project%20Delivery%20Business%20Process_2024%2008%2030.pdf" target="_blank" rel="noopener">ER 5-1-10</a></span><span class="ref-tag"><a href="https://www.publications.usace.army.mil/Portals/76/EM%205-1-11_Project%20Delivery%20Business%20Process_2024%2008%2030.pdf" target="_blank" rel="noopener">REF8001G</a></span><span class="ref-tag"><a href="https://www.publications.usace.army.mil/Portals/76/EM%205-1-11_Project%20Delivery%20Business%20Process_2024%2008%2030.pdf" target="_blank" rel="noopener">REF8003G</a></span><span class="ref-tag"><a href="https://www.publications.usace.army.mil/Portals/76/EM%205-1-11_Project%20Delivery%20Business%20Process_2024%2008%2030.pdf" target="_blank" rel="noopener">REF8005G</a></span><span class="ref-tag"><a href="https://www.publications.usace.army.mil/Portals/76/EM%205-1-11_Project%20Delivery%20Business%20Process_2024%2008%2030.pdf" target="_blank" rel="noopener">REF8007G</a></span><span class="ref-tag"><a href="https://www.publications.usace.army.mil/Portals/76/EM%205-1-11_Project%20Delivery%20Business%20Process_2024%2008%2030.pdf" target="_blank" rel="noopener">REF8014G</a></span></div>
 <button class="btn-primary" onclick="projNew()">New Project &rarr;</button>
       <button class="btn-secondary" onclick="startTour()" style="margin-left:10px;">&#10067; How to Use This Tool</button>
       <button class="btn-secondary" onclick="enterBrowseMode()" style="margin-left:10px;">&#128214; Browse / General Reference</button>
