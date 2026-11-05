@@ -67,7 +67,7 @@ body.light-mode .version-badge{border-color:rgba(100,80,20,0.2);}
 body{background:var(--army-dark);color:var(--white);font-family:'Inter',sans-serif;font-weight:400;min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(42,42,42,0.3) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(26,26,26,0.4) 0%,transparent 60%);pointer-events:none;z-index:0;}
 header{border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:0;background:rgba(15,15,15,0.97);backdrop-filter:blur(12px);z-index:200;}
-.header-inner{max-width:1060px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.header-inner{max-width:1600px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 .logo-block{display:flex;align-items:center;gap:12px;}
 .logo-seal{width:36px;height:36px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:0.6875rem;color:var(--gold);flex-shrink:0;}
 .logo-primary{font-family:'DM Serif Display',serif;font-size:0.875rem;color:var(--white);letter-spacing:.02em;line-height:1.2;}
@@ -92,7 +92,7 @@ body.light-mode .phase-btn.active .phase-progress-badge{color:rgba(255,255,255,.
 body.light-mode .phase-progress-bar-wrap{background:rgba(0,0,0,.1);}
 body.light-mode .phase-progress-bar{background:#8B6914;}
 .version-badge{font-family:'DM Mono',monospace;font-size:0.5rem;color:var(--gold-dim);border:1px solid var(--border);padding:2px 7px;letter-spacing:.08em;}
-.app-layout{max-width:1060px;margin:0 auto;padding:28px 24px 80px;position:relative;z-index:1;display:grid;grid-template-columns:210px 1fr;gap:28px;}
+.app-layout{max-width:1600px;margin:0 auto;padding:28px 32px 80px;position:relative;z-index:1;display:grid;grid-template-columns:230px 1fr;gap:32px;}
 @media(max-width:760px){.app-layout{grid-template-columns:1fr;}.sidebar{display:none!important;}}
 .sidebar{position:sticky;top:82px;height:fit-content;display:flex;flex-direction:column;gap:14px;}
 .sidebar-label{font-family:'DM Mono',monospace;font-size:0.5625rem;letter-spacing:.14em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
@@ -218,7 +218,7 @@ label.field-label{font-family:'DM Mono',monospace;font-size:0.5625rem;letter-spa
 .flag-dot.red{background:var(--danger);}.flag-dot.yellow{background:var(--gold);}.flag-dot.green{background:var(--accent);}
 .divider{height:1px;background:var(--border);margin:20px 0;}
 footer{border-top:1px solid var(--border);padding:16px 0;margin-top:20px;position:relative;z-index:1;}
-.footer-inner{max-width:1060px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.footer-inner{max-width:1600px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 .footer-attr{font-family:'DM Mono',monospace;font-size:0.5625rem;color:var(--gold-dim);letter-spacing:.09em;}
 .footer-doc{font-size:0.5625rem;color:var(--white-dim);opacity:.4;}
 /* SEARCH BAR */
@@ -281,7 +281,7 @@ footer{border-top:1px solid var(--border);padding:16px 0;margin-top:20px;positio
 .output-preview-actions{padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;}
 /* ROLE SELECTOR */
 .role-bar{background:rgba(26,26,26,.6);border-bottom:1px solid var(--border);padding:8px 0;position:sticky;top:64px;z-index:190;backdrop-filter:blur(8px);}
-.role-bar-inner{max-width:1060px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.role-bar-inner{max-width:1600px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .role-bar-label{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:.14em;color:var(--gold-dim);text-transform:uppercase;white-space:nowrap;}
 .role-chips{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
 .role-chip{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:.07em;text-transform:uppercase;padding:5px 11px;background:transparent;border:1px solid var(--border);color:var(--white-dim);cursor:pointer;transition:all .15s;white-space:nowrap;}
@@ -433,7 +433,7 @@ body.light-mode .step-learn-text{color:#5A5A4A;}
 /* PHASE 6 — PDT COLLABORATION */
 /* Session toolbar */
 .session-bar{background:rgba(15,15,15,.6);border-bottom:1px solid var(--border);padding:5px 0;z-index:188;}
-.session-bar-inner{max-width:1060px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.session-bar-inner{max-width:1600px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .session-indicator{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:0.5rem;color:var(--gold-dim);letter-spacing:.07em;}
 .session-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse-dot 2s ease infinite;}
 .session-dot.unsaved{background:var(--warn);}
@@ -1696,7 +1696,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 19.0</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 20.0</span>
   </div>
 </footer>
 <script>
@@ -1981,7 +1981,7 @@ steps:[
 // ===== STATIC SCREENS =====
 const WELCOME_HTML=`
 <div class="screen active" id="screen-welcome">
-<p class="welcome-eyebrow">Step-by-Step Delivery System · EM 5-1-11 PDBP · Version 19</p>
+<p class="welcome-eyebrow">Step-by-Step Delivery System · EM 5-1-11 PDBP · Version 20</p>
 <h1 class="welcome-title">Deliver your project<br><em>by the doctrine.</em></h1>
 <div class="welcome-rule"></div>
 <p class="welcome-body">This tool guides <strong>Project Delivery Teams</strong> through the complete PDBP lifecycle — work acceptance through project closeout — step by step, process by process. It adapts to your project profile and generates draft artifacts at every stage.<br><br>Built and maintained by the <strong>PPM Community of Practice · USACE.</strong> Process steps verified against EM 5-1-11 (Aug 2024 revision) including all branching pathways, decision gates, escalation hierarchies, and role assignments per published step tables.</p>
