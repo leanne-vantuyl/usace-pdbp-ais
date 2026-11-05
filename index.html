@@ -1619,6 +1619,10 @@ window.onerror=function(msg,src,line,col,err){
               <span class="tools-menu-icon" style="color:#E07C73;">&#9888;</span>
               <div><div class="tools-menu-label">Risk Register</div><div class="tools-menu-sub">Active risk tracking · REF8007G</div></div>
             </div>
+            <div class="tools-menu-item" id="pnav-sep" onclick="selectTool('sep')">
+              <span class="tools-menu-icon" style="color:#7BD4A8;">&#128101;</span>
+              <div><div class="tools-menu-label">Stakeholder Engagement Plan</div><div class="tools-menu-sub">PROC2060 · REF8006G · Communications</div></div>
+            </div>
           </div>
           <div class="tools-menu-section">
             <div class="tools-section-label">Reference &amp; Analysis</div>
@@ -1701,7 +1705,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 28.0 · Updated 05 Nov 2026</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 29.0 · Updated 05 Nov 2026</span>
   </div>
 </footer>
 <script>
@@ -3414,6 +3418,117 @@ const SCOPE_HTML_SCREEN=`
 function getSelStyle(){
   return "font-family:'DM Sans',sans-serif;font-size:0.8125rem;padding:7px 10px;border-radius:4px;width:100%;cursor:pointer;-webkit-appearance:none;appearance:none;";
 }
+const SEP_HTML=`
+<div class="screen" id="screen-sep">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:6px;">
+  <div>
+    <p class="screen-eyebrow">Stakeholder Engagement Plan · PROC2060 · REF8006G</p>
+    <h2 class="screen-title">Stakeholder Engagement Plan</h2>
+  </div>
+  <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:4px;">
+    <button class="btn-primary" onclick="genSEP()" style="font-size:9px;padding:9px 18px;">&#128196; Generate SEP</button>
+    <button class="btn-secondary" onclick="saveSEPData()" style="font-size:9px;padding:9px 14px;">&#10003; Save</button>
+  </div>
+</div>
+<div class="charter-guidance" style="margin-bottom:14px;">
+  <strong>The Stakeholder Engagement Plan governs how the PDT communicates with and involves stakeholders throughout project delivery.</strong> Per EM 5-1-11 and REF8006G, the SEP must identify all stakeholders, define their engagement level, establish communication methods and frequency, and assign accountability. An incomplete SEP is the most common root cause of scope creep and sponsor dissatisfaction at project closeout.
+</div>
+<div class="scope-nav" id="sep-nav">
+  <button class="scope-nav-btn active" onclick="switchSEPSection('stakeholders',this)" id="snav-sep-stakeholders">1 · Stakeholders</button>
+  <button class="scope-nav-btn" onclick="switchSEPSection('comms',this)" id="snav-sep-comms">2 · Communications</button>
+  <button class="scope-nav-btn" onclick="switchSEPSection('meetings',this)" id="snav-sep-meetings">3 · Meetings &amp; Cadence</button>
+  <button class="scope-nav-btn" onclick="switchSEPSection('issues',this)" id="snav-sep-issues">4 · Issues &amp; Escalation</button>
+  <button class="scope-nav-btn" onclick="switchSEPSection('approval',this)" id="snav-sep-approval">5 · Approval</button>
+</div>
+<div class="scope-section active" id="sep-stakeholders">
+  <p class="scope-intro">Identify every stakeholder who has an interest in, influence over, or is affected by this project. Classify their engagement level and assign the PDT member responsible for the relationship.</p>
+  <div class="charter-flag missed" onclick="toggleCharterFlag(this)" style="margin-bottom:12px;">
+    <div class="charter-flag-header">&#9670; Often Missed — Internal PDT Members Are Also Stakeholders<span class="charter-flag-toggle">&#9660;</span></div>
+    <div class="charter-flag-body">Most teams list the sponsor and forget the Resource Providers, the contracting office, the Real Estate office, and the O&amp;M staff who will ultimately operate the project. These internal stakeholders have hard dependencies and legal concurrence requirements. Missing them from the SEP means missing their coordination requirements in the schedule.</div>
+  </div>
+  <div class="scope-table-wrap">
+    <table class="scope-table"><thead><tr>
+      <th style="min-width:160px;">Stakeholder / Organization</th>
+      <th style="min-width:110px;">Role / Interest</th>
+      <th style="min-width:110px;">Engagement Level</th>
+      <th style="min-width:120px;">PDT Point of Contact</th>
+      <th style="min-width:120px;">Notes</th>
+      <th style="width:50px;"></th>
+    </tr></thead><tbody id="sep-stakeholders-tbody"></tbody></table>
+  </div>
+  <button class="btn-secondary" onclick="addSEPStakeholderRow()" style="font-size:9px;padding:8px 14px;margin-top:8px;">+ Add Stakeholder</button>
+</div>
+<div class="scope-section" id="sep-comms">
+  <p class="scope-intro">Define the communication products that will be produced, their format, frequency, audience, and the PDT member responsible for delivery. <em>REF8006G.</em></p>
+  <div class="charter-flag missed" onclick="toggleCharterFlag(this)" style="margin-bottom:12px;">
+    <div class="charter-flag-header">&#9670; Often Missed — Frequency Must Be Defined, Not Just Format<span class="charter-flag-toggle">&#9660;</span></div>
+    <div class="charter-flag-body">A communication plan that says “monthly status report” but doesn’t name a specific day, distribution list, or responsible party will not be executed consistently. Tie every communication product to a calendar anchor and a named owner.</div>
+  </div>
+  <div class="scope-table-wrap">
+    <table class="scope-table"><thead><tr>
+      <th style="min-width:160px;">Communication Product</th>
+      <th style="min-width:90px;">Format / Medium</th>
+      <th style="min-width:100px;">Frequency</th>
+      <th style="min-width:140px;">Audience</th>
+      <th style="min-width:120px;">Responsible Party</th>
+      <th style="width:50px;"></th>
+    </tr></thead><tbody id="sep-comms-tbody"></tbody></table>
+  </div>
+  <button class="btn-secondary" onclick="addSEPCommsRow()" style="font-size:9px;padding:8px 14px;margin-top:8px;">+ Add Communication</button>
+</div>
+<div class="scope-section" id="sep-meetings">
+  <p class="scope-intro">Establish the recurring meeting structure for stakeholder engagement. Define purpose, participants, frequency, and the PDT member who facilitates.</p>
+  <div class="scope-table-wrap">
+    <table class="scope-table"><thead><tr>
+      <th style="min-width:160px;">Meeting / Event</th>
+      <th style="min-width:100px;">Purpose</th>
+      <th style="min-width:100px;">Participants</th>
+      <th style="min-width:90px;">Frequency</th>
+      <th style="min-width:120px;">Facilitator</th>
+      <th style="width:50px;"></th>
+    </tr></thead><tbody id="sep-meetings-tbody"></tbody></table>
+  </div>
+  <button class="btn-secondary" onclick="addSEPMeetingRow()" style="font-size:9px;padding:8px 14px;margin-top:8px;">+ Add Meeting</button>
+</div>
+<div class="scope-section" id="sep-issues">
+  <p class="scope-intro">Define the process for raising, tracking, and resolving stakeholder issues and concerns, including the escalation path when issues cannot be resolved at the PDT level.</p>
+  <div class="charter-field-row" style="margin-bottom:14px;">
+    <div>
+      <label class="charter-label">Issue Tracking Method</label>
+      <input class="charter-input" id="sep-issue-method" placeholder="e.g., Issue log in PROMIS, shared tracker, email register" oninput="saveSEPField('issueMethod',this.value)"/>
+    </div>
+    <div>
+      <label class="charter-label">Issue Resolution Target (days)</label>
+      <input class="charter-input" id="sep-issue-days" placeholder="e.g., 10 business days" oninput="saveSEPField('issueDays',this.value)"/>
+    </div>
+  </div>
+  <label class="charter-label">Escalation Path</label>
+  <textarea class="charter-input" id="sep-escalation" rows="3" placeholder="Describe the escalation hierarchy: PDT Lead → PM → DPM → District Commander → MSC/CIE → HQUSACE as appropriate." style="resize:vertical;" oninput="saveSEPField('escalation',this.value)"></textarea>
+  <label class="charter-label" style="margin-top:12px;">Conflict of Interest / Objection Handling</label>
+  <textarea class="charter-input" id="sep-conflict" rows="3" placeholder="How will the PDT handle formal objections or conflicts of interest raised by stakeholders?" style="resize:vertical;" oninput="saveSEPField('conflict',this.value)"></textarea>
+</div>
+<div class="scope-section" id="sep-approval">
+  <p class="scope-intro">The SEP must be reviewed and approved by the PM and acknowledged by the Primary Stakeholder representative before execution begins.</p>
+  <div class="charter-field-row" style="margin-bottom:14px;">
+    <div><label class="charter-label">Prepared By (PM)</label><input class="charter-input" id="sep-prepared-by" placeholder="Name, Title" oninput="saveSEPField('preparedBy',this.value)"/></div>
+    <div><label class="charter-label">Date Prepared</label><input class="charter-input" id="sep-date-prepared" type="date" oninput="saveSEPField('datePrepared',this.value)"/></div>
+  </div>
+  <div class="charter-field-row" style="margin-bottom:14px;">
+    <div><label class="charter-label">Reviewed By (DPM / Supervisor)</label><input class="charter-input" id="sep-reviewed-by" placeholder="Name, Title" oninput="saveSEPField('reviewedBy',this.value)"/></div>
+    <div><label class="charter-label">Date Reviewed</label><input class="charter-input" id="sep-date-reviewed" type="date" oninput="saveSEPField('dateReviewed',this.value)"/></div>
+  </div>
+  <div class="charter-field-row single" style="margin-bottom:14px;">
+    <div><label class="charter-label">Primary Stakeholder Acknowledgment</label><input class="charter-input" id="sep-stakeholder-ack" placeholder="Name, Title, Organization" oninput="saveSEPField('stakeholderAck',this.value)"/></div>
+  </div>
+  <label class="charter-label">Version / Revision Notes</label>
+  <textarea class="charter-input" id="sep-revision-notes" rows="2" placeholder="e.g., Version 1.0 — initial SEP approved at PROC2060 completion." style="resize:vertical;" oninput="saveSEPField('revisionNotes',this.value)"></textarea>
+  <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+    <button class="btn-primary" onclick="genSEP()" style="font-size:9px;padding:9px 18px;">&#128196; Generate SEP Document</button>
+    <button class="btn-secondary" onclick="saveSEPData()" style="font-size:9px;padding:9px 14px;margin-left:8px;">&#10003; Save</button>
+  </div>
+</div>
+</div>`;
+
 const OUTPUTS_HTML=`
 <div class="screen" id="screen-outputs">
 <p class="screen-eyebrow">Outputs &amp; Exports</p>
@@ -3613,7 +3728,7 @@ const PHASE_DESCS={
 const PHASE_PREV={planning:'initiation',execution:'planning',closeout:'execution'};
 const PHASE_NEXT={initiation:'planning',planning:'execution',execution:'closeout'};
 const PHASE_NEXT_LABEL={initiation:'Planning',planning:'Execution',execution:'Closeout'};
-document.getElementById('main-content').innerHTML=WELCOME_HTML+PROFILE_HTML+HEALTH_HTML+CHARTER_HTML_SCREEN+PMP_HTML_SCREEN+SCOPE_HTML_SCREEN+GLOSSARY_HTML_SCREEN+DASHBOARD_HTML_SCREEN+RISK_REG_HTML_SCREEN+QUIZ_HTML_SCREEN+OUTPUTS_HTML+
+document.getElementById('main-content').innerHTML=WELCOME_HTML+PROFILE_HTML+HEALTH_HTML+CHARTER_HTML_SCREEN+PMP_HTML_SCREEN+SCOPE_HTML_SCREEN+SEP_HTML+GLOSSARY_HTML_SCREEN+DASHBOARD_HTML_SCREEN+RISK_REG_HTML_SCREEN+QUIZ_HTML_SCREEN+OUTPUTS_HTML+
 ['initiation','planning','execution','closeout'].map(function(ph){
   var phCap=ph.charAt(0).toUpperCase()+ph.slice(1);
   var backBtn=PHASE_PREV[ph]?'<button class="btn-secondary" onclick="switchPhase(\''+PHASE_PREV[ph]+'\')">&#8592; Back</button>':'';
@@ -3673,6 +3788,7 @@ function switchPhase(phase){
   if(phase==='dashboard'){setTimeout(initDashboard,50);}
   if(phase==='riskregister'){setTimeout(initRiskRegister,50);}
   if(phase==='quiz'){setTimeout(initQuiz,50);}
+  if(phase==='sep'){setTimeout(initSEP,50);}
   var showSidebar=['initiation','planning','execution','closeout'].indexOf(phase)>=0;
   document.getElementById('sidebar').style.display=showSidebar?'flex':'none';
   if(showSidebar)renderSidebar(phase);
@@ -6798,7 +6914,7 @@ function selectTool(phase){setTimeout(wireRefTags,300);
   switchPhase(phase);
 }
 function updateToolsState(){
-  var toolPhases=['charter','pmp','scope','riskregister','dashboard','glossary','quiz'];
+  var toolPhases=['charter','pmp','scope','riskregister','sep','dashboard','glossary','quiz'];
   var current=S.activePhase;
   toolPhases.forEach(function(p){
     var item=document.getElementById('pnav-'+p);
@@ -9267,13 +9383,182 @@ function pullFromScopeBuilder(){
   markDirty();
   showToast('✓ Scope data pulled from Scope Statement Builder into PMP Section 3.');
 }
+// ===== STAKEHOLDER ENGAGEMENT PLAN =====
+function initSEP(){
+  var sep=S.project.sep||{};
+  var set=function(id,val){var el=document.getElementById(id);if(el&&val!==undefined&&val!==null)el.value=val;};
+  set('sep-issue-method',sep.issueMethod);
+  set('sep-issue-days',sep.issueDays);
+  set('sep-escalation',sep.escalation);
+  set('sep-conflict',sep.conflict);
+  set('sep-prepared-by',sep.preparedBy);
+  set('sep-date-prepared',sep.datePrepared);
+  set('sep-reviewed-by',sep.reviewedBy);
+  set('sep-date-reviewed',sep.dateReviewed);
+  set('sep-stakeholder-ack',sep.stakeholderAck);
+  set('sep-revision-notes',sep.revisionNotes);
+  renderSEPStakeholders();renderSEPComms();renderSEPMeetings();
+}
+function saveSEPField(key,val){
+  if(!S.project.sep)S.project.sep={};
+  S.project.sep[key]=val;markDirty();
+}
+function saveSEPData(){
+  if(!S.project.sep)S.project.sep={};
+  var g=function(id){var el=document.getElementById(id);return el?el.value:'';};
+  S.project.sep.issueMethod=g('sep-issue-method');
+  S.project.sep.issueDays=g('sep-issue-days');
+  S.project.sep.escalation=g('sep-escalation');
+  S.project.sep.conflict=g('sep-conflict');
+  S.project.sep.preparedBy=g('sep-prepared-by');
+  S.project.sep.datePrepared=g('sep-date-prepared');
+  S.project.sep.reviewedBy=g('sep-reviewed-by');
+  S.project.sep.dateReviewed=g('sep-date-reviewed');
+  S.project.sep.stakeholderAck=g('sep-stakeholder-ack');
+  S.project.sep.revisionNotes=g('sep-revision-notes');
+  saveSession();showToast('✓ Stakeholder Engagement Plan saved.');
+}
+function switchSEPSection(id,btn){
+  document.querySelectorAll('#screen-sep .scope-section').forEach(function(s){s.classList.remove('active');});
+  var sec=document.getElementById('sep-'+id);if(sec)sec.classList.add('active');
+  document.querySelectorAll('#sep-nav .scope-nav-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+}
+function addSEPStakeholderRow(){
+  if(!S.project.sep)S.project.sep={};
+  if(!S.project.sep.stakeholders)S.project.sep.stakeholders=[];
+  S.project.sep.stakeholders.push({name:'',role:'',level:'Inform',poc:'',notes:''});
+  renderSEPStakeholders();markDirty();
+}
+function renderSEPStakeholders(){
+  var tbody=document.getElementById('sep-stakeholders-tbody');if(!tbody)return;
+  var rows=(S.project.sep&&S.project.sep.stakeholders)||[];
+  var levels=['Inform','Consult','Collaborate','Approve','Lead'];
+  tbody.innerHTML=rows.map(function(r,i){
+    var opts=levels.map(function(l){return '<option'+(r.level===l?' selected':'')+'>'+l+'</option>';}).join('');
+    return '<tr>'
+      +'<td><input class="charter-input" value="'+esc(r.name||'')+'" placeholder="Name / Organization" oninput="sepRowSet(\'stakeholders\','+i+',\'name\',this.value)"/></td>'
+      +'<td><input class="charter-input" value="'+esc(r.role||'')+'" placeholder="Role / Interest" oninput="sepRowSet(\'stakeholders\','+i+',\'role\',this.value)"/></td>'
+      +'<td><select class="charter-input" style="font-family:\'DM Sans\',sans-serif;font-size:0.8125rem;padding:7px 10px;width:100%;cursor:pointer;" onchange="sepRowSet(\'stakeholders\','+i+',\'level\',this.value)">'+opts+'</select></td>'
+      +'<td><input class="charter-input" value="'+esc(r.poc||'')+'" placeholder="PDT POC" oninput="sepRowSet(\'stakeholders\','+i+',\'poc\',this.value)"/></td>'
+      +'<td><input class="charter-input" value="'+esc(r.notes||'')+'" placeholder="Notes" oninput="sepRowSet(\'stakeholders\','+i+',\'notes\',this.value)"/></td>'
+      +'<td><button class="btn-ghost" onclick="sepRowDel(\'stakeholders\','+i+')" style="font-size:9px;padding:4px 7px;" title="Remove">✕</button></td>'
+      +'</tr>';
+  }).join('');
+}
+function addSEPCommsRow(){
+  if(!S.project.sep)S.project.sep={};
+  if(!S.project.sep.comms)S.project.sep.comms=[];
+  S.project.sep.comms.push({product:'',format:'',frequency:'',audience:'',responsible:''});
+  renderSEPComms();markDirty();
+}
+function renderSEPComms(){
+  var tbody=document.getElementById('sep-comms-tbody');if(!tbody)return;
+  var rows=(S.project.sep&&S.project.sep.comms)||[];
+  tbody.innerHTML=rows.map(function(r,i){
+    return '<tr>'
+      +'<td><input class="charter-input" value="'+esc(r.product||'')+'" placeholder="e.g., Monthly Status Report" oninput="sepRowSet(\'comms\','+i+',\'product\',this.value)"/></td>'
+      +'<td><input class="charter-input" value="'+esc(r.format||'')+'" placeholder="e.g., Email, Memo" oninput="sepRowSet(\'comms\','+i+',\'format\',this.value)"/></td>'
+      +'<td><input class="charter-input" value="'+esc(r.frequency||'')+'" placeholder="e.g., Monthly" oninput="sepRowSet(\'comms\','+i+',\'frequency\',this.value)"/></td>'
+      +'<td><input class="charter-input" value="'+esc(r.audience||'')+'" placeholder="e.g., Sponsor, PDT, DPM" oninput="sepRowSet(\'comms\','+i+',\'audience\',this.value)"/></td>'
+      +'<td><input class="charter-input" value="'+esc(r.responsible||'')+'" placeholder="Name / Role" oninput="sepRowSet(\'comms\','+i+',\'responsible\',this.value)"/></td>'
+      +'<td><button class="btn-ghost" onclick="sepRowDel(\'comms\','+i+')" style="font-size:9px;padding:4px 7px;" title="Remove">✕</button></td>'
+      +'</tr>';
+  }).join('');
+}
+function addSEPMeetingRow(){
+  if(!S.project.sep)S.project.sep={};
+  if(!S.project.sep.meetings)S.project.sep.meetings=[];
+  S.project.sep.meetings.push({name:'',purpose:'',participants:'',frequency:'',facilitator:''});
+  renderSEPMeetings();markDirty();
+}
+function renderSEPMeetings(){
+  var tbody=document.getElementById('sep-meetings-tbody');if(!tbody)return;
+  var rows=(S.project.sep&&S.project.sep.meetings)||[];
+  tbody.innerHTML=rows.map(function(r,i){
+    return '<tr>'
+      +'<td><input class="charter-input" value="'+esc(r.name||'')+'" placeholder="e.g., PDT Sync, Sponsor Update" oninput="sepRowSet(\'meetings\','+i+',\'name\',this.value)"/></td>'
+      +'<td><input class="charter-input" value="'+esc(r.purpose||'')+'" placeholder="Purpose" oninput="sepRowSet(\'meetings\','+i+',\'purpose\',this.value)"/></td>'
+      +'<td><input class="charter-input" value="'+esc(r.participants||'')+'" placeholder="Participants" oninput="sepRowSet(\'meetings\','+i+',\'participants\',this.value)"/></td>'
+      +'<td><input class="charter-input" value="'+esc(r.frequency||'')+'" placeholder="e.g., Bi-weekly" oninput="sepRowSet(\'meetings\','+i+',\'frequency\',this.value)"/></td>'
+      +'<td><input class="charter-input" value="'+esc(r.facilitator||'')+'" placeholder="Name / Role" oninput="sepRowSet(\'meetings\','+i+',\'facilitator\',this.value)"/></td>'
+      +'<td><button class="btn-ghost" onclick="sepRowDel(\'meetings\','+i+')" style="font-size:9px;padding:4px 7px;" title="Remove">✕</button></td>'
+      +'</tr>';
+  }).join('');
+}
+function sepRowSet(table,i,key,val){
+  if(!S.project.sep||!S.project.sep[table])return;
+  S.project.sep[table][i][key]=val;markDirty();
+}
+function sepRowDel(table,i){
+  if(!S.project.sep||!S.project.sep[table])return;
+  S.project.sep[table].splice(i,1);
+  if(table==='stakeholders')renderSEPStakeholders();
+  else if(table==='comms')renderSEPComms();
+  else if(table==='meetings')renderSEPMeetings();
+  markDirty();
+}
+function genSEP(){
+  saveSEPData();
+  var sep=S.project.sep||{};var proj=S.project||{};
+  var now=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var stRows=(sep.stakeholders||[]).map(function(r){return '<tr><td>'+esc(r.name)+'</td><td>'+esc(r.role)+'</td><td>'+esc(r.level)+'</td><td>'+esc(r.poc)+'</td><td>'+esc(r.notes)+'</td></tr>';}).join('')
+    ||'<tr><td colspan="5" style="color:#888;font-style:italic;">No stakeholders entered.</td></tr>';
+  var commsRows=(sep.comms||[]).map(function(r){return '<tr><td>'+esc(r.product)+'</td><td>'+esc(r.format)+'</td><td>'+esc(r.frequency)+'</td><td>'+esc(r.audience)+'</td><td>'+esc(r.responsible)+'</td></tr>';}).join('')
+    ||'<tr><td colspan="5" style="color:#888;font-style:italic;">No communications entered.</td></tr>';
+  var meetRows=(sep.meetings||[]).map(function(r){return '<tr><td>'+esc(r.name)+'</td><td>'+esc(r.purpose)+'</td><td>'+esc(r.participants)+'</td><td>'+esc(r.frequency)+'</td><td>'+esc(r.facilitator)+'</td></tr>';}).join('')
+    ||'<tr><td colspan="5" style="color:#888;font-style:italic;">No meetings entered.</td></tr>';
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Stakeholder Engagement Plan</title>'
+    +'<style>body{font-family:Arial,sans-serif;font-size:12px;color:#111;margin:40px;line-height:1.5;}'
+    +'h1{font-size:18px;color:#1A3A1A;border-bottom:2px solid #1A3A1A;padding-bottom:6px;margin-bottom:4px;}'
+    +'h2{font-size:13px;color:#1A3A1A;margin-top:22px;margin-bottom:6px;border-bottom:1px solid #ccc;padding-bottom:4px;}'
+    +'.meta{font-size:11px;color:#555;margin-bottom:18px;}'
+    +'table{width:100%;border-collapse:collapse;margin-bottom:16px;}'
+    +'th{background:#1A3A1A;color:#C8E6C9;padding:7px 10px;text-align:left;font-size:10px;}'
+    +'td{padding:7px 10px;border:1px solid #ccc;font-size:11px;vertical-align:top;}'
+    +'.field-row{display:flex;gap:30px;margin-bottom:8px;}'
+    +'.field-label{font-weight:bold;min-width:160px;color:#333;}'
+    +'</style></head><body>'
+    +'<h1>Stakeholder Engagement Plan</h1>'
+    +'<div class="meta">'
+    +(proj.name?'<strong>Project:</strong> '+esc(proj.name)+'&nbsp;&nbsp;':'')
+    +(proj.p2?'<strong>P2#:</strong> '+esc(proj.p2)+'&nbsp;&nbsp;':'')
+    +'<strong>Reference:</strong> EM 5-1-11 · REF8006G · PROC2060&nbsp;&nbsp;'
+    +'<strong>Generated:</strong> '+now+'</div>'
+    +'<h2>Section 1 — Stakeholder Register</h2>'
+    +'<table><thead><tr><th>Stakeholder / Organization</th><th>Role / Interest</th><th>Engagement Level</th><th>PDT POC</th><th>Notes</th></tr></thead><tbody>'+stRows+'</tbody></table>'
+    +'<h2>Section 2 — Communications Matrix</h2>'
+    +'<table><thead><tr><th>Communication Product</th><th>Format / Medium</th><th>Frequency</th><th>Audience</th><th>Responsible Party</th></tr></thead><tbody>'+commsRows+'</tbody></table>'
+    +'<h2>Section 3 — Meeting Cadence</h2>'
+    +'<table><thead><tr><th>Meeting / Event</th><th>Purpose</th><th>Participants</th><th>Frequency</th><th>Facilitator</th></tr></thead><tbody>'+meetRows+'</tbody></table>'
+    +'<h2>Section 4 — Issues &amp; Escalation</h2>'
+    +'<div class="field-row"><span class="field-label">Issue Tracking Method:</span><span>'+esc(sep.issueMethod||'—')+'</span></div>'
+    +'<div class="field-row"><span class="field-label">Resolution Target:</span><span>'+esc(sep.issueDays||'—')+'</span></div>'
+    +'<div class="field-row"><span class="field-label">Escalation Path:</span><span style="white-space:pre-wrap;">'+esc(sep.escalation||'—')+'</span></div>'
+    +'<div class="field-row"><span class="field-label">Objection Handling:</span><span style="white-space:pre-wrap;">'+esc(sep.conflict||'—')+'</span></div>'
+    +'<h2>Section 5 — Approval</h2>'
+    +'<div class="field-row"><span class="field-label">Prepared By:</span><span>'+esc(sep.preparedBy||'—')+'</span><span class="field-label" style="margin-left:30px;">Date:</span><span>'+esc(sep.datePrepared||'—')+'</span></div>'
+    +'<div class="field-row"><span class="field-label">Reviewed By:</span><span>'+esc(sep.reviewedBy||'—')+'</span><span class="field-label" style="margin-left:30px;">Date:</span><span>'+esc(sep.dateReviewed||'—')+'</span></div>'
+    +'<div class="field-row"><span class="field-label">Stakeholder Ack:</span><span>'+esc(sep.stakeholderAck||'—')+'</span></div>'
+    +(sep.revisionNotes?'<div class="field-row"><span class="field-label">Revision Notes:</span><span>'+esc(sep.revisionNotes)+'</span></div>':'')
+    +'<div style="margin-top:30px;font-size:10px;color:#888;border-top:1px solid #eee;padding-top:8px;">Generated by PDBP AIS · PPM Community of Practice · USACE · UNCLASSIFIED · Do not enter CUI or PII</div>'
+    +'</body></html>';
+  var blob=new Blob([html],{type:'text/html'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download=(proj.name?proj.name.replace(/[^a-zA-Z0-9]/g,'_')+'_':'')+'SEP.html';
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},1000);
+  showToast('✓ Stakeholder Engagement Plan generated and downloaded.');
+}
 // Maps PROC IDs to their supporting Tool screen
 var PROC_TOOL_MAP={
   proc2000:{tool:'pmp',icon:'&#128196;',label:'PMP Builder',sub:'Open the PMP Builder to develop all 12 required sections per REF8005G. Data entered here flows directly into the generated PMP document.'},
   proc2010:{tool:'scope',icon:'&#128203;',label:'Scope Statement Builder',sub:'Open the Scope Statement Builder to document authorized elements, explicit exclusions, and stakeholder requirements per EM 5-1-11 Table 8-1.'},
   proc2020:{tool:'charter',icon:'&#9733;',label:'PDT Charter Builder',sub:'Open the PDT Charter Builder to establish team composition, named assignments, decision authorities, and ways of working per PROC2020.'},
   proc3000:{tool:'dashboard',icon:'&#128202;',label:'Project Health Dashboard',sub:'Open the Dashboard to monitor phase completion, milestone status, CCB thresholds, and the recommended next action for this project.'},
-  proc3010:{tool:'riskregister',icon:'&#9888;',label:'Risk Register',sub:'Open the Risk Register to track risks through execution. When a risk materializes, link it directly to a CCB change entry from the register.'}
+  proc3010:{tool:'riskregister',icon:'&#9888;',label:'Risk Register',sub:'Open the Risk Register to track risks through execution. When a risk materializes, link it directly to a CCB change entry from the register.'},
+  proc2060:{tool:'sep',icon:'&#128101;',label:'Stakeholder Engagement Plan',sub:'Open the SEP Builder to document stakeholders, communications matrix, and meeting cadence per PROC2060 and REF8006G.'}
 };
 // ===== SHAREPOINT SYNC =====
 var _spLastSync=null;
