@@ -1701,7 +1701,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 22.0</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 23.0</span>
   </div>
 </footer>
 <script>
@@ -6269,7 +6269,7 @@ function complianceEnter(){
     cb && cb.focus();
     return;
   }
-  try{localStorage.setItem('pdbp-compliance-ack','1');}catch(e){}
+  try{sessionStorage.setItem('pdbp-compliance-ack','1');}catch(e){}
   var ov = document.getElementById('compliance-overlay');
   if(ov) ov.parentNode.removeChild(ov);
 }
@@ -11424,8 +11424,7 @@ function autoSetHealthNA(){
 function checkComplianceAck(){
   var acked=false;
   try{
-    acked=!!localStorage.getItem('pdbp-compliance-ack')
-       ||sessionStorage.getItem('pdbp-compliance-ack')==='1';
+    acked=sessionStorage.getItem('pdbp-compliance-ack')==='1';
   }catch(e){}
   if(!acked){
     var overlay=document.getElementById('compliance-overlay');
