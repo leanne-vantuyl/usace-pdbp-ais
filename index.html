@@ -1589,14 +1589,14 @@ window.onerror=function(msg,src,line,col,err){
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <span class="version-badge"> EM 5-1-11 </span><span class="pathway-persistent-badge" id="pathway-persistent-badge" style="display:none;"></span><span class="browse-mode-badge" id="browse-mode-badge" style="display:none;" title="Click to exit browse mode" onclick="exitBrowseMode()">📖 Browse Mode ×</span>
       <div class="search-bar-wrap" id="search-wrap">
-        <input class="search-input" id="search-input" type="text" placeholder="Search PROC, step, role, ref…" oninput="onSearch(this.value)" onfocus="openSearchResults()" autocomplete="off"/>
+        <input class="search-input" id="search-input" type="text" placeholder="Search PROC, step, role, ref…" oninput="onSearch(this.value)" onfocus="openSearchResults()" autocomplete="off" title="Search — find any process step, role, reference code, or term across the entire PDBP. Type a PROC number, role name, REF code, or keyword."/>
         <span class="search-icon">⌕</span>
         <div class="search-results" id="search-results"></div>
       </div>
-      <button class="font-toggle" id="font-toggle" onclick="toggleFontSize()">Text: M</button>
-      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button>
+      <button class="font-toggle" id="font-toggle" onclick="toggleFontSize()" title="Text size — cycle through Small, Medium, and Large text. Your preference is saved automatically.">Text: M</button>
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Theme — toggle between Dark mode (default) and Light mode. Your preference is saved automatically.">&#9790; Dark</button>
       <div class="tools-dropdown" id="tools-dropdown">
-        <button class="tools-trigger" id="tools-trigger" onclick="toggleToolsMenu()">
+        <button class="tools-trigger" id="tools-trigger" onclick="toggleToolsMenu()" title="Tools — access PDT Charter builder, PMP Builder, Scope Statement, Risk Register, and other project data collection tools.">
           &#9776; Tools <span class="tools-trigger-arrow">&#9660;</span>
           <span class="tools-data-dot" id="tools-data-dot" style="display:none;" title="Project data entered"></span>
         </button>
@@ -1701,7 +1701,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 24.0</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 25.0</span>
   </div>
 </footer>
 <script>
