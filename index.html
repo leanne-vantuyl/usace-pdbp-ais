@@ -11655,6 +11655,8 @@ function renderProgramPhase(){
 
 function openProgramProc(procId){
   S.activeProc = procId;
+  S.lastActiveProc = procId;
+  S.lastActivePhase = 'program';
   renderProgramPhase();
   renderSidebar('program');
 }
@@ -11672,6 +11674,7 @@ function showNotification(msg, type){
 
 
 function showResumeNotice(procId, phase){
+  var old=document.getElementById('resume-notice-banner');if(old)old.remove();
   var procData=allProcs().find(function(p){return p.id===procId;});
   if(!procData)return;
   var phaseLabel=phase?phase.charAt(0).toUpperCase()+phase.slice(1):'';
@@ -11693,7 +11696,7 @@ function showResumeNotice(procId, phase){
 }
 
 // ===== EXPORT NUDGE SYSTEM =====
-var _sessionDirty=false;
+// NOTE: _sessionDirty is declared at line ~5244 (PHASE 6 block) — do not re-declare here
 var _exportNudgeShown=false;
 function markSessionDirty(){
   _sessionDirty=true;
