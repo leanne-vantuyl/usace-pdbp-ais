@@ -1640,7 +1640,7 @@ window.onerror=function(msg,src,line,col,err){
           </div>
         </div>
       </div>
-      <button class="btn-secondary" onclick="openJumpModal()" style="padding:7px 13px;font-size:9px;letter-spacing:.08em;white-space:nowrap;">&#10549; Jump To</button>
+      <button class="btn-secondary" onclick="openJumpModal()" style="padding:7px 13px;font-size:9px;letter-spacing:.08em;white-space:nowrap;" title="Jump To — skip directly to any PROC step in the lifecycle. Select a phase, then choose the specific process to navigate to it instantly.">&#10549; Jump To</button>
       <div class="phase-nav" role="navigation" aria-label="Section navigation">
         <button class="phase-btn active" onclick="switchPhase('welcome')" id="pnav-welcome" aria-label="Overview — project home">Overview</button>
         <button class="phase-btn" onclick="switchPhase('profile')" id="pnav-profile" aria-label="Profile — project setup">Profile</button>
@@ -1701,7 +1701,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 26.0 · Updated 05 Nov 2026</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 27.0 · Updated 05 Nov 2026</span>
   </div>
 </footer>
 <script>
@@ -3855,7 +3855,8 @@ function renderProcHTML(proc,phase){
       +'<h3 class="proc-detail-title">'+proc.name+'</h3>'
       +'<button class="proc-print-btn" onclick="printProc(\''+proc.id+'\',\''+phase+'\')" title="Print this PROC" aria-label="Print '+proc.name+' ('+proc.code+')">&#128424; Print</button>'
     +'</div>'
-    +'<div class="proc-overview">'+proc.overview+'</div>'
+    +'<div style="font-family:\'DM Mono\',monospace;font-size:0.5rem;letter-spacing:.12em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:5px;opacity:.7;" title="Process Overview — a plain-language summary of this PROC\'s purpose, scope, and key decision points before you begin stepping through it.">Process Overview</div>'
+    +'<div class="proc-overview" title="Process Overview — a plain-language summary of this PROC\'s purpose, scope, and key decision points before you begin stepping through it.">'+proc.overview+'</div>'
     +getProfileTip(proc.id)
      +failModeHTML
      +(PROC_TOOL_MAP[proc.id]?'<div class="tool-link-banner" onclick="selectTool(\''+PROC_TOOL_MAP[proc.id].tool+'\')">'+
