@@ -11676,7 +11676,7 @@ function showResumeNotice(procId, phase){
   // Show a styled banner at top of main content area, auto-dismiss after 6s
   var banner=document.createElement('div');
   banner.id='resume-notice-banner';
-  banner.style.cssText='position:fixed;top:60px;left:50%;transform:translateX(-50%);z-index:8000;'
+  banner.style.cssText='position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:8000;'
     +'padding:9px 20px;background:rgba(15,20,15,.97);border:1px solid rgba(200,168,75,.5);'
     +'border-radius:3px;font-family:\'DM Mono\',monospace;font-size:0.5rem;letter-spacing:.07em;'
     +'color:var(--gold);white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.5);'
@@ -11704,19 +11704,26 @@ function renderOverviewDashboard(){
   var pName=S.project&&S.project.name?S.project.name:(S.pdtName||'Active Project');
   var progLabel=progLabels[S.programType]||S.programType||'—';
   var score=calcScore();
+  // Determine whether health check is fully answered
+  var healthKeys=Object.keys(S.health);
+  var unanswered=healthKeys.filter(function(k){return !S.health[k];}).length;
+  var healthComplete=unanswered===0;
   var scoreColor=score>=75?'#6fcf7a':score>=50?'var(--gold)':'#e07070';
-  var scoreLabel=score>=75?'HEALTHY':score>=50?'CAUTION':'AT RISK';
+  var scoreLabel=(score>=75?'HEALTHY':score>=50?'CAUTION':'AT RISK')+(healthComplete?'':' *');
   // Phase progress
   var phases=['initiation','planning','execution','closeout'];
   var phaseLabels={initiation:'Initiation',planning:'Planning',execution:'Execution',closeout:'Closeout'};
+  // Active phase: prefer last-worked PROC's phase, then highest phase with completions, then initiation
   var currentPhase='initiation';
-  var maxCompleted=-1;
-  phases.forEach(function(ph,i){
-    var procs=PROCS[ph]||[];
-    var done=procs.filter(function(p){return S.procStatus[p.id]==='complete';}).length;
-    if(done>0)currentPhase=ph;
-    if(done===procs.length&&procs.length>0)maxCompleted=i;
-  });
+  if(S.lastActivePhase&&phases.indexOf(S.lastActivePhase)>=0){
+    currentPhase=S.lastActivePhase;
+  } else {
+    phases.forEach(function(ph){
+      var procs=PROCS[ph]||[];
+      var done=procs.filter(function(p){return S.procStatus[p.id]==='complete';}).length;
+      if(done>0)currentPhase=ph;
+    });
+  }
   // Last worked PROC
   var lastProc=null;
   var lastProcName='';
@@ -11750,7 +11757,7 @@ function renderOverviewDashboard(){
       +'<div style="text-align:center;min-width:60px;">'
         +'<div style="font-size:1.3rem;font-weight:700;color:'+scoreColor+';line-height:1;">'+score+'</div>'
         +'<div style="font-size:0.38rem;letter-spacing:.12em;color:'+scoreColor+';text-transform:uppercase;margin-top:1px;">'+scoreLabel+'</div>'
-        +'<div style="font-size:0.38rem;color:var(--gold-dim);margin-top:1px;">Health Score</div>'
+        +'<div style="font-size:0.38rem;color:var(--gold-dim);margin-top:1px;">Health Score'+(healthComplete?'':' <span title="Health check not fully completed" style="color:var(--gold-dim);">· incomplete</span>')+'</div>'
       +'</div>'
     +'</div>'
     // Progress bar
@@ -11785,10 +11792,8 @@ function renderOverviewDashboard(){
       +'<button class="btn-secondary" style="font-size:0.42rem;padding:6px 12px;" onclick="switchPhase(\'health\')">&#9679; Health Check</button>'
     +'</div>'
   +'</div>';
-  // Inject before the lifecycle-grid
-  var grid=el.querySelector('.lifecycle-grid');
-  if(grid){grid.insertAdjacentHTML('beforebegin',html);}
-  else{el.insertAdjacentHTML('afterbegin',html);}
+  // Inject at the top of the welcome screen (before hero content)
+  el.insertAdjacentHTML('afterbegin',html);
 }
 
 var _browseMode=false;
