@@ -1705,7 +1705,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 37.0 · Updated 05 Nov 2026</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 38.0 · Updated 05 Nov 2026</span>
   </div>
 </footer>
 <script>
@@ -2152,7 +2152,7 @@ const HEALTH_HTML=`
 </div>
 <div class="health-section"><div class="health-section-title">Alignment</div>
 <div class="health-item"><div class="health-question">Does the PDT have a signed Charter? <span style="font-size:0.6rem;color:var(--gold-dim);font-style:italic;">(PROC2020 · REF8014G)</span></div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h6','yes')">Yes</button><button class="toggle-btn no" onclick="ht(this,'h6','no')">No</button></div></div>
-<div class="health-item" id="h6-no-tip" style="display:none;padding:6px 0 10px 0;border-bottom:1px solid rgba(200,168,75,.07);"><div style="font-size:0.6rem;color:var(--gold-dim);line-height:1.6;font-family:'DM Mono',monospace;">&#9654; No Charter on file. Use the <a href="#" onclick="selectTool('charter');return false;" style="color:var(--accent);text-decoration:underline;">PDT Charter Builder</a> to establish team composition, decision authorities, and ways of working before PROC2020.</div></div>
+<div class="health-item" id="h6-no-tip" style="display:none;padding:6px 0 10px 0;border-bottom:1px solid rgba(200,168,75,.07);"><div style="font-size:0.6rem;color:var(--gold-dim);line-height:1.6;font-family:'DM Mono',monospace;">&#9654; No Charter on file. Use the <a href="#" onclick="S._charterReturnTo='health';selectTool('charter');return false;" style="color:var(--accent);text-decoration:underline;">PDT Charter Builder</a> to establish team composition, decision authorities, and ways of working before PROC2020.</div></div>
 <div class="health-item"><div class="health-question">Has the PDT held a formal kickoff meeting?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h6b','yes')">Yes</button><button class="toggle-btn no" onclick="ht(this,'h6b','no')">No</button></div></div>
 <div class="health-item"><div class="health-question">Does the PDT share a clear understanding of the authorized scope?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h7','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h7','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h7','no')">No</button></div></div>
 <div class="health-item"><div class="health-question">Are sponsor and primary stakeholder relationships established?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h8','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h8','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h8','no')">No</button></div></div>
@@ -2179,6 +2179,7 @@ const DEFAULT_NORMS=[
 ];
 const CHARTER_HTML_SCREEN=`
 <div class="screen" id="screen-charter">
+<div id="charter-return-bar" style="display:none;margin-bottom:12px;"><button class="btn-ghost" onclick="charterGoBack()" style="font-size:0.6rem;letter-spacing:.06em;padding:4px 0;">&#8592; Return to PDT Health Check</button></div>
 <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:6px;">
   <div>
     <p class="screen-eyebrow">PDT Charter Builder \u00b7 EM 5-1-11 PROC2020</p>
@@ -6940,7 +6941,15 @@ function toggleCharterFlag(el){
   var t=el.querySelector('.charter-flag-toggle');
   if(t)t.textContent=el.classList.contains('open')?'▲':'▼';
 }
+function charterGoBack(){
+  var dest=S._charterReturnTo||'profile';
+  S._charterReturnTo=null;
+  var bar=document.getElementById('charter-return-bar');if(bar)bar.style.display='none';
+  switchPhase(dest);
+}
 function initCharterScreen(){
+  var bar=document.getElementById('charter-return-bar');
+  if(bar)bar.style.display=S._charterReturnTo?'block':'none';
   // Pre-populate from S.project if data exists
   var p=S.project;
   var set=function(id,val){var el=document.getElementById(id);if(el&&val)el.value=val;};
