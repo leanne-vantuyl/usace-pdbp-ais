@@ -94,6 +94,9 @@ body.light-mode .phase-progress-bar{background:#8B6914;}
 .version-badge{font-family:'DM Mono',monospace;font-size:0.5rem;color:var(--gold-dim);border:1px solid var(--border);padding:2px 7px;letter-spacing:.08em;}
 .app-layout{max-width:1600px;margin:0 auto;padding:28px 32px 80px;position:relative;z-index:1;display:grid;grid-template-columns:230px 1fr;gap:32px;}
 @media(max-width:480px){.app-layout{grid-template-columns:1fr;}.sidebar{display:none!important;}}
+.narrow-warn{display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1A3A1A;border-top:2px solid var(--accent);padding:10px 20px;font-family:'DM Mono',monospace;font-size:0.6875rem;color:#C8E6C9;text-align:center;letter-spacing:.03em;}
+.narrow-warn a{color:var(--accent);text-decoration:underline;cursor:pointer;background:none;border:none;font:inherit;padding:0;}
+@media(max-width:900px){.narrow-warn{display:block;}}
 .sidebar{position:sticky;top:82px;height:fit-content;display:flex;flex-direction:column;gap:14px;}
 .sidebar-label{font-family:'DM Mono',monospace;font-size:0.5625rem;letter-spacing:.14em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
 .profile-card{background:rgba(26,26,26,.5);border:1px solid var(--border);padding:13px;}
@@ -1525,6 +1528,8 @@ body.light-mode .profile-tip-text strong{color:#5A4010;}
 </head>
 <body class="light-mode">
 
+<div class="narrow-warn" id="narrow-warn">&#9888; This tool is designed for desktop use. For the best experience, maximize your browser window. &nbsp;<a onclick="document.getElementById('narrow-warn').style.display='none';">Dismiss</a></div>
+
 <div id="compliance-overlay" class="compliance-overlay" style="display:none;">
   <div class="compliance-modal" role="dialog" aria-modal="true" aria-labelledby="compliance-title">
     <div class="compliance-modal-header" id="compliance-title">PDBP Lifecycle Guide</div>
@@ -1696,7 +1701,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 21.0</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 22.0</span>
   </div>
 </footer>
 <script>
