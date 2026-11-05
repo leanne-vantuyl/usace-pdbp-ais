@@ -4081,6 +4081,7 @@ function toggleStep(procId,idx,phase){
   var key=procId+'-'+idx;
   if(!S.stepState)S.stepState={};
   S.stepState[key]=el?el.classList.contains('checked'):false;
+  _sessionDirty=true;
   setTimeout(renderPhaseProgress,50);
 }
 function updateStatus(procId,phase){
@@ -4101,6 +4102,7 @@ function updateStatus(procId,phase){
   // Fire completion trigger only when PROC genuinely fully checked per data
   if(prev!=='complete'&&S.procStatus[procId]==='complete'&&dataStepCount>0){
     showCompletionNotify(procId);
+    markSessionDirty();
   }
   // Refresh dep panel to reflect new status
   if(S.activeProc)renderDepPanel(S.activeProc);
@@ -5387,6 +5389,7 @@ function exportSession(){
     var a=document.createElement('a');a.href=url;
     a.download='PDBP_Session_'+(S.pdtName?S.pdtName.replace(/\s+/g,'_'):'Export')+'_'+new Date().toISOString().slice(0,10)+'.json';
     a.click();URL.revokeObjectURL(url);
+    _sessionDirty=false;
     showToast('Session exported as '+a.download);
   }catch(e){alert('Export failed: '+e.message);}
 }
@@ -11688,6 +11691,60 @@ function showResumeNotice(procId, phase){
     if(banner.parentElement){banner.style.opacity='0';banner.style.transition='opacity .5s';setTimeout(function(){banner.remove();},500);}
   },6000);
 }
+
+// ===== EXPORT NUDGE SYSTEM =====
+var _sessionDirty=false;
+var _exportNudgeShown=false;
+function markSessionDirty(){
+  _sessionDirty=true;
+  // Auto-save to localStorage immediately
+  autoSaveSession();
+  // Show export nudge once per session when meaningful work has been done
+  if(!_exportNudgeShown){
+    try{_exportNudgeShown=sessionStorage.getItem('pdbp-export-nudge-shown')==='1';}catch(e){}
+  }
+  if(!_exportNudgeShown){
+    _exportNudgeShown=true;
+    try{sessionStorage.setItem('pdbp-export-nudge-shown','1');}catch(e){}
+    setTimeout(showExportNudge,1200);
+  }
+}
+function showExportNudge(){
+  var old=document.getElementById('export-nudge-banner');
+  if(old)old.remove();
+  var n=document.createElement('div');
+  n.id='export-nudge-banner';
+  n.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:8500;'
+    +'padding:11px 18px;background:rgba(10,18,10,.98);border:1px solid rgba(200,168,75,.45);'
+    +'border-radius:3px;font-family:\'DM Mono\',monospace;font-size:0.48rem;letter-spacing:.06em;'
+    +'color:var(--gold-dim);display:flex;align-items:center;gap:14px;'
+    +'box-shadow:0 6px 24px rgba(0,0,0,.55);white-space:nowrap;';
+  n.innerHTML='<span>&#128190; Progress saved to your browser. <strong style="color:var(--gold);">Export a backup file</strong> to protect your work.</span>'
+    +'<button onclick="exportSession();document.getElementById(\'export-nudge-banner\').remove();" '
+    +'style="background:var(--gold);color:#0a0a0a;border:none;border-radius:2px;padding:5px 11px;'
+    +'font-family:\'DM Mono\',monospace;font-size:0.44rem;letter-spacing:.08em;cursor:pointer;'
+    +'font-weight:700;text-transform:uppercase;">Export Now</button>'
+    +'<button onclick="this.parentElement.remove()" '
+    +'style="background:none;border:none;color:var(--gold-dim);cursor:pointer;font-size:0.6rem;padding:0 2px;">&#10005;</button>';
+  document.body.appendChild(n);
+  // Auto-dismiss after 18s if not acted on
+  setTimeout(function(){
+    var el=document.getElementById('export-nudge-banner');
+    if(el){el.style.opacity='0';el.style.transition='opacity .5s';setTimeout(function(){el.remove();},500);}
+  },18000);
+}
+// Auto-save on tab hide / page unload
+(function(){
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState==='hidden'&&_sessionDirty){
+      autoSaveSession();
+      _sessionDirty=false;
+    }
+  });
+  window.addEventListener('pagehide',function(){
+    if(_sessionDirty)autoSaveSession();
+  });
+})();
 
 function renderOverviewDashboard(){
   var el=document.getElementById('screen-welcome');
