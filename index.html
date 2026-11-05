@@ -5399,7 +5399,7 @@ function importSession(event){
   reader.onload=function(e){
     try{
       var data=JSON.parse(e.target.result);
-      if(!data||data.version!==4){alert('Not a valid PDBP AIS session file.');return;}
+      if(!data||![4,5,6].includes(data.version)){alert('Not a valid PDBP AIS session file.');return;}
       if(!confirm('Import session from "'+file.name+'"?\nThis will replace your current session.'))return;
       if(data.profile)S.profile=data.profile;if(data.health)S.health=data.health;
       if(data.procStatus)S.procStatus=data.procStatus;if(data.role)S.role=data.role;
