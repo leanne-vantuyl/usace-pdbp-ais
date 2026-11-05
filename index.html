@@ -1650,7 +1650,7 @@ window.onerror=function(msg,src,line,col,err){
         <button class="phase-btn" onclick="switchPhase('profile')" id="pnav-profile" aria-label="Profile — project setup" title="Profile — enter your project name, P2 number, program type, and pathway. Completing this unlocks the lifecycle phases.">Profile</button>
         <button class="phase-btn" onclick="switchPhase('program')" id="pnav-program" style="display:none;" aria-label="Program phase — CW and MILCON budget cycles" title="Program — PROC7000-series budget cycle steps for Civil Works and MILCON projects. Runs concurrently with the delivery phases.">Program<span class="phase-progress-badge" id="pp-program"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-program"></span></span></button>
         <button class="phase-btn locked" onclick="switchPhase('initiation')" id="pnav-initiation" aria-label="Initiation phase" title="Initiation (PROC1000–1040) — work acceptance through funds receipt. Complete your Profile to unlock.">Initiation<span class="phase-progress-badge" id="pp-initiation"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-initiation"></span></span></button>
-        <button class="phase-btn locked" onclick="switchPhase('planning')" id="pnav-planning" aria-label="Planning phase" title="Planning (PROC2000–2080) — scope definition through PMP approval. Complete your Profile to unlock.">Planning<span class="phase-progress-badge" id="pp-planning"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-planning"></span></span></button>
+        <button class="phase-btn locked" onclick="switchPhase('planning')" id="pnav-planning" aria-label="Planning phase" title="Planning (PROC2000–2070) — scope definition through PMP approval. Complete your Profile to unlock.">Planning<span class="phase-progress-badge" id="pp-planning"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-planning"></span></span></button>
         <button class="phase-btn locked" onclick="switchPhase('execution')" id="pnav-execution" aria-label="Execution phase" title="Execution (PROC3000–3030) — project delivery from PMP approval through construction completion. Complete your Profile to unlock.">Execution<span class="phase-progress-badge" id="pp-execution"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-execution"></span></span></button>
         <button class="phase-btn locked" onclick="switchPhase('closeout')" id="pnav-closeout" aria-label="Closeout phase" title="Closeout (PROC4000–4020) — project closeout checklists, financial reconciliation, and lessons learned. Complete your Profile to unlock.">Closeout<span class="phase-progress-badge" id="pp-closeout"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-closeout"></span></span></button>
         <button class="phase-btn" onclick="switchPhase('outputs')" id="pnav-outputs" aria-label="Generate — one-click project deliverables" title="Generate — one-click export of ready-to-use deliverables: process checklists, PMP documents, risk reports, scope statements, CCB logs, phase completion records, and more. All pre-filled from your session.">Generate</button>
@@ -1891,6 +1891,18 @@ steps:[
 {role:'District Commander / DPM',main:'Obtain concurrence from designated District Leadership on the proposed acquisition approach',detail:'Acquisition approach should include strategy documents and peer review as appropriate per acquisition thresholds.',ref:'EM 5-1-11 Table 12–1 Step 10',type:'action'},
 {role:'Project Manager / Contracting Officer (KO)',main:'Coordinate contract type for each activity with Contracting PDT member; enter in PROMIS',detail:'Contract type entered in PROMIS drives acquisition milestones in the project schedule.',ref:'EM 5-1-11 Table 12–1 Step 11',type:'action'},
 {role:'Project Manager / Contracting Officer (KO)',main:'Prepare the acquisition plan portion of the PMP; provide input to formal Acquisition Plan if required',detail:'If FAR Part 7 requires a formal AP, prepare and obtain required approvals. Incorporate all acquisition milestones into the project schedule.',ref:'EM 5-1-11 Table 12–1 Step 12',type:'action'}
+]},
+{id:'proc2060',code:'PROC2060',name:'Stakeholder Engagement Planning',artifactName:'Stakeholder Engagement Plan (SEP)',
+overview:'Develops the SEP — the governing document for how the PDT communicates with and involves stakeholders throughout project delivery. Per EM 5-1-11 and REF8006G, the SEP must identify all stakeholders, define engagement levels, establish communication methods and frequency, and assign accountability. Stakeholder engagement failures are the most common root cause of scope creep and sponsor dissatisfaction at closeout.',
+endResult:['Stakeholder register complete with engagement levels and attitudes documented','Communications matrix with methods, frequency, and owners established','Meeting cadence defined for the PDT and key stakeholder groups','SEP accepted by PDT before execution begins'],
+pathway:'SEP development is concurrent with scope, team establishment, and acquisition planning. The register informs scope (PROC2010) and the communications matrix feeds directly into the PMP. Complete the SEP Builder in the Build menu.',
+steps:[
+{role:'Project Manager',main:'Identify all project stakeholders',detail:'Develop an initial stakeholder list covering sponsors, regulators, resource providers, affected communities, and internal PDT members. Err toward inclusion — it is easier to remove a stakeholder than to discover a missed one in execution.',ref:'EM 5-1-11 · REF8006G Step 1',type:'action'},
+{role:'Project Manager / PDT',main:'Assess stakeholder roles, engagement levels, and attitudes',detail:'For each stakeholder document their role, IAP2 engagement level (Inform, Consult, Involve, Collaborate, or Empower), and current attitude (Supportive, Neutral, Resistant, or Unknown). Engagement level reflects your commitment to them — not just their interest in the project.',ref:'EM 5-1-11 · REF8006G Step 2',type:'action'},
+{role:'Project Manager',main:'Develop the communications matrix',detail:'Define communication method, frequency, responsible party, and audience for each stakeholder group. Address both routine reporting and event-driven communications. Coordinate with the PMP communications section.',ref:'EM 5-1-11 · REF8006G Step 3',type:'action'},
+{role:'Project Manager',main:'Establish meeting cadence and coordination structure',detail:'Document regular PDT meetings, sponsor touch-points, public engagement events, and other recurring coordination. Assign facilitators and note-takers. Include meeting cadence in the project schedule.',ref:'EM 5-1-11 · REF8006G Step 4',type:'action'},
+{role:'Project Manager / PDT',main:'Integrate SEP into the PMP as a subsidiary plan',detail:'The SEP is a required subsidiary plan under PROC2000. Incorporate by reference or attachment in the PMP. Ensure the communications matrix aligns with schedule milestones.',ref:'EM 5-1-11 Table 11–1',type:'action'},
+{role:'PDT',main:'Review and accept the SEP at or before PDT kickoff',detail:'The PDT reviews the SEP at the kickoff meeting. The PM documents PDT acceptance. The SEP is a living document — update when stakeholders change, engagement commitments shift, or the project is restructured.',ref:'EM 5-1-11 · PROC2020',type:'action'}
 ]},
 {id:'proc2070',code:'PROC2070',name:'PMP / PgMP Approval',artifactName:'PMP Approval Routing Checklist',
 overview:'Secures formal approval of the PMP before project execution begins. The PMP approval is a command decision authorizing the PDT to execute as documented. No significant project work begins without an approved PMP. The approval date establishes the official planning-to-execution transition.',
@@ -2164,7 +2176,7 @@ const HEALTH_HTML=`
 </div>`;
 const PROC_SEL_OPTIONS=`<option value="">— Select PROC —</option>
 <optgroup label="Initiation"><option value="proc1000">PROC1000 · Work Acceptance</option><option value="proc1020">PROC1020 · Workload Analysis</option><option value="proc1030">PROC1030 · Initiating in PROMIS</option><option value="proc1040">PROC1040 · Receipt of Funds</option></optgroup>
-<optgroup label="Planning"><option value="proc2000">PROC2000 · PMP/PgMP Development</option><option value="proc2010">PROC2010 · Scope &amp; Stakeholder</option><option value="proc2020">PROC2020 · Team Establishment</option><option value="proc2030">PROC2030 · Activity &amp; Schedule</option><option value="proc2040">PROC2040 · Resource Estimate</option><option value="proc2050">PROC2050 · Acquisition Planning</option><option value="proc2070">PROC2070 · PMP/PgMP Approval</option></optgroup>
+<optgroup label="Planning"><option value="proc2000">PROC2000 · PMP/PgMP Development</option><option value="proc2010">PROC2010 · Scope &amp; Stakeholder</option><option value="proc2020">PROC2020 · Team Establishment</option><option value="proc2030">PROC2030 · Activity &amp; Schedule</option><option value="proc2040">PROC2040 · Resource Estimate</option><option value="proc2050">PROC2050 · Acquisition Planning</option><option value="proc2060">PROC2060 · Stakeholder Engagement Planning</option><option value="proc2070">PROC2070 · PMP/PgMP Approval</option></optgroup>
 <optgroup label="Execution"><option value="proc3000">PROC3000 · Execution &amp; Control</option><option value="proc3010">PROC3010 · Change Management</option><option value="proc3020">PROC3020 · After Action Review</option></optgroup>
 <optgroup label="Closeout"><option value="proc4000">PROC4000 · Phase/Project Closeout</option></optgroup>`;
 const CHARTER_ROLES=['Project Manager (PM)','Deputy for Programs and Project Management (DPM)','Program Manager (PgM)','Cost Engineer','Scheduler','Real Estate Specialist','Environmental Specialist','Regulatory/Permitting','Legal Counsel','Contracting Officer','Contracting Specialist','Safety Manager','Geotechnical Engineer','Structural Engineer','Hydraulics/Hydrology','Value Engineer','Operations/O&M Lead','PDT Member','Other'];
@@ -3521,7 +3533,7 @@ const SEP_HTML=`
     <div><label class="charter-label">Date Prepared</label><input class="charter-input" id="sep-date-prepared" type="date" oninput="saveSEPField('datePrepared',this.value)"/></div>
   </div>
   <div class="charter-field-row" style="margin-bottom:14px;">
-    <div><label class="charter-label">Reviewed By</label><input class="charter-input" id="sep-reviewed-by" placeholder="Name, Title" oninput="saveSEPField('reviewedBy',this.value)"/></div>
+    <div><label class="charter-label" title="Typically the DPM, PgM, or senior PDT lead who accepts the SEP on behalf of the team">Reviewed By <span style="font-size:0.6rem;color:var(--gold-dim);font-style:italic;">(DPM / PgM / PDT Lead)</span></label><input class="charter-input" id="sep-reviewed-by" placeholder="Name, Title" oninput="saveSEPField('reviewedBy',this.value)"/></div>
     <div><label class="charter-label">Date Accepted by PDT</label><input class="charter-input" id="sep-date-reviewed" type="date" oninput="saveSEPField('dateReviewed',this.value)"/></div>
   </div>
   <label class="charter-label">Version / Revision Notes</label>
@@ -3537,7 +3549,7 @@ const OUTPUTS_HTML=`
 <div class="screen" id="screen-outputs">
 <p class="screen-eyebrow">Generate</p>
 <h2 class="screen-title">Generate deliverables for your PDT.</h2>
-<p class="screen-desc">10 output types — from role-filtered checklists to full PMP documents, risk reports, scope statements, and project health dashboards. All generated from your current session data and project profile.</p>
+<p class="screen-desc">11 output types — from role-filtered checklists to full PMP documents, risk reports, scope statements, SEPs, and project health dashboards. All generated from your current session data and project profile.</p>
 <div class="outputs-grid">
   <div class="output-card" style="grid-column:1/-1;">
     <div class="output-card-icon">&#9654;</div>
@@ -3633,6 +3645,16 @@ const OUTPUTS_HTML=`
       <button class="btn-primary" onclick="genPMPShell()" style="padding:8px 14px;font-size:9px;">Generate PMP Shell</button>
     </div>
   </div>
+  <div class="output-card">
+    <div class="output-card-icon">&#128101;</div>
+    <div class="output-card-title">Stakeholder Engagement Plan</div>
+    <div class="output-card-desc">Export your SEP as a formatted HTML document — stakeholder register with engagement levels and attitudes, communications matrix, meeting cadence, and approval block. Ready for PMP appendix or project file. Build your SEP in the Build menu first.</div>
+    <div class="output-card-actions">
+      <button class="btn-primary" onclick="selectTool('sep')" style="padding:8px 14px;font-size:9px;">Open SEP Builder</button>
+      <button class="btn-ghost" onclick="genSEP()" style="padding:8px 14px;font-size:9px;">&#128424; Export SEP</button>
+    </div>
+  </div>
+
   <div class="output-card">
     <div class="output-card-icon">&#9650;</div>
     <div class="output-card-title">CCB Threshold Tracker</div>
@@ -4192,6 +4214,7 @@ const JUMP_PHASES={
     {id:'proc2030',code:'PROC2030',name:'Activity & Schedule',desc:'Developing the P6 project schedule'},
     {id:'proc2040',code:'PROC2040',name:'Resource Estimate',desc:'Cost estimate, BOE, and spend plan'},
     {id:'proc2050',code:'PROC2050',name:'Acquisition Planning',desc:'Contracting strategy for all project actions'},
+    {id:'proc2060',code:'PROC2060',name:'Stakeholder Engagement Planning',desc:'SEP — stakeholder register, comms matrix, meeting cadence'},
     {id:'proc2070',code:'PROC2070',name:'PMP/PgMP Approval',desc:'Command approval before execution begins'}
   ]},
   execution:{label:'Execution',procs:[
@@ -5944,6 +5967,16 @@ var PROC_DEPS={
     downstream:[
       {id:'proc2030',note:'Contract award milestones must appear in the project schedule'},
       {id:'proc2070',note:'Acquisition plan is a required PMP section'}
+    ]
+  },
+  proc2060:{
+    upstream:[
+      {id:'proc2010',note:'Stakeholder requirements register informs the SEP stakeholder list'},
+      {id:'proc2020',note:'PDT roster defines internal stakeholders and communication owners'}
+    ],
+    downstream:[
+      {id:'proc2070',note:'SEP is a required PMP subsidiary plan'},
+      {id:'proc3000',note:'SEP governs stakeholder communications throughout execution'}
     ]
   },
   proc2070:{
