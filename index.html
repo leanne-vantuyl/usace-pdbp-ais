@@ -1705,7 +1705,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 29.0 · Updated 05 Nov 2026</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 30.0 · Updated 05 Nov 2026</span>
   </div>
 </footer>
 <script>
@@ -3450,7 +3450,8 @@ const SEP_HTML=`
     <table class="scope-table"><thead><tr>
       <th style="min-width:160px;">Stakeholder / Organization</th>
       <th style="min-width:110px;">Role / Interest</th>
-      <th style="min-width:110px;">Engagement Level</th>
+      <th style="min-width:110px;" title="IAP2 Spectrum: how much participation you are committing to give this stakeholder">Engagement Level</th>
+      <th style="min-width:100px;" title="Current stakeholder attitude toward the project">Attitude</th>
       <th style="min-width:120px;">PDT Point of Contact</th>
       <th style="min-width:120px;">Notes</th>
       <th style="width:50px;"></th>
@@ -9427,19 +9428,22 @@ function switchSEPSection(id,btn){
 function addSEPStakeholderRow(){
   if(!S.project.sep)S.project.sep={};
   if(!S.project.sep.stakeholders)S.project.sep.stakeholders=[];
-  S.project.sep.stakeholders.push({name:'',role:'',level:'Inform',poc:'',notes:''});
+  S.project.sep.stakeholders.push({name:'',role:'',level:'Inform',attitude:'Neutral',poc:'',notes:''});
   renderSEPStakeholders();markDirty();
 }
 function renderSEPStakeholders(){
   var tbody=document.getElementById('sep-stakeholders-tbody');if(!tbody)return;
   var rows=(S.project.sep&&S.project.sep.stakeholders)||[];
-  var levels=['Inform','Consult','Collaborate','Approve','Lead'];
+  var levels=['Inform','Consult','Involve','Collaborate','Empower'];
+  var attitudes=['Supportive','Neutral','Resistant','Unknown'];
   tbody.innerHTML=rows.map(function(r,i){
     var opts=levels.map(function(l){return '<option'+(r.level===l?' selected':'')+'>'+l+'</option>';}).join('');
+    var aOpts=attitudes.map(function(a){return '<option'+(r.attitude===a?' selected':'')+'>'+a+'</option>';}).join('');
     return '<tr>'
       +'<td><input class="charter-input" value="'+esc(r.name||'')+'" placeholder="Name / Organization" oninput="sepRowSet(\'stakeholders\','+i+',\'name\',this.value)"/></td>'
       +'<td><input class="charter-input" value="'+esc(r.role||'')+'" placeholder="Role / Interest" oninput="sepRowSet(\'stakeholders\','+i+',\'role\',this.value)"/></td>'
-      +'<td><select class="charter-input" style="font-family:\'DM Sans\',sans-serif;font-size:0.8125rem;padding:7px 10px;width:100%;cursor:pointer;" onchange="sepRowSet(\'stakeholders\','+i+',\'level\',this.value)">'+opts+'</select></td>'
+      +'<td><select class="charter-input" style="font-family:\'DM Sans\',sans-serif;font-size:0.8125rem;padding:7px 10px;width:100%;cursor:pointer;" onchange="sepRowSet(\'stakeholders\','+i+',\'level\',this.value)" title="IAP2: how much participation you commit to this stakeholder">'+opts+'</select></td>'
+      +'<td><select class="charter-input" style="font-family:\'DM Sans\',sans-serif;font-size:0.8125rem;padding:7px 10px;width:100%;cursor:pointer;" onchange="sepRowSet(\'stakeholders\','+i+',\'attitude\',this.value)" title="Current stakeholder attitude toward the project">'+aOpts+'</select></td>'
       +'<td><input class="charter-input" value="'+esc(r.poc||'')+'" placeholder="PDT POC" oninput="sepRowSet(\'stakeholders\','+i+',\'poc\',this.value)"/></td>'
       +'<td><input class="charter-input" value="'+esc(r.notes||'')+'" placeholder="Notes" oninput="sepRowSet(\'stakeholders\','+i+',\'notes\',this.value)"/></td>'
       +'<td><button class="btn-ghost" onclick="sepRowDel(\'stakeholders\','+i+')" style="font-size:9px;padding:4px 7px;" title="Remove">✕</button></td>'
@@ -9502,8 +9506,8 @@ function genSEP(){
   saveSEPData();
   var sep=S.project.sep||{};var proj=S.project||{};
   var now=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  var stRows=(sep.stakeholders||[]).map(function(r){return '<tr><td>'+esc(r.name)+'</td><td>'+esc(r.role)+'</td><td>'+esc(r.level)+'</td><td>'+esc(r.poc)+'</td><td>'+esc(r.notes)+'</td></tr>';}).join('')
-    ||'<tr><td colspan="5" style="color:#888;font-style:italic;">No stakeholders entered.</td></tr>';
+  var stRows=(sep.stakeholders||[]).map(function(r){return '<tr><td>'+esc(r.name)+'</td><td>'+esc(r.role)+'</td><td>'+esc(r.level)+'</td><td>'+esc(r.attitude||'')+'</td><td>'+esc(r.poc)+'</td><td>'+esc(r.notes)+'</td></tr>';}).join('')
+    ||'<tr><td colspan="6" style="color:#888;font-style:italic;">No stakeholders entered.</td></tr>';
   var commsRows=(sep.comms||[]).map(function(r){return '<tr><td>'+esc(r.product)+'</td><td>'+esc(r.format)+'</td><td>'+esc(r.frequency)+'</td><td>'+esc(r.audience)+'</td><td>'+esc(r.responsible)+'</td></tr>';}).join('')
     ||'<tr><td colspan="5" style="color:#888;font-style:italic;">No communications entered.</td></tr>';
   var meetRows=(sep.meetings||[]).map(function(r){return '<tr><td>'+esc(r.name)+'</td><td>'+esc(r.purpose)+'</td><td>'+esc(r.participants)+'</td><td>'+esc(r.frequency)+'</td><td>'+esc(r.facilitator)+'</td></tr>';}).join('')
@@ -9526,7 +9530,7 @@ function genSEP(){
     +'<strong>Reference:</strong> EM 5-1-11 · REF8006G · PROC2060&nbsp;&nbsp;'
     +'<strong>Generated:</strong> '+now+'</div>'
     +'<h2>Section 1 — Stakeholder Register</h2>'
-    +'<table><thead><tr><th>Stakeholder / Organization</th><th>Role / Interest</th><th>Engagement Level</th><th>PDT POC</th><th>Notes</th></tr></thead><tbody>'+stRows+'</tbody></table>'
+    +'<table><thead><tr><th>Stakeholder / Organization</th><th>Role / Interest</th><th>Engagement Level (IAP2)</th><th>Attitude</th><th>PDT POC</th><th>Notes</th></tr></thead><tbody>'+stRows+'</tbody></table>'
     +'<h2>Section 2 — Communications Matrix</h2>'
     +'<table><thead><tr><th>Communication Product</th><th>Format / Medium</th><th>Frequency</th><th>Audience</th><th>Responsible Party</th></tr></thead><tbody>'+commsRows+'</tbody></table>'
     +'<h2>Section 3 — Meeting Cadence</h2>'
