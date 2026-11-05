@@ -1646,14 +1646,14 @@ window.onerror=function(msg,src,line,col,err){
       </div>
       <button class="btn-secondary" onclick="openJumpModal()" style="padding:7px 13px;font-size:9px;letter-spacing:.08em;white-space:nowrap;" title="Jump To — skip directly to any PROC step in the lifecycle. Select a phase, then choose the specific process to navigate to it instantly.">&#10549; Jump To</button>
       <div class="phase-nav" role="navigation" aria-label="Section navigation">
-        <button class="phase-btn active" onclick="switchPhase('welcome')" id="pnav-welcome" aria-label="Overview — project home">Overview</button>
-        <button class="phase-btn" onclick="switchPhase('profile')" id="pnav-profile" aria-label="Profile — project setup">Profile</button>
-        <button class="phase-btn" onclick="switchPhase('program')" id="pnav-program" style="display:none;" aria-label="Program phase — CW and MILCON budget cycles">Program<span class="phase-progress-badge" id="pp-program"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-program"></span></span></button>
-        <button class="phase-btn locked" onclick="switchPhase('initiation')" id="pnav-initiation" aria-label="Initiation phase" title="Complete your Project Profile to unlock">Initiation<span class="phase-progress-badge" id="pp-initiation"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-initiation"></span></span></button>
-        <button class="phase-btn locked" onclick="switchPhase('planning')" id="pnav-planning" aria-label="Planning phase" title="Complete your Project Profile to unlock">Planning<span class="phase-progress-badge" id="pp-planning"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-planning"></span></span></button>
-        <button class="phase-btn locked" onclick="switchPhase('execution')" id="pnav-execution" aria-label="Execution phase" title="Complete your Project Profile to unlock">Execution<span class="phase-progress-badge" id="pp-execution"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-execution"></span></span></button>
-        <button class="phase-btn locked" onclick="switchPhase('closeout')" id="pnav-closeout" aria-label="Closeout phase" title="Complete your Project Profile to unlock">Closeout<span class="phase-progress-badge" id="pp-closeout"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-closeout"></span></span></button>
-        <button class="phase-btn" onclick="switchPhase('outputs')" id="pnav-outputs" aria-label="Outputs — generated artifacts and documents">Outputs</button>
+        <button class="phase-btn active" onclick="switchPhase('welcome')" id="pnav-welcome" aria-label="Overview — project home" title="Overview — your project home screen. Start here to set up a new project or return to the lifecycle summary.">Overview</button>
+        <button class="phase-btn" onclick="switchPhase('profile')" id="pnav-profile" aria-label="Profile — project setup" title="Profile — enter your project name, P2 number, program type, and pathway. Completing this unlocks the lifecycle phases.">Profile</button>
+        <button class="phase-btn" onclick="switchPhase('program')" id="pnav-program" style="display:none;" aria-label="Program phase — CW and MILCON budget cycles" title="Program — PROC7000-series budget cycle steps for Civil Works and MILCON projects. Runs concurrently with the delivery phases.">Program<span class="phase-progress-badge" id="pp-program"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-program"></span></span></button>
+        <button class="phase-btn locked" onclick="switchPhase('initiation')" id="pnav-initiation" aria-label="Initiation phase" title="Initiation (PROC1000–1040) — work acceptance through funds receipt. Complete your Profile to unlock.">Initiation<span class="phase-progress-badge" id="pp-initiation"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-initiation"></span></span></button>
+        <button class="phase-btn locked" onclick="switchPhase('planning')" id="pnav-planning" aria-label="Planning phase" title="Planning (PROC2000–2080) — scope definition through PMP approval. Complete your Profile to unlock.">Planning<span class="phase-progress-badge" id="pp-planning"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-planning"></span></span></button>
+        <button class="phase-btn locked" onclick="switchPhase('execution')" id="pnav-execution" aria-label="Execution phase" title="Execution (PROC3000–3030) — project delivery from PMP approval through construction completion. Complete your Profile to unlock.">Execution<span class="phase-progress-badge" id="pp-execution"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-execution"></span></span></button>
+        <button class="phase-btn locked" onclick="switchPhase('closeout')" id="pnav-closeout" aria-label="Closeout phase" title="Closeout (PROC4000–4020) — project closeout checklists, financial reconciliation, and lessons learned. Complete your Profile to unlock.">Closeout<span class="phase-progress-badge" id="pp-closeout"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-closeout"></span></span></button>
+        <button class="phase-btn" onclick="switchPhase('outputs')" id="pnav-outputs" aria-label="Outputs — generated artifacts and documents" title="Outputs — generate ready-to-use project deliverables: process checklists, PMP documents, risk reports, scope statements, CCB logs, phase completion records, and more. All pre-filled from your session.">Outputs</button>
       </div>
     </div>
   </div>
@@ -1705,7 +1705,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 34.0 · Updated 05 Nov 2026</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 35.0 · Updated 05 Nov 2026</span>
   </div>
 </footer>
 <script>
