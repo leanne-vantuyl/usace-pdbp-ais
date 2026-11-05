@@ -1990,7 +1990,7 @@ steps:[
 // ===== STATIC SCREENS =====
 const WELCOME_HTML=`
 <div class="screen active" id="screen-welcome">
-<p class="welcome-eyebrow">Step-by-Step Delivery System · EM 5-1-11 PDBP · Version 20</p>
+<p class="welcome-eyebrow">Step-by-Step Delivery System · EM 5-1-11 PDBP · Version 39.0</p>
 <h1 class="welcome-title">Deliver your project<br><em>by the doctrine.</em></h1>
 <div class="welcome-rule"></div>
 <p class="welcome-body">This tool guides <strong>Project Delivery Teams</strong> through the complete PDBP lifecycle — work acceptance through project closeout — step by step, process by process. It adapts to your project profile and generates draft artifacts at every stage.<br><br>Built and maintained by the <strong>PPM Community of Practice · USACE.</strong> Process steps verified against EM 5-1-11 (Aug 2024 revision) including all branching pathways, decision gates, escalation hierarchies, and role assignments per published step tables.</p>
@@ -10202,7 +10202,7 @@ function projNew(){
   projSetActiveKey(key);
   // Reset state
   S.profile={q1:'',q2:'',q3:'',q4:''};S.programType='';
-  S.health={h1:'',h2:'',h3:'',h4:'',h5:'',h6:'',h7:'',h8:'',h9:'',h10:''};
+  S.health={h1:'',h2:'',h3:'',h4:'',h5:'',h6:'',h6b:'',h7:'',h8:'',h9:'',h10:''};
   S.procStatus={};S.stepState={};S.role='all';
   S.project={name:'',p2:'',district:'',authDoc:'',charterDate:'',charterGenerated:false,
     pdt:[],waysOfWorking:{meetingCadence:'',reportingFormat:'',escalationPath:'',
@@ -11648,8 +11648,12 @@ function selectProgramCategory(cat) {
 
   if(cat === 'cw') {
     if(cwSub) cwSub.style.display = 'block';
+    // Default to Standard CW; user can override by clicking a sub-type button
+    selectProgramType('cw');
   } else if(cat === 'milcon') {
     if(milconSub) milconSub.style.display = 'block';
+    // Default to Army MILCON; user can override by clicking a sub-type button
+    selectProgramType('milcon-army');
   } else if(cat === 'environmental') {
     // Goes direct — no sub-selection needed
     selectProgramType('environmental');
