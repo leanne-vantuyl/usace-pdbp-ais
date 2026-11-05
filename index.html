@@ -3787,6 +3787,44 @@ document.getElementById('main-content').innerHTML=WELCOME_HTML+PROFILE_HTML+HEAL
 });
 document.getElementById('btn-adv-closeout').onclick=showCompletion;
 // ===== NAVIGATION =====
+function rebuildScreensIfNeeded(){
+  // renderProgramPhase() replaces main-content.innerHTML, destroying all .screen divs.
+  // Call this before any switchPhase non-program path to restore them.
+  if(document.getElementById('screen-initiation')) return; // already intact
+  var mainEl=document.getElementById('main-content');
+  if(!mainEl) return;
+  mainEl.innerHTML=WELCOME_HTML+PROFILE_HTML+HEALTH_HTML+CHARTER_HTML_SCREEN+PMP_HTML_SCREEN+SCOPE_HTML_SCREEN+SEP_HTML+GLOSSARY_HTML_SCREEN+DASHBOARD_HTML_SCREEN+RISK_REG_HTML_SCREEN+QUIZ_HTML_SCREEN+OUTPUTS_HTML+
+  ['initiation','planning','execution','closeout'].map(function(ph){
+    var phCap=ph.charAt(0).toUpperCase()+ph.slice(1);
+    var backBtn=PHASE_PREV[ph]?'<button class="btn-secondary" onclick="switchPhase(\''+PHASE_PREV[ph]+'\')">&#8592; Back</button>':'';
+    var advLabel=ph==='closeout'?'Project Lifecycle Complete &#10003;':'Advance to '+PHASE_NEXT_LABEL[ph]+' →';
+    return '<div class="screen" id="screen-'+ph+'">'
+      +'<p class="screen-eyebrow">Phase '+PHASE_NUMS[ph]+' · '+phCap+'</p>'
+      +'<h2 class="screen-title">'+phCap+' Phase</h2>'
+      +'<p class="screen-desc">'+PHASE_DESCS[ph]+'</p>'
+      +'<div id="launch-panel-'+ph+'" class="launch-panel"></div>'
+      +'<div id="hs-'+ph+'"></div><div id="pd-'+ph+'"></div>'
+      +'<div class="btn-row">'
+      +'<button class="btn-secondary" id="gate-btn-'+ph+'" style="font-size:9px;padding:8px 14px;white-space:nowrap;">✓ Gate Review</button>'
+      +backBtn
+      +'<button class="btn-primary" id="btn-adv-'+ph+'" style="display:none;">'+advLabel+'</button>'
+      +'</div></div>';
+  }).join('');
+  // Re-wire advance and gate buttons (mirrors original wiring at lines ~3779-3789)
+  ['initiation','planning','execution'].forEach(function(ph){
+    var btn=document.getElementById('btn-adv-'+ph);
+    if(btn) btn.onclick=(function(p){return function(){switchPhase(PHASE_NEXT[p]);};})(ph);
+  });
+  ['initiation','planning','execution','closeout'].forEach(function(ph){
+    var gBtn=document.getElementById('gate-btn-'+ph);
+    if(gBtn) gBtn.onclick=(function(p){return function(){openPhaseGate(p);};})(ph);
+  });
+  var closeBtn=document.getElementById('btn-adv-closeout');
+  if(closeBtn) closeBtn.onclick=showCompletion;
+  // Re-render phase content
+  ['initiation','planning','execution','closeout'].forEach(function(ph){ renderPhase(ph); });
+  updateToolsState();
+}
 function switchPhase(phase){
   if(phase==='program'){
     document.querySelectorAll('.screen').forEach(function(s){s.style.display='none';});
@@ -3800,6 +3838,7 @@ function switchPhase(phase){
     renderSidebar('program');
     return;
   }
+  rebuildScreensIfNeeded();
   var btn=document.getElementById('pnav-'+phase);
   if(btn&&btn.classList.contains('locked')){
     showToast('Roadmap locked — complete your Project Profile first. Click "Profile" in the nav or "New Project" on the Overview screen.');
