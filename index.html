@@ -1596,8 +1596,8 @@ window.onerror=function(msg,src,line,col,err){
       <button class="font-toggle" id="font-toggle" onclick="toggleFontSize()" title="Text size — cycle through Small, Medium, and Large text. Your preference is saved automatically.">Text: M</button>
       <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Theme — toggle between Dark mode (default) and Light mode. Your preference is saved automatically.">&#9790; Dark</button>
       <div class="tools-dropdown" id="tools-dropdown">
-        <button class="tools-trigger" id="tools-trigger" onclick="toggleToolsMenu()" title="Tools — access PDT Charter builder, PMP Builder, Scope Statement, Risk Register, and other project data collection tools.">
-          &#9776; Tools <span class="tools-trigger-arrow">&#9660;</span>
+        <button class="tools-trigger" id="tools-trigger" onclick="toggleToolsMenu()" title="Build — interactive forms to build your PDT Charter, PMP, Scope Statement, Risk Register, Stakeholder Engagement Plan, and more. Data is saved to your session.">
+          &#9776; Build <span class="tools-trigger-arrow">&#9660;</span>
           <span class="tools-data-dot" id="tools-data-dot" style="display:none;" title="Project data entered"></span>
         </button>
         <div class="tools-menu" id="tools-menu">
@@ -1653,7 +1653,7 @@ window.onerror=function(msg,src,line,col,err){
         <button class="phase-btn locked" onclick="switchPhase('planning')" id="pnav-planning" aria-label="Planning phase" title="Planning (PROC2000–2080) — scope definition through PMP approval. Complete your Profile to unlock.">Planning<span class="phase-progress-badge" id="pp-planning"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-planning"></span></span></button>
         <button class="phase-btn locked" onclick="switchPhase('execution')" id="pnav-execution" aria-label="Execution phase" title="Execution (PROC3000–3030) — project delivery from PMP approval through construction completion. Complete your Profile to unlock.">Execution<span class="phase-progress-badge" id="pp-execution"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-execution"></span></span></button>
         <button class="phase-btn locked" onclick="switchPhase('closeout')" id="pnav-closeout" aria-label="Closeout phase" title="Closeout (PROC4000–4020) — project closeout checklists, financial reconciliation, and lessons learned. Complete your Profile to unlock.">Closeout<span class="phase-progress-badge" id="pp-closeout"></span><span class="phase-progress-bar-wrap"><span class="phase-progress-bar" id="ppb-closeout"></span></span></button>
-        <button class="phase-btn" onclick="switchPhase('outputs')" id="pnav-outputs" aria-label="Outputs — generated artifacts and documents" title="Outputs — generate ready-to-use project deliverables: process checklists, PMP documents, risk reports, scope statements, CCB logs, phase completion records, and more. All pre-filled from your session.">Outputs</button>
+        <button class="phase-btn" onclick="switchPhase('outputs')" id="pnav-outputs" aria-label="Generate — one-click project deliverables" title="Generate — one-click export of ready-to-use deliverables: process checklists, PMP documents, risk reports, scope statements, CCB logs, phase completion records, and more. All pre-filled from your session.">Generate</button>
       </div>
     </div>
   </div>
@@ -1705,7 +1705,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 35.0 · Updated 05 Nov 2026</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 36.0 · Updated 05 Nov 2026</span>
   </div>
 </footer>
 <script>
@@ -3533,7 +3533,7 @@ const SEP_HTML=`
 
 const OUTPUTS_HTML=`
 <div class="screen" id="screen-outputs">
-<p class="screen-eyebrow">Outputs &amp; Exports</p>
+<p class="screen-eyebrow">Generate</p>
 <h2 class="screen-title">Generate deliverables for your PDT.</h2>
 <p class="screen-desc">10 output types — from role-filtered checklists to full PMP documents, risk reports, scope statements, and project health dashboards. All generated from your current session data and project profile.</p>
 <div class="outputs-grid">
@@ -5149,7 +5149,7 @@ function genCCBLog(){
       'CHANGE CONTROL LOG\n'+'='.repeat(60)+'\n'+
       'Reference: DCG-CEO CW Change Management Guidance | EM 5-1-11 PROC3010\n\n'+
       'No change requests have been logged yet.\n\n'+
-      'To add a change request, go to the CCB Tracker in the Outputs tab and\n'+
+      'To add a change request, go to the CCB Tracker in the Generate tab and\n'+
       'complete the Change Request form. All logged changes will appear here.\n\n'+
       'POC: PPM Community of Practice · USACE | EM 5-1-11 Rev Aug 2024'
     );
@@ -6242,7 +6242,7 @@ var TOUR_STEPS=[
   {title:'Start with Your Project Profile',
    body:'Before the roadmap unlocks, answer four questions about your project — type, scale, funding, and where you are in delivery. These answers shape the entire experience: which steps are emphasized, which outputs are relevant, and what the health dashboard tracks.'},
   {title:'Phase Navigation',
-   body:'The tabs across the top — <strong>Initiation, Planning, Execution, Closeout</strong> — are the four PDBP lifecycle phases. Each phase contains its PROC codes, step-by-step. Click any unlocked phase to jump to it. <strong>Outputs</strong> is always available regardless of progress. Each phase tab shows a live <strong>X/Y step count</strong> and a small progress bar so you can see where you stand at a glance.'},
+   body:'The tabs across the top — <strong>Initiation, Planning, Execution, Closeout</strong> — are the four PDBP lifecycle phases. Each phase contains its PROC codes, step-by-step. Click any unlocked phase to jump to it. <strong>Generate</strong> is always available regardless of progress. Each phase tab shows a live <strong>X/Y step count</strong> and a small progress bar so you can see where you stand at a glance.'},
   {title:'Program Phase — CW &amp; MILCON Budget Cycles',
    body:'If your project is <strong>Civil Works or MILCON</strong>, a <strong>Program</strong> tab appears between Profile and Initiation. This tab contains the PROC7000-series — the CW Budget Cycle (PROC7000–7050) and MILCON Program &amp; Budget PROCs (PROC7100–7160). Per EM 5-1-11, these run concurrently with the four delivery phases. For IIS/SRM, Environmental, and Dam/Levee Safety projects, the Program tab is not shown — those projects follow the base PROC1000–4000 sequence; see the pathway note under Profile for details.'},
   {title:'Role Bar — Filter to Your Steps',
@@ -6251,12 +6251,12 @@ var TOUR_STEPS=[
    body:'Each PROC lists its steps from EM 5-1-11. Check the box to mark a step complete — the PROC tracks in-progress vs. complete automatically. <strong>Risk flags</strong> (red/amber/blue) call out compliance failures, fail modes, and step prerequisites. When a PROC completes, a notification fires with the next recommended action.'},
   {title:'Clickable Reference Documents',
    body:'Throughout the tool — in step panels, pathway notes, and the glossary — you\'ll see <strong>reference codes</strong> like <em>EM 5-1-11</em>, <em>REF8001G</em>, or <em>ER 5-1-11</em>. Click any of them to see the full document name, type, and description in a popup. This keeps the regulatory context visible without leaving the tool.'},
-  {title:'Tools — Data Collection &amp; Reference',
-   body:'The <strong>Tools ▾</strong> button in the header opens a dropdown with everything beyond process guidance: <strong>PDT Charter Builder, PMP Builder, Scope Statement Builder, Risk Register</strong> for data collection; <strong>Dashboard</strong> and <strong>Glossary</strong> for reference; and <strong>Knowledge Quiz</strong> for training. Key PROCs also show a direct link to their supporting tool.'},
+  {title:'Build — Interactive Project Forms',
+   body:'The <strong>Build ▾</strong> button in the header opens a dropdown with interactive forms for building your project documents: <strong>PDT Charter, PMP Builder, Scope Statement, Risk Register, Stakeholder Engagement Plan</strong> for data entry; <strong>Dashboard</strong> and <strong>Glossary</strong> for reference; and <strong>Knowledge Quiz</strong> for training. Key PROCs also show a direct link to their supporting form.'},
   {title:'Project Health Dashboard &amp; Risk Register',
    body:'The <strong>Dashboard</strong> shows phase completion, PDT health score, milestone status, and CCB threshold tracking — all from your session data. The <strong>Risk Register</strong> tracks risks through execution: add risks, score them, and when one materializes, link it directly to a CCB change entry.'},
   {title:'10 Output Types',
-   body:'The <strong>Outputs</strong> tab generates 10 ready-to-use deliverables — process checklists, role-filtered step lists, PMP documents, risk reports, scope statements, CCB logs, phase completion records, and more. All pre-filled from your session. The PMP Builder will warn you if required sections are empty before generating.'},
+   body:'The <strong>Generate</strong> tab produces 10 ready-to-use deliverables with one click — process checklists, role-filtered step lists, PMP documents, risk reports, scope statements, CCB logs, phase completion records, and more. All pre-filled from your session. The PMP Builder will warn you if required sections are empty before generating.'},
   {title:'Session Bar — Save, Share, Hand Off',
    body:'The bar at the top lets you <strong>name, save, export, import, or share</strong> your session. Progress auto-saves every 45 seconds. Use <strong>Export</strong> to hand off to another PDT member — they import the file and pick up exactly where you left off. Use <strong>Share</strong> to generate a URL that encodes the current session state.'}
 ];
@@ -11859,7 +11859,7 @@ var PROC_PROFILE_TIPS = {
     {q:'q4', v:'inheriting', tip:'Inheriting mid-execution: conduct a thorough project status review before resuming execution. Verify all open RFIs, submittals, and contract modifications are documented.', icon:'\u26a0\ufe0f'}
   ],
   proc2020: [
-    {q:'q4', v:'scratch', tip:'New team: use the PDT Charter Builder (Tools menu) to formally establish roles, authorities, decision rights, and ways of working before your first PDT meeting.', icon:'\u1f91d'}
+    {q:'q4', v:'scratch', tip:'New team: use the PDT Charter Builder (Build menu) to formally establish roles, authorities, decision rights, and ways of working before your first PDT meeting.', icon:'\u1f91d'}
   ]
 };
 
