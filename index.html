@@ -2168,6 +2168,10 @@ const HEALTH_HTML=`
 <div class="health-item"><div class="health-question">Does the PDT share a clear understanding of the authorized scope?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h7','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h7','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h7','no')">No</button></div></div>
 <div class="health-item"><div class="health-question">Are sponsor and primary stakeholder relationships established?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h8','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h8','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h8','no')">No</button></div></div>
 </div>
+<div class="health-section"><div class="health-section-title">Planning Readiness</div>
+<div class="health-item"><div class="health-question">Have project risks been identified and documented? <span style="font-size:0.6rem;color:var(--gold-dim);font-style:italic;">(PROC2040 · REF8007G)</span></div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h11','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h11','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h11','no')">No</button></div></div>
+<div class="health-item"><div class="health-question">Is contingency established and allocated in the project estimate? <span style="font-size:0.6rem;color:var(--gold-dim);font-style:italic;">(REF8007G)</span></div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h12','yes')">Yes</button><button class="toggle-btn no" onclick="ht(this,'h12','no')">No</button><button class="toggle-btn na" onclick="ht(this,'h12','na')">N/A</button></div></div>
+</div>
 <div class="health-section"><div class="health-section-title">Capacity</div>
 <div class="health-item"><div class="health-question">Are PDT members dedicated to this project (not split across many)?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h9','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h9','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h9','no')">No</button></div></div>
 <div class="health-item"><div class="health-question">Are there known resource constraints that will affect delivery?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h10','yes')">Yes</button><button class="toggle-btn no" onclick="ht(this,'h10','no')">No</button></div></div>
@@ -3858,6 +3862,9 @@ function getFlags(){
   if(S.health.h6b==='no')f.push({c:'yellow',t:'No PDT kickoff meeting — schedule before PROC2020'});
   if(S.health.h5==='no')f.push({c:'yellow',t:'Knowledge gap — document project history'});
   if(S.health.h10==='yes')f.push({c:'yellow',t:'Resource constraints — flag in REF8007G Risk Register'});
+  if(S.health.h11==='no')f.push({c:'red',t:'No risk identification — open Risk Register before PROC2040 completion',action:'riskregister'});
+  if(S.health.h11==='partial')f.push({c:'yellow',t:'Risk identification incomplete — complete the Risk Register before PMP approval',action:'riskregister'});
+  if(S.health.h12==='no')f.push({c:'yellow',t:'No contingency established — required in project estimate per REF8007G'});
   // Process status auto-flags
   var phase=S.activePhase||'';
   var ps=S.procStatus||{};
@@ -10235,7 +10242,7 @@ function projNew(){
   projSetActiveKey(key);
   // Reset state
   S.profile={q1:'',q2:'',q3:'',q4:''};S.programType='';
-  S.health={h1:'',h2:'',h3:'',h4:'',h5:'',h6:'',h6b:'',h7:'',h8:'',h9:'',h10:''};
+  S.health={h1:'',h2:'',h3:'',h4:'',h5:'',h6:'',h6b:'',h7:'',h8:'',h9:'',h10:'',h11:'',h12:''};
   S.procStatus={};S.stepState={};S.role='all';
   S.project={name:'',p2:'',district:'',authDoc:'',charterDate:'',charterGenerated:false,
     pdt:[],waysOfWorking:{meetingCadence:'',reportingFormat:'',escalationPath:'',
