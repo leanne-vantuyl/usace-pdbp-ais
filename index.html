@@ -5521,9 +5521,9 @@ function phaseForProc(procId){
 var _origToggleStep=toggleStep;
 toggleStep=function(procId,idx,phase){
   _origToggleStep(procId,idx,phase);
-  if(!S.stepState)S.stepState={};
-  var el=document.getElementById('step-'+procId+'-'+idx);
-  S.stepState[procId+'-'+idx]=el?el.classList.contains('checked'):false;
+  // NOTE: _origToggleStep already updates S.stepState and calls updateStatus.
+  // Do NOT re-read el.classList here — el may be null for off-screen steps,
+  // which would overwrite the correct stepState value with false.
   markDirty();
   // For program procs, re-render to update step-check display
   if(phase==='program'){
