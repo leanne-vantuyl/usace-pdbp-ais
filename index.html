@@ -167,6 +167,7 @@ label.field-label{font-family:'DM Mono',monospace;font-size:0.5625rem;letter-spa
 .toggle-btn.na:hover{border-color:var(--gold-dim);color:var(--white);}
 .toggle-btn.na.selected{background:rgba(128,128,128,.2);border-color:#888;color:var(--white-dim);}
 .toggle-btn.partial.selected{background:rgba(200,168,75,.12);border-color:var(--gold-dim);color:var(--gold-light);}
+.health-item-inverted .toggle-btn.yes.selected{background:rgba(192,57,43,.2);border-color:var(--danger);color:#E07C73;}
 .proc-detail{display:none;}
 .proc-detail.active{display:block;animation:fadeUp .28s ease both;}
 .proc-detail-header{display:flex;align-items:center;gap:13px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);}
@@ -1129,6 +1130,7 @@ body.light-mode .toggle-btn:hover{background:#E8E4D9;}
 body.light-mode .toggle-btn.yes.selected{background:#1A4A10;border-color:#1A4A10;color:#FFFFFF;}
 body.light-mode .toggle-btn.no.selected{background:#7A1A1A;border-color:#7A1A1A;color:#FFFFFF;}
 body.light-mode .toggle-btn.partial.selected{background:#5A4010;border-color:#5A4010;color:#FFFFFF;}
+body.light-mode .health-item-inverted .toggle-btn.yes.selected{background:#7A1A1A;border-color:#7A1A1A;color:#FFFFFF;}
 body.light-mode .proc-code-badge{color:#111111;border:2px solid #5A4010;background:#E8E4D9;font-weight:700;}
 body.light-mode .proc-detail-title{color:#111111;}
 body.light-mode .proc-overview{background:#E8E4D9;border-left:5px solid #5A4010;color:#111111;}
@@ -2174,7 +2176,7 @@ const HEALTH_HTML=`
 </div>
 <div class="health-section"><div class="health-section-title">Capacity</div>
 <div class="health-item"><div class="health-question">Are PDT members dedicated to this project (not split across many)?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h9','yes')">Yes</button><button class="toggle-btn partial" onclick="ht(this,'h9','partial')">Partial</button><button class="toggle-btn no" onclick="ht(this,'h9','no')">No</button></div></div>
-<div class="health-item"><div class="health-question">Are there known resource constraints that will affect delivery?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h10','yes')">Yes</button><button class="toggle-btn no" onclick="ht(this,'h10','no')">No</button></div></div>
+<div class="health-item health-item-inverted"><div class="health-question">Are there known resource constraints that will affect delivery?</div><div class="health-toggle"><button class="toggle-btn yes" onclick="ht(this,'h10','yes')">Yes</button><button class="toggle-btn no" onclick="ht(this,'h10','no')">No</button></div></div>
 </div>
 <div class="btn-row"><button class="btn-secondary" onclick="switchPhase('profile')">← Back</button><button class="btn-primary" onclick="launchRoadmap()">Build My Roadmap →</button></div>
 </div>`;
@@ -3905,7 +3907,7 @@ function getFlags(){
   if(S.health.h6==='no')f.push({c:'yellow',t:'No PDT Charter — open Charter Builder to create one before PROC2020',action:'charter'});
   if(S.health.h6b==='no')f.push({c:'yellow',t:'No PDT kickoff meeting — schedule before PROC2020'});
   if(S.health.h5==='no')f.push({c:'yellow',t:'Knowledge gap — document project history'});
-  if(S.health.h10==='yes')f.push({c:'yellow',t:'Resource constraints — flag in REF8007G Risk Register'});
+  if(S.health.h10==='yes')f.push({c:'red',t:'Known resource constraints — document in REF8007G Risk Register and address in PMP'});
   if(S.health.h11==='no')f.push({c:'red',t:'No risk identification — open Risk Register before PROC2040 completion',action:'riskregister'});
   if(S.health.h11==='partial')f.push({c:'yellow',t:'Risk identification incomplete — complete the Risk Register before PMP approval',action:'riskregister'});
   if(S.health.h12==='no')f.push({c:'yellow',t:'No contingency established — required in project estimate per REF8007G'});
