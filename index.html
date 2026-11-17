@@ -413,6 +413,13 @@ body.light-mode .prereq-toast-msg{color:#3A3F34;}
 .cn-close{position:absolute;top:8px;right:10px;background:none;border:none;color:var(--white-dim);cursor:pointer;font-size:0.8125rem;line-height:1;}
 .cn-action{display:inline-block;margin-top:9px;font-family:'DM Mono',monospace;font-size:0.5625rem;color:var(--gold);cursor:pointer;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:1px;}
 .cn-action:hover{color:var(--gold-light);}
+.proc-complete-wrap{margin:18px 0 6px;padding:14px 16px;border:1px dashed rgba(123,160,91,.25);background:rgba(123,160,91,.03);}
+.proc-complete-btn{display:inline-flex;align-items:center;gap:7px;background:rgba(123,160,91,.12);border:1px solid rgba(123,160,91,.4);color:var(--accent);font-family:'DM Mono',monospace;font-size:0.5625rem;letter-spacing:.08em;text-transform:uppercase;padding:9px 16px;cursor:pointer;transition:all .15s;}
+.proc-complete-btn:hover{background:rgba(123,160,91,.22);border-color:var(--accent);}
+.proc-complete-btn.done{background:rgba(123,160,91,.22);border-color:var(--accent);opacity:.6;cursor:default;}
+.pcb-check{font-size:0.75rem;line-height:1;}
+.pcb-hint{font-family:'DM Mono',monospace;font-size:0.4375rem;color:var(--white-dim);opacity:.5;margin-top:6px;letter-spacing:.04em;}
+body.light-mode .proc-complete-btn{color:#1A4A10;border-color:rgba(26,74,16,.4);background:rgba(26,74,16,.07);}
 body.light-mode .dep-panel{background:#ECEAE3;border-color:rgba(100,80,20,.18);}
 body.light-mode .dep-code{color:#8B6914;}
 body.light-mode .dep-name{color:#5A5A4A;}
@@ -1707,7 +1714,7 @@ window.onerror=function(msg,src,line,col,err){
 <footer>
   <div class="footer-inner">
     <span class="footer-attr">POC: PPM Community of Practice · USACE</span>
-    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 39.0 · Updated 06 Nov 2026</span>
+    <span class="footer-doc">EM 5-1-11 · 1 Sep 2022 (Rev Aug 2024) · ER 5-1-11 · 31 Jul 2018 · Version 40.0 · Updated 17 Nov 2026</span>
   </div>
 </footer>
 <script>
@@ -2004,7 +2011,7 @@ steps:[
 // ===== STATIC SCREENS =====
 const WELCOME_HTML=`
 <div class="screen active" id="screen-welcome">
-<p class="welcome-eyebrow">Step-by-Step Delivery System · EM 5-1-11 PDBP · Version 39.0</p>
+<p class="welcome-eyebrow">Step-by-Step Delivery System · EM 5-1-11 PDBP · Version 40.0</p>
 <h1 class="welcome-title">Deliver your project<br><em>by the doctrine.</em></h1>
 <div class="welcome-rule"></div>
 <p class="welcome-body">This tool guides <strong>Project Delivery Teams</strong> through the complete PDBP lifecycle — work acceptance through project closeout — step by step, process by process. It adapts to your project profile and generates draft artifacts at every stage.<br><br>Built and maintained by the <strong>PPM Community of Practice · USACE.</strong> Process steps verified against EM 5-1-11 (Aug 2024 revision) including all branching pathways, decision gates, escalation hierarchies, and role assignments per published step tables.</p>
@@ -4070,6 +4077,12 @@ function renderProcHTML(proc,phase){
     +pathwayHTML
     +'<div class="steps-title">Process Steps &mdash; EM 5-1-11 Table '+(tableMap[proc.code]||'&mdash;')+'</div>'
     +'<div class="step-list" id="steps-'+proc.id+'">'+stepsHTML+'</div>'
+    +'<div class="proc-complete-wrap" id="pcw-'+proc.id+'">'
+      +'<button class="proc-complete-btn" id="pcb-'+proc.id+'" onclick="forceCompleteProc(\''+proc.id+'\',\''+phase+'\')">'
+        +'<span class="pcb-check">&#10003;</span> Mark PROC Complete &amp; Advance'
+      +'</button>'
+      +'<div class="pcb-hint">Use when branch steps don\'t apply to your path.</div>'
+    +'</div>'
     +(ASKSAGE_ENABLED?'<div class="ai-prompt-area"><div class="ai-prompt-label">AI Guidance · '+proc.code+'</div><textarea class="text-input" id="ai-in-'+proc.id+'" placeholder="Ask about this process—e.g. What are common failure modes?"></textarea><div style="margin-top:9px;"><button class="btn-primary" onclick="askAI(\''+proc.id+'\')">Get Guidance →</button></div></div><div class="ai-response-area" id="ai-out-'+proc.id+'"><span style="opacity:.35;font-size:10px;font-family:\'DM Mono\',monospace;">Waiting for question...</span></div>':'')
     +'<div class="artifact-panel">'
       +'<div class="artifact-header">'
@@ -4150,6 +4163,33 @@ function updateStatus(procId,phase){
     markSessionDirty();
   }
   // Refresh dep panel to reflect new status
+  if(S.activeProc)renderDepPanel(S.activeProc);
+  if((PROCS[phase]||[]).every(function(p){return S.procStatus[p.id]==='complete';})){
+    var _advBtnEl=document.getElementById('btn-adv-'+phase);if(_advBtnEl&&_advBtnEl.style)_advBtnEl.style.display='inline-flex';
+    document.getElementById('pnav-'+phase)?.classList.add('complete');
+  }
+}
+function forceCompleteProc(procId,phase){
+  // Mark all steps checked in stepState (force-complete, e.g. when branch steps don't apply)
+  var procData=allProcs().find(function(p){return p.id===procId;});
+  if(!procData)return;
+  if(!S.stepState)S.stepState={};
+  for(var i=0;i<procData.steps.length;i++){
+    var key=procId+'-'+i;
+    S.stepState[key]=true;
+    var el=document.getElementById('step-'+procId+'-'+i);
+    if(el){el.classList.add('checked');el.setAttribute('aria-checked','true');}
+  }
+  var prev=S.procStatus[procId];
+  S.procStatus[procId]='complete';
+  document.getElementById('sbn-'+procId)?.classList.add('complete');
+  var btn=document.getElementById('pcb-'+procId);
+  if(btn){btn.classList.add('done');btn.disabled=true;}
+  if(prev!=='complete'){
+    showCompletionNotify(procId);
+  }
+  markSessionDirty();
+  setTimeout(renderPhaseProgress,50);
   if(S.activeProc)renderDepPanel(S.activeProc);
   if((PROCS[phase]||[]).every(function(p){return S.procStatus[p.id]==='complete';})){
     var _advBtnEl=document.getElementById('btn-adv-'+phase);if(_advBtnEl&&_advBtnEl.style)_advBtnEl.style.display='inline-flex';
@@ -5362,6 +5402,15 @@ function restoreStepState(stepState){
       if(el){el.classList.add('checked');el.setAttribute('aria-checked','true');}
     }
   });
+  // Restore "done" state on force-complete buttons for already-complete PROCs
+  setTimeout(function(){
+    Object.keys(S.procStatus||{}).forEach(function(procId){
+      if(S.procStatus[procId]==='complete'){
+        var btn=document.getElementById('pcb-'+procId);
+        if(btn){btn.classList.add('done');btn.disabled=true;}
+      }
+    });
+  },350);
   setTimeout(renderPhaseProgress,300);
 }
 function restoreRoleChips(){
